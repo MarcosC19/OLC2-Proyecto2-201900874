@@ -1,0 +1,87 @@
+import { Component } from 'react';
+import '../css/reportsPage.css';
+import Navigation from './navbar';
+
+export default class Reports extends Component{
+    constructor(){
+        super();
+
+        this.state = {
+            errores: [],
+            table: [],
+            archivo: ''
+        }
+    }
+
+    componentDidMount(){
+    }
+
+    render() {
+        return(
+            <div>
+                <div>
+                    <Navigation/>
+                </div>
+                <h3 id = "ts">Tabla de Simbolos</h3>
+                <div id = "mTS">
+                    <table border="1" cellPadding="2" cellSpacing="0" className="table table-success table-bordered border-dark">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Tipo</th>
+                                <th>Ámbito</th>
+                                <th>Fila</th>
+                                <th>Columna</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                this.state.table.map(simbolo => {
+                                    return(
+                                        <tr>
+                                            <td>{simbolo.nombre}</td>
+                                            <td>{simbolo.tipo}</td>
+                                            <td>{simbolo.ambito}</td>
+                                            <td>{simbolo.fila}</td>
+                                            <td>{simbolo.columna}</td>
+                                        </tr>
+                                    )
+                                })
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <h3 id = "errores">Tabla de Errores</h3>
+                <div id = "mErrores">
+                    <table border="1" cellPadding="2" cellSpacing="0" className="table table-primary table-bordered border-dark">
+                        <thead>
+                            <tr>
+                                <th><center>Tipo</center></th>
+                                <th><center>Descripción</center></th>
+                                <th><center>Linea</center></th>
+                                <th><center>Columna</center></th>
+                                <th><center>Fecha y Hora</center></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                this.state.errores.map(error => {
+                                    return(
+                                        <tr>
+                                            <td>{error.tipo}</td>
+                                            <td>{error.descripcion}</td>
+                                            <td>{error.linea}</td>
+                                            <td>{error.columna}</td>
+                                            <td>{error.tiempo}</td>
+                                        </tr>
+                                    )
+                                })
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <button type="button" id = "arbol" className="btn btn-outline-dark">Reporte<br/>Optimizacion</button>
+            </div>
+        );
+    }
+}

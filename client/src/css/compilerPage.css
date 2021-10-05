@@ -1,0 +1,33 @@
+#compiler{
+    position: absolute;
+    top:20%;
+    left: 1%;
+    width: 45%;
+    height: 70%;
+}
+
+#console{
+    position: absolute;
+    top:20%;
+    left: 54%;
+    width: 45%;
+    height: 70%;
+}
+
+#entrada{
+    position: absolute;
+    top: 15%;
+    left: 10%;
+}
+
+#salida{
+    position: absolute;
+    top: 15%;
+    left: 55%;
+}
+
+#buttonCompiler{
+    position: absolute;
+    top: 50%;
+    left: 47.5%;
+}

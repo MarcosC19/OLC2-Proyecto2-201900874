@@ -1,0 +1,33 @@
+#ts{
+    position: absolute;
+    top: 15%;
+    left: 5%;
+}
+
+#mTS{
+    position: absolute;
+    top:20%;
+    left: 5%;
+    width: 40%;
+    height: 60%;
+}
+
+#errores{
+    position: absolute;
+    top: 15%;
+    left: 55%;
+}
+
+#mErrores{
+    position: absolute;
+    top:20%;
+    left: 55%;
+    width: 40%;
+    height: 60%;
+}
+
+#arbol{
+    position: absolute;
+    top: 50%;
+    left: 46.4%;
+}
