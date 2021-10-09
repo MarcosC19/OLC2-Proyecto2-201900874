@@ -14,6 +14,29 @@ export default class Reports extends Component{
     }
 
     componentDidMount(){
+        this.getErrors();
+        this.getTable();
+        alert('Generando reportes');
+    }
+
+    getErrors(){
+        fetch('http://localhost:5000/getErrores')
+        .then(res => res.json())
+        .then(data => {
+            this.setState({
+                errores: data.error
+            });
+        });
+    }
+
+    getTable(){
+        fetch('http://localhost:5000/getTabla')
+        .then(res => res.json())
+        .then(data => {
+            this.setState({
+                table: data.tabla
+            });
+        });
     }
 
     render() {
@@ -80,7 +103,8 @@ export default class Reports extends Component{
                         </tbody>
                     </table>
                 </div>
-                <button type="button" id = "arbol" className="btn btn-outline-dark">Reporte<br/>Optimizacion</button>
+                <button type="button" id = "arbol" className="btn btn-outline-dark" onClick={() => {window.open("http://localhost:5000/getAST", "_blank")}}>Visualizar<br/>Arbol</button>
+                <button type="button" id = "optimizacion" className="btn btn-outline-dark">Reporte<br/>Optimizacion</button>
             </div>
         );
     }

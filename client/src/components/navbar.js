@@ -18,7 +18,11 @@ export default class Navbar extends Component{
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             {/* ETIQUETA PARA ACCEDER AL COMPILADOR */}
                             <li className="nav-item">
-                            <Link className="navbar-brand mb-0 h1"  to="/Compiler">Compilar</Link>
+                            <Link className="navbar-brand mb-0 h1"  to="/Interpreter">Editor</Link>
+                            </li>
+                            {/* ETIQUETA PARA ACCEDER AL COMPILADOR */}
+                            <li className="nav-item">
+                            <Link className="navbar-brand mb-0 h1"  to="/Compiler">Compilador</Link>
                             </li>
                             {/* ETIQUETA PARA ACCEDER AL OPTIMIZADOR MIRILLA */}
                             <li className="nav-item">

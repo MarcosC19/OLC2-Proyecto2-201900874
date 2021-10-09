@@ -28,6 +28,12 @@
 
 #arbol{
     position: absolute;
+    top: 40%;
+    left: 47.2%;
+}
+
+#optimizacion{
+    position: absolute;
     top: 50%;
     left: 46.4%;
 }
