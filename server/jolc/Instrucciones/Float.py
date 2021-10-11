@@ -33,5 +33,5 @@ class Float(AST):
                 return Primitivo(TIPO_DATO.DECIMAL, self.line, self.column, float(valor))
         return Excepcion("Semantico", "Se esperaba un tipo Int64", self.line, self.column)
 
-    def getC3D(self):
+    def getC3D(self, contador):
         return ""

@@ -126,5 +126,5 @@ class If(AST):
                         if isinstance(instr, Continue): return Excepcion("Semantico", "Continue se encuentra fuera de un ciclo", instr.line, instr.column)
         return None
 
-    def getC3D(self):
+    def getC3D(self, contador):
         return ""

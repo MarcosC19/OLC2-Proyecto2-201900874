@@ -62,5 +62,18 @@ class Primitivo(AST):
                 return False
         return self.value
 
-    def getC3D(self):
-        return ""
+    def getC3D(self, contador):
+        C3D = []
+        if(isinstance(self.value, str)):        
+            if self.value.lower() == 'true':
+                for i in 'true':
+                    C3D.append(ord(i))
+            elif self.value.lower() == 'false':
+                for i in 'false':
+                    C3D.append(ord(i))
+            else:
+                for i in self.value:
+                    C3D.append(ord(i))
+        else:
+            C3D.append(self.value)
+        return C3D

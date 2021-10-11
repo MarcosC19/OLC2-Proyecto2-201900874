@@ -27,5 +27,5 @@ class Length(AST):
 
         return Excepcion("Semantico", "El valor ingresado no posee longitud", self.line, self.column)
 
-    def getC3D(self):
+    def getC3D(self, contador):
         return ""

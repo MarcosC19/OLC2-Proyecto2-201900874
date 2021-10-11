@@ -91,5 +91,5 @@ class Asignacion(AST):
 
         return None
 
-    def getC3D(self):
+    def getC3D(self, contador):
         return ""

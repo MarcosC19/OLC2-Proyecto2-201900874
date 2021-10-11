@@ -175,5 +175,5 @@ class LlamadaFuncion(AST):
             valor = valor.interpretar(table, tree)
             valor = self.recorrerSimbolo(valor, table, tree)
 
-    def getC3D(self):
+    def getC3D(self, contador):
         return ""

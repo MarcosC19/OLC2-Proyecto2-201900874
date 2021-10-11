@@ -326,5 +326,17 @@ class Aritmetica(AST):
         else:
             return Excepcion("Semantico", "Operador no valido", self.line, self.column)
 
-    def getC3D(self):
-        return ""
+    def getC3D(self, contador):
+        C3D = ""
+        if isinstance(self.operating1, Primitivo):
+            valores = self.operating1.getC3D(contador)
+            for valor in valores:
+                C3D += "    t" + str(contador) + " = " + str(valor)
+        if self.operator == OPERADOR_ARITMETICO.SUMA:
+            C3D += " + "
+        if isinstance(self.operating2, Primitivo):
+            valores = self.operating2.getC3D(contador)
+            for valor in valores:
+                C3D += str(valor) + ";"
+        contador += 1
+        return [C3D, contador]

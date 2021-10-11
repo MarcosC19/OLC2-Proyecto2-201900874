@@ -56,7 +56,7 @@ class ModLista(AST):
         else:
             return Excepcion("Semantico", "La variable no es de tipo lista", self.line, self.column)
 
-    def getC3D(self):
+    def getC3D(self, contador):
         return ""
         
     def modConj(self, lista, posicion, valor, table, tree):

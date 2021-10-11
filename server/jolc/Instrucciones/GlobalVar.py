@@ -45,5 +45,5 @@ class Global(AST):
 
         return globalTable
 
-    def getC3D(self):
+    def getC3D(self, contador):
         return ""

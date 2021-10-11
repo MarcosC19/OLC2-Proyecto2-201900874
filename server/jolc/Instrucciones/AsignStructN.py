@@ -38,5 +38,5 @@ class StructN(AST):
             else:
                 return Excepcion("Semantico", "El struct " + self.identificador + " ya ha sido creado", self.line, self.column)
 
-    def getC3D(self):
+    def getC3D(self, contador):
         return ""

@@ -70,5 +70,5 @@ class ModiAtributo(AST):
                 valor = self.recorrerSimbolo(valor.interpretar(table,tree), table, tree)
             return valor
 
-    def getC3D(self):
+    def getC3D(self, contador):
         return ""

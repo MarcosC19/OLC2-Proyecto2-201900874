@@ -4,7 +4,7 @@ from flask import Flask
 from flask_cors import CORS
 from tablaSimbolos.Tipo import TIPO_DATO
 from Abstract.nodoAST import nodeAST
-from gramatica import parse
+from gramaticaP import parse
 
 app = Flask(__name__)
 CORS(app)

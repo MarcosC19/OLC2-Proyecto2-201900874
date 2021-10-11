@@ -22,5 +22,5 @@ class Return(AST):
         else:
             return self.expresion.interpretar(table, tree)
 
-    def getC3D(self):
+    def getC3D(self, contador):
         return ""

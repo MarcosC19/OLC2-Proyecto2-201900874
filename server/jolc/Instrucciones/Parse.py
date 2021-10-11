@@ -54,5 +54,5 @@ class Parse(AST):
             else:
                 return Excepcion("Semantico", "Se esperaba una cadena de texto", self.line, self.column)
 
-    def getC3D(self):
+    def getC3D(self, contador):
         return ""

@@ -25,5 +25,5 @@ class String(AST):
             return valor
         return Primitivo(self.type, self.line, self.column, str(valor))
 
-    def getC3D(self):
+    def getC3D(self, contador):
         return ""

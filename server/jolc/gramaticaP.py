@@ -684,7 +684,9 @@ def parse(inp) :
     global lexer
     global parser
     errores = []
-    c3d = ""
+    c3d = "package main;\n\nimport(\n   \"fmt\"\n)\n\nvar stack[32000000]float64;\nvar heap[32000000]float64;\nvar P, H float64;\n"
+    instC3D = "func main(){\n"
+    contadorT = 0
     lexer = lex.lex(reflags= re.IGNORECASE)
     parser = yacc.yacc()
     global input
@@ -713,5 +715,22 @@ def parse(inp) :
             if isinstance(myInstruction, Excepcion): 
                 errores.append(myInstruction)
                 ast.updateConsole(myInstruction.imprimir())
+            else:
+                valores = instruccion.getC3D(contadorT)
+                instC3D += valores[0]
+                contadorT = valores[1]
+
+        instC3D += "}"
+        if contadorT > 0:
+            contadores = "var "
+            for i in range(0, contadorT):
+                contadores += "t" + str(i)
+                if i != contadorT -1:
+                    contadores += ", "
+            contadores += " float64;\n\n"
+            c3d += contadores
+        else:
+            c3d += "\n"
+        c3d += instC3D
 
     return [ast, errores, ast.getGlobal(), c3d]

@@ -33,5 +33,5 @@ class Truncate(AST):
                 return Primitivo(TIPO_DATO.DECIMAL, self.line, self.column, int(valor))
         return Excepcion("Semantico", "Se esperaba un tipo Float64", self.line, self.column)
 
-    def getC3D(self):
+    def getC3D(self, contador):
         return ""

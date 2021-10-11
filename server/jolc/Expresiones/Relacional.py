@@ -225,5 +225,5 @@ class Relacional(AST):
         else:
             return Excepcion("Semantico", "Operador no valido", self.line, self.column)
 
-    def getC3D(self):
+    def getC3D(self, contador):
         return ""

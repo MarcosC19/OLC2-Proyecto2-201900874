@@ -82,8 +82,22 @@ class Println(AST):
         tree.updateConsole(str(value) + '\n')
         return None
 
-    def getC3D(self):
-        return ""
+    def getC3D(self, contador):
+        C3D = ""
+        for expresion in self.expresion:
+            if isinstance(expresion, Primitivo):
+                contenido = expresion.getC3D(contador)
+                for valor in contenido:
+                    if expresion.type == TIPO_DATO.ENTERO:
+                        C3D += "    fmt.Printf(\"%d\\n\", int(" + str(valor) + "));\n"
+                    elif expresion.type == TIPO_DATO.DECIMAL:
+                        C3D += "    fmt.Printf(\"%f\\n\", " + str(valor) + ");\n"
+                    else:
+                        if valor == contenido[-1]:
+                            C3D += "    fmt.Printf(\"%c\\n\", " + str(valor) + ");\n"
+                        else:
+                            C3D += "    fmt.Printf(\"%c\", " + str(valor) + ");\n"
+        return C3D
         
     def recorrerList(self, lista, table, tree):
         texto = "["

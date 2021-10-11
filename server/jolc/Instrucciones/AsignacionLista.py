@@ -32,7 +32,7 @@ class Lista(AST):
             return asignar
         return None
 
-    def getC3D(self):
+    def getC3D(self, contador):
         return ""
         
     def intList(self, lista, table, tree):

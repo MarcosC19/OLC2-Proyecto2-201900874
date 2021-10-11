@@ -16,5 +16,5 @@ class Break(AST):
     def interpretar(self, table, tree):
         return self
 
-    def getC3D(self):
+    def getC3D(self, contador):
         return ""

@@ -216,5 +216,5 @@ class For(AST):
         texto += "]"
         return texto
 
-    def getC3D(self):
+    def getC3D(self, contador):
         return ""

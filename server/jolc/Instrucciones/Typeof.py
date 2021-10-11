@@ -28,5 +28,5 @@ class Typeof(AST):
         elif self.expresion.type == TIPO_DATO.BOOLEANO: return 'Bool'
         elif self.expresion.type == TIPO_DATO.NULL: return 'Null'
 
-    def getC3D(self):
+    def getC3D(self, contador):
         return ""

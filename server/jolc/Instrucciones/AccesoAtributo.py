@@ -73,7 +73,7 @@ class AccesoAtributo(AST):
             if isinstance(myStruct, Primitivo):
                 return Excepcion("Semantico", "El atributo " + self.identificadorA + " no existe", self.line, self.column)
 
-    def getC3D(self):
+    def getC3D(self, contador):
         return ""
         
     def recorrerLista(self, lista, table, tree):

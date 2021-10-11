@@ -2,6 +2,7 @@ from Excepciones.Excepcion import Excepcion
 from Expresiones.Primitivo import Primitivo
 from Abstract.nodoAST import nodeAST
 from Abstract.AST import AST
+from Expresiones.Aritmetica import Aritmetica
 from tablaSimbolos.Tipo import TIPO_DATO
 from tablaSimbolos.Simbolo import Simbolo
 
@@ -103,8 +104,27 @@ class Print(AST):
         texto += "]"
         return texto
 
-    def getC3D(self):
-        return ""
+    def getC3D(self, contador):
+        C3D = ""
+        for expresion in self.expresion:
+            if isinstance(expresion, Primitivo):
+                contenido = expresion.getC3D(contador)
+                for valor in contenido:
+                    if expresion.type == TIPO_DATO.ENTERO:
+                        C3D += "    fmt.Printf(\"%d\", int(" + str(valor) + "));\n"
+                    elif expresion.type == TIPO_DATO.DECIMAL:
+                        C3D += "    fmt.Printf(\"%f\", " + str(valor) + ");\n"
+                    else:
+                        C3D += "    fmt.Printf(\"%c\", " + str(valor) + ");\n"
+            elif isinstance(expresion, Aritmetica):
+                contenido = expresion.getC3D(contador)
+                contador = contenido[1]
+                C3D += contenido[0] + "\n"
+                if expresion.type == TIPO_DATO.ENTERO:
+                        C3D += "    fmt.Printf(\"%d\", int(t" + str(contador-1) + "));\n"
+                elif expresion.type == TIPO_DATO.DECIMAL:
+                    C3D += "    fmt.Printf(\"%f\", " + str(contador-1) + ");\n"
+        return [C3D, contador]
             
     def recorrerAtr(self, valor, table, tree):
         valores = valor.getValor()
