@@ -16,5 +16,5 @@ class AST(ABC):
         pass
 
     @abstractmethod
-    def getC3D(self, contador):
+    def getC3D(self, c3dObj):
         pass

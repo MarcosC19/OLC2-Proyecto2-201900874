@@ -29,5 +29,5 @@ class Identificador(AST):
             return myStruct
         return simbolo.getValor()
 
-    def getC3D(self, contador):
+    def getC3D(self, c3dObj):
         return ""

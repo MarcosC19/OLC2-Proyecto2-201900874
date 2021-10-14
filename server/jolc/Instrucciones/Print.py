@@ -104,11 +104,11 @@ class Print(AST):
         texto += "]"
         return texto
 
-    def getC3D(self, contador):
+    def getC3D(self, c3dObj):
         C3D = ""
         for expresion in self.expresion:
             if isinstance(expresion, Primitivo):
-                contenido = expresion.getC3D(contador)
+                contenido = expresion.getC3D(c3dObj)
                 for valor in contenido:
                     if expresion.type == TIPO_DATO.ENTERO:
                         C3D += "    fmt.Printf(\"%d\", int(" + str(valor) + "));\n"
@@ -117,14 +117,13 @@ class Print(AST):
                     else:
                         C3D += "    fmt.Printf(\"%c\", " + str(valor) + ");\n"
             elif isinstance(expresion, Aritmetica):
-                contenido = expresion.getC3D(contador)
-                contador = contenido[1]
-                C3D += contenido[0] + "\n"
+                contenido = expresion.getC3D(c3dObj)
+                C3D += contenido + "\n"
                 if expresion.type == TIPO_DATO.ENTERO:
-                        C3D += "    fmt.Printf(\"%d\", int(t" + str(contador-1) + "));\n"
+                        C3D += "    fmt.Printf(\"%d\", int(t" + str(c3dObj.getLastContadorT()) + "));\n"
                 elif expresion.type == TIPO_DATO.DECIMAL:
-                    C3D += "    fmt.Printf(\"%f\", " + str(contador-1) + ");\n"
-        return [C3D, contador]
+                    C3D += "    fmt.Printf(\"%f\", t" + str(c3dObj.getLastContadorT()) + ");\n"
+        return C3D
             
     def recorrerAtr(self, valor, table, tree):
         valores = valor.getValor()

@@ -326,17 +326,218 @@ class Aritmetica(AST):
         else:
             return Excepcion("Semantico", "Operador no valido", self.line, self.column)
 
-    def getC3D(self, contador):
+    def getC3D(self, c3dObj):
         C3D = ""
-        if isinstance(self.operating1, Primitivo):
-            valores = self.operating1.getC3D(contador)
-            for valor in valores:
-                C3D += "    t" + str(contador) + " = " + str(valor)
+        # OPERACION SUMA
         if self.operator == OPERADOR_ARITMETICO.SUMA:
-            C3D += " + "
-        if isinstance(self.operating2, Primitivo):
-            valores = self.operating2.getC3D(contador)
-            for valor in valores:
-                C3D += str(valor) + ";"
-        contador += 1
-        return [C3D, contador]
+            if self.operating1.type == TIPO_DATO.ENTERO:
+                if isinstance(self.operating1, Primitivo):
+                    valores = self.operating1.getC3D(c3dObj)
+                    for valor in valores:
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(valor) + " + "
+                    if self.operating2.type == TIPO_DATO.ENTERO:   # ENTERO + ENTERO
+                        self.type = TIPO_DATO.ENTERO
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";"
+                        c3dObj.addContadorT()
+                    elif self.operating2.type == TIPO_DATO.DECIMAL:  # ENTERO + DECIMAL
+                        self.type = TIPO_DATO.DECIMAL
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";"
+                        c3dObj.addContadorT()
+            elif self.operating1.type == TIPO_DATO.DECIMAL:
+                if isinstance(self.operating1, Primitivo):
+                    valores = self.operating1.getC3D(c3dObj)
+                    for valor in valores:
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(valor) + " + "
+                    if self.operating2.type == TIPO_DATO.ENTERO:   # DECIMAL + ENTERO
+                        self.type = TIPO_DATO.DECIMAL
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";"
+                        c3dObj.addContadorT()
+                    elif self.operating2.type == TIPO_DATO.DECIMAL:  # DECIMAL + DECIMAL
+                        self.type = TIPO_DATO.DECIMAL
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";"
+                        c3dObj.addContadorT()
+        # OPERACION RESTA
+        elif self.operator == OPERADOR_ARITMETICO.RESTA:
+            if self.operating1.type == TIPO_DATO.ENTERO:
+                if isinstance(self.operating1, Primitivo):
+                    valores = self.operating1.getC3D(c3dObj)
+                    for valor in valores:
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(valor) + " - "
+                    if self.operating2.type == TIPO_DATO.ENTERO:   # ENTERO - ENTERO
+                        self.type = TIPO_DATO.ENTERO
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";"
+                        c3dObj.addContadorT()
+                    elif self.operating2.type == TIPO_DATO.DECIMAL:  # ENTERO - DECIMAL
+                        self.type = TIPO_DATO.DECIMAL
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";"
+                        c3dObj.addContadorT()
+            elif self.operating1.type == TIPO_DATO.DECIMAL:
+                if isinstance(self.operating1, Primitivo):
+                    valores = self.operating1.getC3D(c3dObj)
+                    for valor in valores:
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(valor) + " - "
+                    if self.operating2.type == TIPO_DATO.ENTERO:   # DECIMAL - ENTERO
+                        self.type = TIPO_DATO.DECIMAL
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";"
+                        c3dObj.addContadorT()
+                    elif self.operating2.type == TIPO_DATO.DECIMAL:  # DECIMAL - DECIMAL
+                        self.type = TIPO_DATO.DECIMAL
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";"
+                        c3dObj.addContadorT()
+        # OPERACION MULTIPLICACION
+        elif self.operator == OPERADOR_ARITMETICO.MULTIPLICACION:
+            if self.operating1.type == TIPO_DATO.ENTERO:
+                if isinstance(self.operating1, Primitivo):
+                    valores = self.operating1.getC3D(c3dObj)
+                    for valor in valores:
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(valor) + " * "
+                    if self.operating2.type == TIPO_DATO.ENTERO:   # ENTERO * ENTERO
+                        self.type = TIPO_DATO.ENTERO
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";"
+                        c3dObj.addContadorT()
+                    elif self.operating2.type == TIPO_DATO.DECIMAL:  # ENTERO * DECIMAL
+                        self.type = TIPO_DATO.DECIMAL
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";"
+                        c3dObj.addContadorT()
+            elif self.operating1.type == TIPO_DATO.DECIMAL:
+                if isinstance(self.operating1, Primitivo):
+                    valores = self.operating1.getC3D(c3dObj)
+                    for valor in valores:
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(valor) + " * "
+                    if self.operating2.type == TIPO_DATO.ENTERO:   # DECIMAL * ENTERO
+                        self.type = TIPO_DATO.DECIMAL
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";"
+                        c3dObj.addContadorT()
+                    elif self.operating2.type == TIPO_DATO.DECIMAL:  # DECIMAL * DECIMAL
+                        self.type = TIPO_DATO.DECIMAL
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";"
+                        c3dObj.addContadorT()
+            elif self.operating1.type == TIPO_DATO.CADENA:
+                if isinstance(self.operating1, Primitivo):
+                    valores = self.operating1.getC3D(c3dObj)
+                    for valor in valores:
+                        C3D += "    fmt.Printf(\"%c\", " + str(valor) + ");\n"
+                    if self.operating2.type == TIPO_DATO.CADENA:
+                        self.type = TIPO_DATO.CADENA
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += "    fmt.Printf(\"%c\", " + str(valor) + ");\n"
+        # OPERACION DIVISION
+        elif self.operator == OPERADOR_ARITMETICO.DIVISON:
+            if self.operating1.type == TIPO_DATO.ENTERO:
+                if isinstance(self.operating1, Primitivo):
+                    valores = self.operating1.getC3D(c3dObj)
+                    for valor in valores:
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(valor) + " / "
+                    if self.operating2.type == TIPO_DATO.ENTERO:   # ENTERO / ENTERO
+                        self.type = TIPO_DATO.DECIMAL
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";\n"
+                        c3dObj.addContadorT()
+                    elif self.operating2.type == TIPO_DATO.DECIMAL:  # ENTERO / DECIMAL
+                        self.type = TIPO_DATO.DECIMAL
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";"
+                        c3dObj.addContadorT()
+            elif self.operating1.type == TIPO_DATO.DECIMAL:
+                if isinstance(self.operating1, Primitivo):
+                    valores = self.operating1.getC3D(c3dObj)
+                    for valor in valores:
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(valor) + " / "
+                    if self.operating2.type == TIPO_DATO.ENTERO:   # DECIMAL / ENTERO
+                        self.type = TIPO_DATO.DECIMAL
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";"
+                        c3dObj.addContadorT()
+                    elif self.operating2.type == TIPO_DATO.DECIMAL:  # DECIMAL / DECIMAL
+                        self.type = TIPO_DATO.DECIMAL
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";"
+                        c3dObj.addContadorT()
+        # OPERACION MODULO
+        elif self.operator == OPERADOR_ARITMETICO.MODULO:
+            if self.operating1.type == TIPO_DATO.ENTERO:
+                if isinstance(self.operating1, Primitivo):
+                    valores = self.operating1.getC3D(c3dObj)
+                    for valor in valores:
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(valor) + " % "
+                    if self.operating2.type == TIPO_DATO.ENTERO:   # ENTERO % ENTERO
+                        self.type = TIPO_DATO.ENTERO
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";"
+                        c3dObj.addContadorT()
+                    elif self.operating2.type == TIPO_DATO.DECIMAL:  # ENTERO % DECIMAL
+                        self.type = TIPO_DATO.DECIMAL
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";"
+                        c3dObj.addContadorT()
+            elif self.operating1.type == TIPO_DATO.DECIMAL:
+                if isinstance(self.operating1, Primitivo):
+                    valores = self.operating1.getC3D(c3dObj)
+                    for valor in valores:
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(valor) + " % "
+                    if self.operating2.type == TIPO_DATO.ENTERO:   # DECIMAL % ENTERO
+                        self.type = TIPO_DATO.DECIMAL
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";"
+                        c3dObj.addContadorT()
+                    elif self.operating2.type == TIPO_DATO.DECIMAL:  # DECIMAL % DECIMAL
+                        self.type = TIPO_DATO.DECIMAL
+                        if isinstance(self.operating2, Primitivo):
+                            valores = self.operating2.getC3D(c3dObj)
+                            for valor in valores:
+                                C3D += str(valor) + ";"
+                        c3dObj.addContadorT()
+
+        return C3D

@@ -35,6 +35,7 @@ from Expresiones.Logica import Logica
 from tablaSimbolos.Tipo import OPERADOR_ARITMETICO
 from Expresiones.Aritmetica import Aritmetica
 from tablaSimbolos.Tipo import TIPO_DATO
+from C3D.sentC3D import C3D
 import re
 
 errores = []
@@ -684,9 +685,9 @@ def parse(inp) :
     global lexer
     global parser
     errores = []
-    c3d = "package main;\n\nimport(\n   \"fmt\"\n)\n\nvar stack[32000000]float64;\nvar heap[32000000]float64;\nvar P, H float64;\n"
-    instC3D = "func main(){\n"
-    contadorT = 0
+    c3d = C3D()
+    c3d.initC3D()
+    instC3D = ""
     lexer = lex.lex(reflags= re.IGNORECASE)
     parser = yacc.yacc()
     global input
@@ -716,21 +717,20 @@ def parse(inp) :
                 errores.append(myInstruction)
                 ast.updateConsole(myInstruction.imprimir())
             else:
-                valores = instruccion.getC3D(contadorT)
-                instC3D += valores[0]
-                contadorT = valores[1]
+                instC3D += instruccion.getC3D(c3d)
 
         instC3D += "}"
-        if contadorT > 0:
+        if c3d.getContadorT() > 0:
             contadores = "var "
-            for i in range(0, contadorT):
+            for i in range(0, c3d.getContadorT()):
                 contadores += "t" + str(i)
-                if i != contadorT -1:
+                if i != c3d.getContadorT() -1:
                     contadores += ", "
             contadores += " float64;\n\n"
-            c3d += contadores
+            c3d.addC3D(contadores)
         else:
-            c3d += "\n"
-        c3d += instC3D
+            c3d.addC3D("\n")
+        c3d.addC3D("func main(){\n")
+        c3d.addC3D(instC3D)
 
     return [ast, errores, ast.getGlobal(), c3d]

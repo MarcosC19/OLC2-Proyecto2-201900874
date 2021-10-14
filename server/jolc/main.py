@@ -97,7 +97,7 @@ def getC3D():
     global errores
     result = parse(entrada)
     errores = result[1]
-    retorno = {"salida": result[3]}
+    retorno = {"salida": result[3].getC3D()}
     return retorno
 
 if(__name__ == '__main__'):

@@ -64,7 +64,7 @@ class IdLista(AST):
                 valores = self.recorrerLista(valores, table, tree)
             return valores    
 
-    def getC3D(self, contador):
+    def getC3D(self, c3dObj):
         return ""
         
     def recorrerLista(self, lista, table, tree):

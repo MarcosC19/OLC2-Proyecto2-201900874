@@ -36,5 +36,5 @@ class Atributo(AST):
     def interpretar(self, table, tree):
         return self
 
-    def getC3D(self, contador):
+    def getC3D(self, c3dObj):
         return ""

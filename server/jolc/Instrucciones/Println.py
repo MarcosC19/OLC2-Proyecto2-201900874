@@ -82,11 +82,11 @@ class Println(AST):
         tree.updateConsole(str(value) + '\n')
         return None
 
-    def getC3D(self, contador):
+    def getC3D(self, c3dObj):
         C3D = ""
         for expresion in self.expresion:
             if isinstance(expresion, Primitivo):
-                contenido = expresion.getC3D(contador)
+                contenido = expresion.getC3D(c3dObj)
                 for valor in contenido:
                     if expresion.type == TIPO_DATO.ENTERO:
                         C3D += "    fmt.Printf(\"%d\\n\", int(" + str(valor) + "));\n"
