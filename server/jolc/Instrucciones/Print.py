@@ -118,11 +118,17 @@ class Print(AST):
                         C3D += "    fmt.Printf(\"%c\", " + str(valor) + ");\n"
             elif isinstance(expresion, Aritmetica):
                 contenido = expresion.getC3D(c3dObj)
-                C3D += contenido + "\n"
-                if expresion.type == TIPO_DATO.ENTERO:
-                        C3D += "    fmt.Printf(\"%d\", int(t" + str(c3dObj.getLastContadorT()) + "));\n"
-                elif expresion.type == TIPO_DATO.DECIMAL:
-                    C3D += "    fmt.Printf(\"%f\", t" + str(c3dObj.getLastContadorT()) + ");\n"
+                if expresion.operating2 == None:    # OPERADOR UNARIO
+                    if expresion.type == TIPO_DATO.ENTERO:
+                        C3D += "    fmt.Printf(\"%d\", int(" + contenido[0] + "));\n"
+                    elif expresion.type == TIPO_DATO.DECIMAL:
+                        C3D += "    fmt.Printf(\"%f\", " + contenido[0] + ");\n"
+                else:                           # OPERACIONES DOS OPERADORES
+                    C3D += contenido[0]
+                    if expresion.type == TIPO_DATO.ENTERO:
+                            C3D += "    fmt.Printf(\"%d\", int(t" + str(contenido[1]) + "));\n"
+                    elif expresion.type == TIPO_DATO.DECIMAL:
+                        C3D += "    fmt.Printf(\"%f\", t" + str(contenido[1]) + ");\n"
         return C3D
             
     def recorrerAtr(self, valor, table, tree):
