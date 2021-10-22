@@ -87,7 +87,6 @@ tokens = [
     'PTCOMA',
     'PUNTO',
     'IGUAL',
-    'EXCLA',
     'DOSPTS',
     'COMA',
     'PARIZQ',
@@ -121,7 +120,6 @@ t_PTCOMA            = r';'
 t_PUNTO             = r'\.'
 t_IGUAL             = r'='
 t_DOSPTS            = r':'
-t_EXCLA             = r'!'
 t_COMA              = r','
 t_PARIZQ            = r'\('
 t_PARDER            = r'\)'
@@ -328,15 +326,15 @@ def p_asignacion_list_list(t):
     t[0] = Lista(TIPO_DATO.LISTA, t.lineno(1), find_column(input, t.slice[1]), t[1], t[4])
 
 def p_add_valores(t):
-    'add_valores        : RPUSH EXCLA PARIZQ ID COMA expresion PARDER'
+    'add_valores        : RPUSH NOT PARIZQ ID COMA expresion PARDER'
     t[0] = Push(TIPO_DATO.LISTA, t.lineno(1), find_column(input, t.slice[1]), t[4], t[6], None)
 
 def p_add_valores_i(t):
-    'add_valores        : RPUSH EXCLA PARIZQ ID CORIZQ expresion CORDER COMA expresion PARDER'
+    'add_valores        : RPUSH NOT PARIZQ ID CORIZQ expresion CORDER COMA expresion PARDER'
     t[0] = Push(TIPO_DATO.LISTA, t.lineno(1), find_column(input, t.slice[1]), t[4], t[9], t[6])
 
 def p_delete_values(t):
-    'delete_valores     : RPOP EXCLA PARIZQ ID PARDER'
+    'delete_valores     : RPOP NOT PARIZQ ID PARDER'
     t[0] = Pop(TIPO_DATO.LISTA, t.lineno(1), find_column(input, t.slice[1]), t[4])
 
 def p_mod_list(t):

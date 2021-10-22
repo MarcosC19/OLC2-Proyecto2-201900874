@@ -3,6 +3,7 @@ from Expresiones.Primitivo import Primitivo
 from Abstract.nodoAST import nodeAST
 from Abstract.AST import AST
 from Expresiones.Aritmetica import Aritmetica
+from Expresiones.Logica import Logica
 from tablaSimbolos.Tipo import TIPO_DATO
 from tablaSimbolos.Simbolo import Simbolo
 from Expresiones.Relacional import Relacional
@@ -109,6 +110,7 @@ class Print(AST):
         C3D = ""
         for expresion in self.expresion:
             if isinstance(expresion, Primitivo):
+                C3D += "    /* IMPRIMIENDO PRIMITIVO */\n"
                 contenido = expresion.getC3D(c3dObj)
                 if isinstance(contenido, list):
                     for valor in contenido:
@@ -119,6 +121,7 @@ class Print(AST):
                 else:
                     C3D += contenido
             elif isinstance(expresion, Aritmetica):
+                C3D += "    /* IMPRIMIENDO ARITMETICA */\n"
                 contenido = expresion.getC3D(c3dObj)
                 if expresion.operating2 == None:    # OPERADOR UNARIO
                     if expresion.type == TIPO_DATO.ENTERO:
@@ -132,9 +135,31 @@ class Print(AST):
                     elif expresion.type == TIPO_DATO.DECIMAL:
                         C3D += "    fmt.Printf(\"%f\", t" + str(contenido[1]) + ");\n"
             elif isinstance(expresion, Relacional):
+                C3D += "    /* IMPRIMIENDO RELACIONAL */\n"
                 contenido = expresion.getC3D(c3dObj)
-
                 C3D += contenido[0]
+                C3D += "    L" + str(contenido[1]) + ":\n"
+                C3D += c3dObj.printTrue()
+                C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                temporalLS = c3dObj.getContadorL()
+                c3dObj.addContadorL()
+                C3D += "    L" + str(contenido[2]) + ":\n"
+                C3D += c3dObj.printFalse()
+                C3D += "    L" + str(temporalLS) + ":\n"
+            elif isinstance(expresion, Logica):
+                C3D += "    /* IMPRIMIENDO LOGICA */\n"
+                contenido = expresion.getC3D(c3dObj)
+                C3D += contenido[0]
+                for valor in contenido[1]:
+                    C3D += "    L" + str(valor) + ":\n"
+                C3D += c3dObj.printTrue()
+                C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                temporalLS = c3dObj.getContadorL()
+                c3dObj.addContadorL()
+                for valor in contenido[2]:
+                    C3D += "    L" + str(valor) + ":\n"
+                C3D += c3dObj.printFalse()
+                C3D += "    L" + str(temporalLS) + ":\n"
         return C3D
             
     def recorrerAtr(self, valor, table, tree):

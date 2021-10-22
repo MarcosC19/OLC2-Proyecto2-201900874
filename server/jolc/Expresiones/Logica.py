@@ -79,4 +79,93 @@ class Logica(AST):
             return Excepcion("Semantico", "Operador no valido", self.line, self.column)
 
     def getC3D(self, c3dObj):
-        return ""
+        C3D = ""
+        LV = []
+        LF = []
+        # OPERACION AND
+        if self.operator == OPERADOR_LOGICO.AND:
+            if self.operating1.type == TIPO_DATO.BOOLEANO:
+                if self.operating2.type == TIPO_DATO.BOOLEANO:
+                    self.type = TIPO_DATO.BOOLEANO
+                    resultado1C3D = self.operating1.getC3D(c3dObj)
+                    resultado2C3D = self.operating2.getC3D(c3dObj)
+                    C3D += resultado1C3D[0]
+                    if isinstance(resultado1C3D[1], list):
+                        for valor in resultado1C3D[1]:
+                            C3D += "    L" + str(valor) + ":\n"
+                    else:
+                        C3D += "    L" + str(resultado1C3D[1]) + ":\n"
+                    C3D += str(resultado2C3D[0])
+                    if isinstance(resultado2C3D[1], list):
+                        LV.extend(resultado2C3D[1])
+                        if isinstance(resultado1C3D[2], list):
+                            LF.extend(resultado1C3D[2])
+                        else:
+                            LF.append(resultado1C3D[2])
+                        LF.extend(resultado2C3D[2])
+                    else:
+                        LV.append(resultado2C3D[1])
+                        if isinstance(resultado1C3D[2], list):
+                            LF.extend(resultado1C3D[2])
+                        else:
+                            LF.append(resultado1C3D[2])
+                        LF.append(resultado2C3D[2])
+        # OPERACION OR
+        elif self.operator == OPERADOR_LOGICO.OR:
+            if self.operating1.type == TIPO_DATO.BOOLEANO:
+                if self.operating2.type == TIPO_DATO.BOOLEANO:
+                    self.type = TIPO_DATO.BOOLEANO
+                    resultado1C3D = self.operating1.getC3D(c3dObj)
+                    resultado2C3D = self.operating2.getC3D(c3dObj)
+                    C3D += resultado1C3D[0]
+                    if isinstance(resultado1C3D[1], list):
+                        for valor in resultado1C3D[2]:
+                            C3D += "    L" + str(valor) + ":\n"
+                    else:
+                        C3D += "    L" + str(resultado1C3D[2]) + ":\n"
+                    C3D += str(resultado2C3D[0])
+                    if isinstance(resultado1C3D[1], list):
+                        LV.extend(resultado1C3D[1])
+                        if isinstance(resultado2C3D[1], list):
+                            LV.extend(resultado2C3D[1])
+                        else:
+                            LV.append(resultado2C3D[1])
+                        if isinstance(resultado2C3D[2], list):
+                            LF.extend(resultado2C3D[2])
+                        else:
+                            LF.append(resultado2C3D[2])
+                    else:
+                        LV.append(resultado1C3D[1])
+                        if isinstance(resultado2C3D[1], list):
+                            LV.extend(resultado2C3D[1])
+                        else:
+                            LV.append(resultado2C3D[1])
+                        if isinstance(resultado2C3D[2], list):
+                            LF.extend(resultado2C3D[2])
+                        else:
+                            LF.append(resultado2C3D[2])
+        # OPERACION NOT
+        elif self.operator == OPERADOR_LOGICO.NOT:
+            if self.operating1.type == TIPO_DATO.BOOLEANO:
+                self.type = TIPO_DATO.BOOLEANO
+                if isinstance(self.operating1, Primitivo):
+                    if self.operating1.value == "true":
+                        C3D += c3dObj.printFalse()
+                    else:
+                        C3D += c3dObj.printTrue()
+                else:
+                    resultado1C3D = self.operating1.getC3D(c3dObj)
+                    C3D += resultado1C3D[0]
+                    if isinstance(resultado1C3D[2], list):
+                        LV.extend(resultado1C3D[2])
+                        if isinstance(resultado1C3D[1], list):
+                            LF.extend(resultado1C3D[1])
+                        else:
+                            LF.append(resultado1C3D[1])
+                    else:
+                        LV.append(resultado1C3D[2])
+                        if isinstance(resultado1C3D[1], list):
+                            LF.extend(resultado1C3D[1])
+                        else:
+                            LF.append(resultado1C3D[1])
+        return [C3D, LV, LF]

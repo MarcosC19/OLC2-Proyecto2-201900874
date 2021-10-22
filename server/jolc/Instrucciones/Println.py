@@ -3,6 +3,7 @@ from Expresiones.Relacional import Relacional
 from tablaSimbolos.Simbolo import Simbolo
 from Excepciones.Excepcion import Excepcion
 from Expresiones.Primitivo import Primitivo
+from Expresiones.Logica import Logica
 from Abstract.nodoAST import nodeAST
 from Abstract.AST import AST
 from tablaSimbolos.Tipo import TIPO_DATO
@@ -88,6 +89,7 @@ class Println(AST):
         C3D = ""
         for expresion in self.expresion:
             if isinstance(expresion, Primitivo):
+                C3D += "    /* IMPRIMIENDO PRIMITIVO */\n"
                 contenido = expresion.getC3D(c3dObj)
                 if isinstance(contenido, list):
                     for valor in contenido:
@@ -99,6 +101,7 @@ class Println(AST):
                     C3D += contenido
                     C3D += "    fmt.Printf(\"%c\\n\", 32);\n"
             elif isinstance(expresion, Aritmetica):
+                C3D += "    /* IMPRIMIENDO ARITMETICA */\n"
                 contenido = expresion.getC3D(c3dObj)
                 if expresion.operating2 == None:    # OPERADOR UNARIO
                     if expresion.type == TIPO_DATO.ENTERO:
@@ -114,8 +117,32 @@ class Println(AST):
                     elif expresion.type == TIPO_DATO.CADENA:
                         C3D += "    fmt.Printf(\"%c\\n\", 32);\n"
             elif isinstance(expresion, Relacional):
+                C3D += "    /* IMPRIMIENDO RELACIONAL */\n"
                 contenido = expresion.getC3D(c3dObj)
                 C3D += contenido[0]
+                C3D += "    L" + str(contenido[1]) + ":\n"
+                C3D += c3dObj.printTrue()
+                C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                temporalLS = c3dObj.getContadorL()
+                c3dObj.addContadorL()
+                C3D += "    L" + str(contenido[2]) + ":\n"
+                C3D += c3dObj.printFalse()
+                C3D += "    L" + str(temporalLS) + ":\n"
+                C3D += "    fmt.Printf(\"%c\\n\", 32);\n"
+            elif isinstance(expresion, Logica):
+                C3D += "    /* IMPRIMIENDO LOGICA */\n"
+                contenido = expresion.getC3D(c3dObj)
+                C3D += contenido[0]
+                for valor in contenido[1]:
+                    C3D += "    L" + str(valor) + ":\n"
+                C3D += c3dObj.printTrue()
+                C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                temporalLS = c3dObj.getContadorL()
+                c3dObj.addContadorL()
+                for valor in contenido[2]:
+                    C3D += "    L" + str(valor) + ":\n"
+                C3D += c3dObj.printFalse()
+                C3D += "    L" + str(temporalLS) + ":\n"
                 C3D += "    fmt.Printf(\"%c\\n\", 32);\n"
         return C3D
         
