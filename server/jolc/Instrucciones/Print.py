@@ -5,6 +5,7 @@ from Abstract.AST import AST
 from Expresiones.Aritmetica import Aritmetica
 from tablaSimbolos.Tipo import TIPO_DATO
 from tablaSimbolos.Simbolo import Simbolo
+from Expresiones.Relacional import Relacional
 
 
 class Print(AST):
@@ -109,13 +110,14 @@ class Print(AST):
         for expresion in self.expresion:
             if isinstance(expresion, Primitivo):
                 contenido = expresion.getC3D(c3dObj)
-                for valor in contenido:
-                    if expresion.type == TIPO_DATO.ENTERO:
-                        C3D += "    fmt.Printf(\"%d\", int(" + str(valor) + "));\n"
-                    elif expresion.type == TIPO_DATO.DECIMAL:
-                        C3D += "    fmt.Printf(\"%f\", " + str(valor) + ");\n"
-                    else:
-                        C3D += "    fmt.Printf(\"%c\", " + str(valor) + ");\n"
+                if isinstance(contenido, list):
+                    for valor in contenido:
+                        if expresion.type == TIPO_DATO.ENTERO:
+                            C3D += "    fmt.Printf(\"%d\", int(" + str(valor) + "));\n"
+                        elif expresion.type == TIPO_DATO.DECIMAL:
+                            C3D += "    fmt.Printf(\"%f\", " + str(valor) + ");\n"
+                else:
+                    C3D += contenido
             elif isinstance(expresion, Aritmetica):
                 contenido = expresion.getC3D(c3dObj)
                 if expresion.operating2 == None:    # OPERADOR UNARIO
@@ -129,6 +131,10 @@ class Print(AST):
                             C3D += "    fmt.Printf(\"%d\", int(t" + str(contenido[1]) + "));\n"
                     elif expresion.type == TIPO_DATO.DECIMAL:
                         C3D += "    fmt.Printf(\"%f\", t" + str(contenido[1]) + ");\n"
+            elif isinstance(expresion, Relacional):
+                contenido = expresion.getC3D(c3dObj)
+
+                C3D += contenido[0]
         return C3D
             
     def recorrerAtr(self, valor, table, tree):

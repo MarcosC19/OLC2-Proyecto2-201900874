@@ -226,4 +226,353 @@ class Relacional(AST):
             return Excepcion("Semantico", "Operador no valido", self.line, self.column)
 
     def getC3D(self, c3dObj):
-        return ""
+        C3D = ""
+        # OPERANDO MAYOR QUE >
+        if self.operator == OPERADOR_RELACIONAL.MAYORQUE:
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
+                if isinstance(self.operating1, Primitivo):
+                    resultado1C3D = self.operating1.getC3D(c3dObj)
+                    if isinstance(self.operating2, Primitivo):  # PRIMITIVO > PRIMITIVO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        for contenido in resultado1C3D:
+                            C3D += "    if " + str(contenido) + " > "
+                        for contenido in resultado2C3D:
+                            C3D += str(contenido) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                    else:                                   # PRIMITIVO > OTRO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += resultado2C3D[0]
+                        for contenido in resultado1C3D:
+                            C3D += "    if " + str(contenido) + " > "
+                        C3D += "t" + str(resultado2C3D[1]) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                else:
+                    resultado1C3D = self.operating1.getC3D(c3dObj)
+                    C3D += resultado1C3D[0]
+                    if isinstance(self.operating2, Primitivo):  # OTRO > PRIMITIVO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += "    if t" + str(resultado1C3D[1]) + " > "
+                        for contenido in resultado2C3D:
+                            C3D += str(contenido) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                    else:                                   # OTRO > OTRO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += resultado2C3D[0]
+                        C3D += "    if t" + str(resultado1C3D[1]) + " > t" + str(resultado2C3D[1]) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+            elif self.operating1.type == TIPO_DATO.CADENA:
+                if self.operating2.type == TIPO_DATO.CADENA:
+                    return str(izquierdo) > str(derecho)
+        # OPERANDO MENOR QUE <
+        elif self.operator == OPERADOR_RELACIONAL.MENORQUE:
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
+                if isinstance(self.operating1, Primitivo):
+                    resultado1C3D = self.operating1.getC3D(c3dObj)
+                    if isinstance(self.operating2, Primitivo):  # PRIMITIVO < PRIMITIVO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        for contenido in resultado1C3D:
+                            C3D += "    if " + str(contenido) + " < "
+                        for contenido in resultado2C3D:
+                            C3D += str(contenido) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                    else:                                   # PRIMITIVO < OTRO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += resultado2C3D[0]
+                        for contenido in resultado1C3D:
+                            C3D += "    if " + str(contenido) + " < "
+                        C3D += "t" + str(resultado2C3D[1]) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                else:
+                    resultado1C3D = self.operating1.getC3D(c3dObj)
+                    C3D += resultado1C3D[0]
+                    if isinstance(self.operating2, Primitivo):  # OTRO < PRIMITIVO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += "    if t" + str(resultado1C3D[1]) + " < "
+                        for contenido in resultado2C3D:
+                            C3D += str(contenido) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                    else:                                   # OTRO < OTRO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += resultado2C3D[0]
+                        C3D += "    if t" + str(resultado1C3D[1]) + " < t" + str(resultado2C3D[1]) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+            elif self.operating1.type == TIPO_DATO.CADENA:
+                if self.operating2.type == TIPO_DATO.CADENA:
+                    return str(izquierdo) < str(derecho)
+        # OPERANDO MAYOR IGUAL QUE >=
+        elif self.operator == OPERADOR_RELACIONAL.MAYORIGUAL:
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
+                if isinstance(self.operating1, Primitivo):
+                    resultado1C3D = self.operating1.getC3D(c3dObj)
+                    if isinstance(self.operating2, Primitivo):  # PRIMITIVO >= PRIMITIVO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        for contenido in resultado1C3D:
+                            C3D += "    if " + str(contenido) + " >= "
+                        for contenido in resultado2C3D:
+                            C3D += str(contenido) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                    else:                                   # PRIMITIVO >= OTRO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += resultado2C3D[0]
+                        for contenido in resultado1C3D:
+                            C3D += "    if " + str(contenido) + " >= "
+                        C3D += "t" + str(resultado2C3D[1]) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                else:
+                    resultado1C3D = self.operating1.getC3D(c3dObj)
+                    C3D += resultado1C3D[0]
+                    if isinstance(self.operating2, Primitivo):  # OTRO >= PRIMITIVO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += "    if t" + str(resultado1C3D[1]) + " >= "
+                        for contenido in resultado2C3D:
+                            C3D += str(contenido) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                    else:                                   # OTRO >= OTRO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += resultado2C3D[0]
+                        C3D += "    if t" + str(resultado1C3D[1]) + " >= t" + str(resultado2C3D[1]) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+            elif self.operating1.type == TIPO_DATO.CADENA:
+                if self.operating2.type == TIPO_DATO.CADENA:
+                    return str(izquierdo) >= str(derecho)
+        # OPERANDO MENOR IGUAL QUE <=
+        elif self.operator == OPERADOR_RELACIONAL.MENORIGUAL:
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
+                if isinstance(self.operating1, Primitivo):
+                    resultado1C3D = self.operating1.getC3D(c3dObj)
+                    if isinstance(self.operating2, Primitivo):  # PRIMITIVO <= PRIMITIVO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        for contenido in resultado1C3D:
+                            C3D += "    if " + str(contenido) + " <= "
+                        for contenido in resultado2C3D:
+                            C3D += str(contenido) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                    else:                                   # PRIMITIVO <= OTRO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += resultado2C3D[0]
+                        for contenido in resultado1C3D:
+                            C3D += "    if " + str(contenido) + " <= "
+                        C3D += "t" + str(resultado2C3D[1]) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                else:
+                    resultado1C3D = self.operating1.getC3D(c3dObj)
+                    C3D += resultado1C3D[0]
+                    if isinstance(self.operating2, Primitivo):  # OTRO <= PRIMITIVO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += "    if t" + str(resultado1C3D[1]) + " <= "
+                        for contenido in resultado2C3D:
+                            C3D += str(contenido) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                    else:                                   # OTRO <= OTRO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += resultado2C3D[0]
+                        C3D += "    if t" + str(resultado1C3D[1]) + " <= t" + str(resultado2C3D[1]) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+            elif self.operating1.type == TIPO_DATO.CADENA:
+                if self.operating2.type == TIPO_DATO.CADENA:
+                    return str(izquierdo) <= str(derecho)
+        # OPERANDO IGUAL IGUAL QUE ==
+        elif self.operator == OPERADOR_RELACIONAL.IGUAL:
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
+                if isinstance(self.operating1, Primitivo):
+                    resultado1C3D = self.operating1.getC3D(c3dObj)
+                    if isinstance(self.operating2, Primitivo):  # PRIMITIVO == PRIMITIVO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        for contenido in resultado1C3D:
+                            C3D += "    if " + str(contenido) + " == "
+                        for contenido in resultado2C3D:
+                            C3D += str(contenido) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                    else:                                   # PRIMITIVO == OTRO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += resultado2C3D[0]
+                        for contenido in resultado1C3D:
+                            C3D += "    if " + str(contenido) + " == "
+                        C3D += "t" + str(resultado2C3D[1]) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                else:
+                    resultado1C3D = self.operating1.getC3D(c3dObj)
+                    C3D += resultado1C3D[0]
+                    if isinstance(self.operating2, Primitivo):  # OTRO == PRIMITIVO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += "    if t" + str(resultado1C3D[1]) + " == "
+                        for contenido in resultado2C3D:
+                            C3D += str(contenido) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                    else:                                   # OTRO == OTRO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += resultado2C3D[0]
+                        C3D += "    if t" + str(resultado1C3D[1]) + " == t" + str(resultado2C3D[1]) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+            elif self.operating1.type == TIPO_DATO.CADENA:
+                if self.operating2.type == TIPO_DATO.CADENA:
+                    return str(izquierdo) == str(derecho)
+            elif self.operating1.type == TIPO_DATO.BOOLEANO:
+                if self.operating2.type == TIPO_DATO.BOOLEANO:
+                    return bool(izquierdo) == bool(derecho)
+                else:
+                    return Excepcion("Semantico", "Operando 2 no es valido para la operacion ==", self.line, self.column)
+            else:
+                return bool(izquierdo == derecho)
+        # OPERANDO DIFERENTE QUE !=
+        elif self.operator == OPERADOR_RELACIONAL.DIFERENTE:
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
+                if isinstance(self.operating1, Primitivo):
+                    resultado1C3D = self.operating1.getC3D(c3dObj)
+                    if isinstance(self.operating2, Primitivo):  # PRIMITIVO != PRIMITIVO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        for contenido in resultado1C3D:
+                            C3D += "    if " + str(contenido) + " != "
+                        for contenido in resultado2C3D:
+                            C3D += str(contenido) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                    else:                                   # PRIMITIVO != OTRO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += resultado2C3D[0]
+                        for contenido in resultado1C3D:
+                            C3D += "    if " + str(contenido) + " != "
+                        C3D += "t" + str(resultado2C3D[1]) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                else:
+                    resultado1C3D = self.operating1.getC3D(c3dObj)
+                    C3D += resultado1C3D[0]
+                    if isinstance(self.operating2, Primitivo):  # OTRO != PRIMITIVO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += "    if t" + str(resultado1C3D[1]) + " != "
+                        for contenido in resultado2C3D:
+                            C3D += str(contenido) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                    else:                                   # OTRO != OTRO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += resultado2C3D[0]
+                        C3D += "    if t" + str(resultado1C3D[1]) + " != t" + str(resultado2C3D[1]) + " "
+                        C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+            elif self.operating1.type == TIPO_DATO.CADENA:
+                if self.operating2.type == TIPO_DATO.CADENA:
+                    return str(izquierdo) != str(derecho)
+            elif self.operating1.type == TIPO_DATO.BOOLEANO:
+                if self.operating2.type == TIPO_DATO.BOOLEANO:
+                    return bool(izquierdo) != bool(derecho)
+            else:
+                return bool(izquierdo != derecho)
+        return [C3D, temporalL0, temporalL1]    # RETORNO [C3D, ListaV, ListaF]

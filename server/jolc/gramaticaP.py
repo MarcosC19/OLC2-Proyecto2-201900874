@@ -720,6 +720,8 @@ def parse(inp) :
                 instC3D += instruccion.getC3D(c3d)
 
         instC3D += "}"
+        potCode = c3d.addPotencia()
+        printCode = c3d.addPrintString()
         if c3d.getContadorT() > 0:
             contadores = "var "
             for i in range(0, c3d.getContadorT()):
@@ -730,6 +732,8 @@ def parse(inp) :
             c3d.addC3D(contadores)
         else:
             c3d.addC3D("\n")
+        c3d.addC3D(printCode)
+        c3d.addC3D(potCode)
         c3d.addC3D("func main(){\n")
         c3d.addC3D(instC3D)
 

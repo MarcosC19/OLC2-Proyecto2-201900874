@@ -1,4 +1,5 @@
 from Expresiones.Aritmetica import Aritmetica
+from Expresiones.Relacional import Relacional
 from tablaSimbolos.Simbolo import Simbolo
 from Excepciones.Excepcion import Excepcion
 from Expresiones.Primitivo import Primitivo
@@ -88,13 +89,15 @@ class Println(AST):
         for expresion in self.expresion:
             if isinstance(expresion, Primitivo):
                 contenido = expresion.getC3D(c3dObj)
-                for valor in contenido:
-                    if expresion.type == TIPO_DATO.ENTERO:
-                        C3D += "    fmt.Printf(\"%d\\n\", int(" + str(valor) + "));\n"
-                    elif expresion.type == TIPO_DATO.DECIMAL:
-                        C3D += "    fmt.Printf(\"%f\\n\", " + str(valor) + ");\n"
-                    else:
-                        C3D += "    fmt.Printf(\"%c\\n\", " + str(valor) + ");\n"
+                if isinstance(contenido, list):
+                    for valor in contenido:
+                        if expresion.type == TIPO_DATO.ENTERO:
+                            C3D += "    fmt.Printf(\"%d\\n\", int(" + str(valor) + "));\n"
+                        elif expresion.type == TIPO_DATO.DECIMAL:
+                            C3D += "    fmt.Printf(\"%f\\n\", " + str(valor) + ");\n"
+                else:
+                    C3D += contenido
+                    C3D += "    fmt.Printf(\"%c\\n\", 32);\n"
             elif isinstance(expresion, Aritmetica):
                 contenido = expresion.getC3D(c3dObj)
                 if expresion.operating2 == None:    # OPERADOR UNARIO
@@ -110,6 +113,10 @@ class Println(AST):
                         C3D += "    fmt.Printf(\"%f\\n\", t" + str(contenido[1]) + ");\n"
                     elif expresion.type == TIPO_DATO.CADENA:
                         C3D += "    fmt.Printf(\"%c\\n\", 32);\n"
+            elif isinstance(expresion, Relacional):
+                contenido = expresion.getC3D(c3dObj)
+                C3D += contenido[0]
+                C3D += "    fmt.Printf(\"%c\\n\", 32);\n"
         return C3D
         
     def recorrerList(self, lista, table, tree):

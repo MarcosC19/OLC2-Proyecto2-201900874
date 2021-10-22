@@ -64,16 +64,31 @@ class Primitivo(AST):
 
     def getC3D(self, c3dObj):
         C3D = []
-        if(isinstance(self.value, str)):        
+        if(isinstance(self.value, str)):   
+            C3D = ""    
             if self.value.lower() == 'true':
-                for i in 'true':
-                    C3D.append(ord(i))
+                C3D = c3dObj.printTrue()
             elif self.value.lower() == 'false':
-                for i in 'false':
-                    C3D.append(ord(i))
+                C3D = c3dObj.printFalse()
             else:
+                C3D += "    t" + str(c3dObj.getContadorT()) + " = H;\n"
+                temporalT1 = c3dObj.getContadorT()
+                c3dObj.addContadorT()
                 for i in self.value:
-                    C3D.append(ord(i))
+                    C3D += "    heap[int(H)] = " + str(ord(i)) + ";\n"
+                    C3D += "    H = H + 1;\n"
+                C3D += "    heap[int(H)] = -1;\n"
+                C3D += "    H = H + 1;\n"
+                C3D += "    t" + str(c3dObj.getContadorT()) + " = P + 0;\n"
+                temporalT2 = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                C3D += "    t" + str(temporalT2) + " = t" + str(temporalT2) + " + 1;\n"
+                C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalT1) + ";\n"
+                C3D += "    P = P + 0;\n"
+                C3D += "    printString();\n"
+                C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(P)];\n"
+                C3D += "    P = P - 0;\n"
+            return C3D
         else:
             C3D.append(self.value)
         return C3D
