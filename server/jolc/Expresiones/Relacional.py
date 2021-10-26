@@ -504,16 +504,35 @@ class Relacional(AST):
                         C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
                         temporalL1 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
-            elif self.operating1.type == TIPO_DATO.CADENA:
-                if self.operating2.type == TIPO_DATO.CADENA:
-                    return str(izquierdo) == str(derecho)
-            elif self.operating1.type == TIPO_DATO.BOOLEANO:
-                if self.operating2.type == TIPO_DATO.BOOLEANO:
-                    return bool(izquierdo) == bool(derecho)
-                else:
-                    return Excepcion("Semantico", "Operando 2 no es valido para la operacion ==", self.line, self.column)
-            else:
-                return bool(izquierdo == derecho)
+            elif (self.operating1.type == TIPO_DATO.CADENA and self.operating2.type == TIPO_DATO.CADENA) or (self.operating1.type == TIPO_DATO.BOOLEANO and self.operating2.type == TIPO_DATO.BOOLEANO):
+                C3D += self.operating1.getC3D(c3dObj)
+                c3dObj.addContadorT()
+                temporalAux1 = c3dObj.getLastContadorT()
+                C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux1) + " + 0;\n"
+                temporalT2 = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux1 - 1) + ";\n"
+                C3D += self.operating2.getC3D(c3dObj)
+                c3dObj.addContadorT()
+                temporalAux2 = c3dObj.getLastContadorT()
+                C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux2) + " + 1;\n"
+                temporalT2 = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux2 - 1) + ";\n"
+                C3D += "    P = P + 0;\n"
+                C3D += "    compareString();\n"
+                C3D += "    t" + str(c3dObj.getContadorT()) + " = P + 2;\n"
+                temporalT3 = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalT3) + ")];\n"
+                temporalT4 = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                C3D += "    if t" + str(temporalT4) + " == 1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                temporalL0 = c3dObj.getContadorL()
+                c3dObj.addContadorL()
+                C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                temporalL1 = c3dObj.getContadorL()
+                c3dObj.addContadorL()
         # OPERANDO DIFERENTE QUE !=
         elif self.operator == OPERADOR_RELACIONAL.DIFERENTE:
             if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
@@ -567,12 +586,33 @@ class Relacional(AST):
                         C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
                         temporalL1 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
-            elif self.operating1.type == TIPO_DATO.CADENA:
-                if self.operating2.type == TIPO_DATO.CADENA:
-                    return str(izquierdo) != str(derecho)
-            elif self.operating1.type == TIPO_DATO.BOOLEANO:
-                if self.operating2.type == TIPO_DATO.BOOLEANO:
-                    return bool(izquierdo) != bool(derecho)
-            else:
-                return bool(izquierdo != derecho)
+            elif (self.operating1.type == TIPO_DATO.CADENA and self.operating2.type == TIPO_DATO.CADENA) or (self.operating1.type == TIPO_DATO.BOOLEANO and self.operating2.type == TIPO_DATO.BOOLEANO):
+                C3D += self.operating1.getC3D(c3dObj)
+                c3dObj.addContadorT()
+                temporalAux1 = c3dObj.getLastContadorT()
+                C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux1) + " + 0;\n"
+                temporalT2 = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux1 - 1) + ";\n"
+                C3D += self.operating2.getC3D(c3dObj)
+                c3dObj.addContadorT()
+                temporalAux2 = c3dObj.getLastContadorT()
+                C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux2) + " + 1;\n"
+                temporalT2 = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux2 - 1) + ";\n"
+                C3D += "    P = P + 0;\n"
+                C3D += "    compareString();\n"
+                C3D += "    t" + str(c3dObj.getContadorT()) + " = P + 2;\n"
+                temporalT3 = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalT3) + ")];\n"
+                temporalT4 = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                C3D += "    if t" + str(temporalT4) + " != 1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                temporalL0 = c3dObj.getContadorL()
+                c3dObj.addContadorL()
+                C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                temporalL1 = c3dObj.getContadorL()
+                c3dObj.addContadorL()
         return [C3D, temporalL0, temporalL1]    # RETORNO [C3D, ListaV, ListaF]

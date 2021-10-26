@@ -6,6 +6,8 @@ from Instrucciones.Break import Break
 from Abstract.AST import AST
 from Abstract.nodoAST import nodeAST
 from Excepciones.Excepcion import Excepcion
+from Expresiones.Relacional import Relacional
+from Expresiones.Logica import Logica
 from tablaSimbolos.Tipo import TIPO_DATO
 from tablaSimbolos.Tabla import Tabla
 
@@ -126,5 +128,40 @@ class If(AST):
                         if isinstance(instr, Continue): return Excepcion("Semantico", "Continue se encuentra fuera de un ciclo", instr.line, instr.column)
         return None
 
-    def getC3D(self, contador):
-        return ""
+    def getC3D(self, c3dObj):
+        C3D = ""
+        resultadoCondicion = self.condicion.getC3D(c3dObj)
+        # [C3D, LV, LF]
+        C3D += resultadoCondicion[0] # IF 
+        C3D += "    /* REALIZANDO IF */\n"
+        if isinstance(self.condicion, Relacional):
+            C3D += "    L" + str(resultadoCondicion[1]) + ":\n"
+            for instruccion in self.instruccionIf:
+                C3D += instruccion.getC3D(c3dObj)
+            C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+            temporalLS = c3dObj.getContadorL()
+            c3dObj.addContadorL()
+            C3D += "    L" + str(resultadoCondicion[2]) + ":\n"
+            if self.instruccionesElseIf != None: # ELSE IF
+                C3D += self.instruccionesElseIf.getC3D(c3dObj)
+            elif self.instruccionesElse != None: # ELSE
+                for insElse in self.instruccionesElse:
+                    C3D += insElse.getC3D(c3dObj)
+            C3D += "    L" + str(temporalLS) + ":\n"
+        elif isinstance(self.condicion, Logica):
+            for valor in resultadoCondicion[1]:
+                C3D += "    L" + str(valor) + ":\n"
+            for instruccion in self.instruccionIf:
+                C3D += instruccion.getC3D(c3dObj)
+            C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+            temporalLS = c3dObj.getContadorL()
+            c3dObj.addContadorL()
+            for valor in resultadoCondicion[2]:
+                C3D += "    L" + str(valor) + ":\n"
+            if self.instruccionesElseIf != None: # ELSE IF
+                C3D += self.instruccionesElseIf.getC3D(c3dObj)
+            elif self.instruccionesElse != None: # ELSE
+                for insElse in self.instruccionesElse:
+                    C3D += insElse.getC3D(c3dObj)
+            C3D += "    L" + str(temporalLS) + ":\n"
+        return C3D

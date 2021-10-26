@@ -683,9 +683,6 @@ def parse(inp) :
     global lexer
     global parser
     errores = []
-    c3d = C3D()
-    c3d.initC3D()
-    instC3D = ""
     lexer = lex.lex(reflags= re.IGNORECASE)
     parser = yacc.yacc()
     global input
@@ -714,12 +711,43 @@ def parse(inp) :
             if isinstance(myInstruction, Excepcion): 
                 errores.append(myInstruction)
                 ast.updateConsole(myInstruction.imprimir())
+
+    return [ast, errores, ast.getGlobal()]
+
+def parseC3D(inp) :
+    global errores
+    global lexer
+    global parser
+    errores = []
+    c3d = C3D()
+    c3d.initC3D()
+    instC3D = ""
+    lexer = lex.lex(reflags= re.IGNORECASE)
+    parser = yacc.yacc()
+    global input
+    input = inp
+    instrucciones=parser.parse(inp)
+    ast = Arbol(instrucciones)
+    TSGlobal = Tabla()
+    ast.setGlobal(TSGlobal)
+
+    if ast.getInstructions() != None:
+        for instruccion in ast.getInstructions():
+            if isinstance(instruccion, Funcion):
+                simbolo = Simbolo(TIPO_DATO.FUNCION, instruccion.identificador, instruccion.line, instruccion.column, instruccion)
+                TSGlobal.setVariable(simbolo)
+
+        for instruccion in ast.getInstructions():
+            if isinstance(instruccion, Excepcion): 
+                errores.append(instruccion)
+                ast.updateConsole(instruccion.imprimir())
             else:
                 instC3D += instruccion.getC3D(c3d)
 
         instC3D += "}"
         potCode = c3d.addPotencia()
         printCode = c3d.addPrintString()
+        compareStr = c3d.addCompareString()
         if c3d.getContadorT() > 0:
             contadores = "var "
             for i in range(0, c3d.getContadorT()):
@@ -732,7 +760,8 @@ def parse(inp) :
             c3d.addC3D("\n")
         c3d.addC3D(printCode)
         c3d.addC3D(potCode)
+        c3d.addC3D(compareStr)
         c3d.addC3D("func main(){\n")
         c3d.addC3D(instC3D)
 
-    return [ast, errores, ast.getGlobal(), c3d]
+    return [c3d, errores, ast.getGlobal()]

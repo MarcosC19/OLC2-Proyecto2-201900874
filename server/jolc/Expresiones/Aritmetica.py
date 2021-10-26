@@ -486,18 +486,26 @@ class Aritmetica(AST):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     self.type = self.getTypeOperation(self.operating1.type, self.operating2.type)
                     if isinstance(self.operating2, Primitivo): # PRIMITIVO / PRIMITIVO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += c3dObj.printMathError(resultado2C3D)
+                        C3D += "    L" + str(c3dObj.getLastContadorL()) + ":\n"
                         for texto in resultado1C3D:
                             C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(texto) + " / "
-                        resultado2C3D = self.operating2.getC3D(c3dObj)
                         for texto in resultado2C3D:
                             C3D += str(texto) + ";\n"
+                        C3D += "    L" + str(c3dObj.getContadorL()) + ":\n"
                         c3dObj.addContadorT()
+                        c3dObj.addContadorL()
                     else:                                      # PRIMITIVO / OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
                         C3D += resultado2C3D[0]
+                        C3D += c3dObj.printMathError(resultado2C3D[1])
+                        C3D += "    L" + str(c3dObj.getLastContadorL()) + ":\n"
                         for texto in resultado1C3D:
                             C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(texto) +" / t" + str(resultado2C3D[1]) + ";\n"
+                        C3D += "    L" + str(c3dObj.getContadorL()) + ":\n"
                         c3dObj.addContadorT()
+                        c3dObj.addContadorL()
                 else:
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
@@ -505,20 +513,28 @@ class Aritmetica(AST):
                     self.type = self.getTypeOperation(self.operating1.type, self.operating2.type)
                     if isinstance(self.operating2, Primitivo): # OTRO / PRIMITIVO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += c3dObj.printMathError(resultado2C3D)
+                        C3D += "    L" + str(c3dObj.getLastContadorL()) + ":\n"
                         for texto in resultado2C3D:
                             if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
                                 C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(resultado1C3D[1]) + " / " + str(texto) + ";\n"
                             else:
                                 C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(resultado1C3D[0]) + " / " + str(texto) + ";\n"
+                        C3D += "    L" + str(c3dObj.getContadorL()) + ":\n"
                         c3dObj.addContadorT()
+                        c3dObj.addContadorL()
                     else:                                      # OTRO / OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
                         C3D += resultado2C3D[0]
+                        C3D += c3dObj.printMathError(resultado2C3D[1])
+                        C3D += "    L" + str(c3dObj.getLastContadorL()) + ":\n"
                         if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
                             C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(resultado1C3D[1]) + " / t" + str(resultado2C3D[1]) + ";\n"
                         else:
                             C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(resultado1C3D[0]) + " / t" + str(resultado2C3D[1]) + ";\n"
+                        C3D += "    L" + str(c3dObj.getContadorL()) + ":\n"
                         c3dObj.addContadorT()
+                        c3dObj.addContadorL()
         # OPERACION POTENCIA
         elif self.operator == OPERADOR_ARITMETICO.POTENCIA:
             if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
@@ -651,18 +667,26 @@ class Aritmetica(AST):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     self.type = self.getTypeOperation(self.operating1.type, self.operating2.type)
                     if isinstance(self.operating2, Primitivo): # PRIMITIVO % PRIMITIVO
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += c3dObj.printMathError(resultado2C3D)
+                        C3D += "    L" + str(c3dObj.getLastContadorL()) + ":\n"
                         for texto in resultado1C3D:
                             C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(texto) + " % "
-                        resultado2C3D = self.operating2.getC3D(c3dObj)
                         for texto in resultado2C3D:
                             C3D += str(texto) + ";\n"
+                        C3D += "    L" + str(c3dObj.getContadorL()) + ":\n"
                         c3dObj.addContadorT()
+                        c3dObj.addContadorL()
                     else:                                      # PRIMITIVO % OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
                         C3D += resultado2C3D[0]
+                        C3D += c3dObj.printMathError(resultado2C3D[1])
+                        C3D += "    L" + str(c3dObj.getLastContadorL()) + ":\n"
                         for texto in resultado1C3D:
                             C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(texto) +" % t" + str(resultado2C3D[1]) + ";\n"
+                        C3D += "    L" + str(c3dObj.getContadorL()) + ":\n"
                         c3dObj.addContadorT()
+                        c3dObj.addContadorL()
                 else:
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
@@ -670,20 +694,28 @@ class Aritmetica(AST):
                     self.type = self.getTypeOperation(self.operating1.type, self.operating2.type)
                     if isinstance(self.operating2, Primitivo): # OTRO % PRIMITIVO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += c3dObj.printMathError(resultado2C3D)
+                        C3D += "    L" + str(c3dObj.getLastContadorL()) + ":\n"
                         for texto in resultado2C3D:
                             if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
                                 C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(resultado1C3D[1]) + " % " + str(texto) + ";\n"
                             else:
                                 C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(resultado1C3D[0]) + " % " + str(texto) + ";\n"
+                        C3D += "    L" + str(c3dObj.getContadorL()) + ":\n"
                         c3dObj.addContadorT()
+                        c3dObj.addContadorL()
                     else:                                      # OTRO % OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
                         C3D += resultado2C3D[0]
+                        C3D += c3dObj.printMathError(resultado2C3D[1])
+                        C3D += "    L" + str(c3dObj.getLastContadorL()) + ":\n"
                         if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
                             C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(resultado1C3D[1]) + " % t" + str(resultado2C3D[1]) + ";\n"
                         else:
                             C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(resultado1C3D[0]) + " % t" + str(resultado2C3D[1]) + ";\n"
+                        C3D += "    L" + str(c3dObj.getContadorL()) + ":\n"
                         c3dObj.addContadorT()
+                        c3dObj.addContadorL()
         # OPERADOR UNARIO "-"
         elif self.operator == OPERADOR_ARITMETICO.UMENOS:
             if self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL:

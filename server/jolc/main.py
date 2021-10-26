@@ -5,6 +5,7 @@ from flask_cors import CORS
 from tablaSimbolos.Tipo import TIPO_DATO
 from Abstract.nodoAST import nodeAST
 from gramaticaP import parse
+from gramaticaP import parseC3D
 
 app = Flask(__name__)
 CORS(app)
@@ -95,9 +96,9 @@ def getC3D():
     entrada = flask.request.json['entrada']
     global result
     global errores
-    result = parse(entrada)
+    result = parseC3D(entrada)
     errores = result[1]
-    retorno = {"salida": result[3].getC3D()}
+    retorno = {"salida": result[0].getC3D()}
     return retorno
 
 if(__name__ == '__main__'):

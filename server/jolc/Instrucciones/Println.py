@@ -99,6 +99,17 @@ class Println(AST):
                             C3D += "    fmt.Printf(\"%f\\n\", " + str(valor) + ");\n"
                 else:
                     C3D += contenido
+                    temporalT1 = c3dObj.getLastContadorT()
+                    temporalT2 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalT2) + " + 0;\n"
+                    temporalT3 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    C3D += "    stack[int(t" + str(temporalT3) + ")] = t" + str(temporalT1) + ";\n"
+                    C3D += "    P = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                    C3D += "    printString();\n"
+                    C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(P)];\n"
+                    C3D += "    P = P - " + str(c3dObj.getNumVariables()) + ";\n"
                     C3D += "    fmt.Printf(\"%c\\n\", 32);\n"
             elif isinstance(expresion, Aritmetica):
                 C3D += "    /* IMPRIMIENDO ARITMETICA */\n"
