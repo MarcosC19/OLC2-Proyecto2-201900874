@@ -492,33 +492,33 @@ def p_expresiones_aritmeticas(t):
                         |   RAIZ PARIZQ expresion PARDER'''
 
     if t[2] == '+':
-        t[0] = Aritmetica(TIPO_DATO.ENTERO, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.SUMA, t[1], t[3])
+        t[0] = Aritmetica(t[3].type, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.SUMA, t[1], t[3])
     elif t[2] == '-':
-        t[0] = Aritmetica(TIPO_DATO.ENTERO, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.RESTA, t[1], t[3])
+        t[0] = Aritmetica(t[3].type, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.RESTA, t[1], t[3])
     elif t[2] == '*':
-        t[0] = Aritmetica(TIPO_DATO.ENTERO, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.MULTIPLICACION, t[1], t[3])
+        t[0] = Aritmetica(t[3].type, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.MULTIPLICACION, t[1], t[3])
     elif t[2] == '/':
-        t[0] = Aritmetica(TIPO_DATO.ENTERO, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.DIVISON, t[1], t[3])
+        t[0] = Aritmetica(t[3].type, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.DIVISON, t[1], t[3])
     elif t[2] == '^':
-        t[0] = Aritmetica(TIPO_DATO.ENTERO, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.POTENCIA, t[1], t[3])
+        t[0] = Aritmetica(t[1].type, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.POTENCIA, t[1], t[3])
     elif t[2] == '%':
-        t[0] = Aritmetica(TIPO_DATO.ENTERO, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.MODULO, t[1], t[3])
+        t[0] = Aritmetica(t[3].type, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.MODULO, t[1], t[3])
     elif t[1] == 'log10':
-        t[0] = Aritmetica(TIPO_DATO.ENTERO, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.LOG10, t[3])
+        t[0] = Aritmetica(t[3].type, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.LOG10, t[3])
     elif t[1] == 'log':
-        t[0] = Aritmetica(TIPO_DATO.ENTERO, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.LOG, t[3], t[5])
+        t[0] = Aritmetica(t[3].type, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.LOG, t[3], t[5])
     elif t[1] == 'sin':
-        t[0] = Aritmetica(TIPO_DATO.ENTERO, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.SENO, t[3])
+        t[0] = Aritmetica(t[3].type, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.SENO, t[3])
     elif t[1] == 'cos':
-        t[0] = Aritmetica(TIPO_DATO.ENTERO, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.COSENO, t[3])
+        t[0] = Aritmetica(t[3].type, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.COSENO, t[3])
     elif t[1] == 'tan':
-        t[0] = Aritmetica(TIPO_DATO.ENTERO, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.TANGENTE, t[3])
+        t[0] = Aritmetica(t[3].type, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.TANGENTE, t[3])
     elif t[1] == 'sqrt':
-        t[0] = Aritmetica(TIPO_DATO.ENTERO, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.RAIZ, t[3])
+        t[0] = Aritmetica(t[3].type, t.lineno(2), find_column(input, t.slice[2]), OPERADOR_ARITMETICO.RAIZ, t[3])
 
 def p_expresion_unaria_aritmetica(t):
     'expresion          :   MENOS expresion %prec UMENOS'
-    t[0] = Aritmetica(TIPO_DATO.ENTERO, t.lineno(1), find_column(input, t.slice[1]), OPERADOR_ARITMETICO.UMENOS, t[2])
+    t[0] = Aritmetica(t[2].type, t.lineno(1), find_column(input, t.slice[1]), OPERADOR_ARITMETICO.UMENOS, t[2])
 
 def p_expresiones_logicas(t):
     '''expresion        :   expresion OR expresion

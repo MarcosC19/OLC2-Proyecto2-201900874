@@ -3,6 +3,7 @@ from Excepciones.Excepcion import Excepcion
 from Abstract.nodoAST import nodeAST
 from Abstract.AST import AST
 from Expresiones.Primitivo import Primitivo
+from C3D.variableC3D import VariableC3D
 
 
 class Identificador(AST):
@@ -30,4 +31,16 @@ class Identificador(AST):
         return simbolo.getValor()
 
     def getC3D(self, c3dObj):
-        return ""
+        C3D = "    /* OBTENIENDO VARIABLE */\n"
+        myVar = c3dObj.getVariable(self.identificador)
+        temporalTV = None
+        if myVar != None:
+            self.type = myVar.typeVal
+            C3D += "    t" + str(c3dObj.getContadorT()) + " = " + myVar.getPosition() + ";\n"
+            temporalT0 = c3dObj.getContadorT()
+            c3dObj.addContadorT()
+            C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalT0) + ")];\n"
+            temporalTV = c3dObj.getContadorT()
+            c3dObj.addContadorT()
+            return [C3D, temporalTV, myVar.type]
+        return None

@@ -8,9 +8,18 @@ class C3D():
         self.contadorT = 0
         self.contadorL = 0
         self.numVariablesG = 0
+        self.variables = {}
 
     def addC3D(self, code):
         self.code += code
+
+    def addVariable(self, nombre, variable):
+        self.variables[nombre] = variable
+
+    def getVariable(self, nombre):
+        if nombre in self.variables:
+            return self.variables[nombre]
+        return None
 
     def getC3D(self):
         return self.code
@@ -197,16 +206,47 @@ class C3D():
         return C3D
 
     def saveString(self, cadena):
-        C3D = ""
+        C3D = "    /* GUARDANDO STRING */\n"
         C3D += "    t" + str(self.getContadorT()) + " = H;\n"
         temporalT1 = self.getContadorT()
         self.addContadorT()
         for i in cadena:
             C3D += "    heap[int(H)] = " + str(ord(i)) + ";\n"
             C3D += "    H = H + 1;\n"
+        return C3D
+
+    def endString(self):
+        C3D = "    /* CERRANDO CADENA */\n"
         C3D += "    heap[int(H)] = -1;\n"
         C3D += "    H = H + 1;\n"
+        return C3D
+
+    def printString(self, contador):
+        C3D = "    /* IMPRIMIENDO STRING */\n"
         C3D += "    t" + str(self.getContadorT()) + " = P + " + str(self.getNumVariables()) + ";\n"
+        temporalT1 = self.getLastContadorT()
+        temporalT2 = self.getContadorT()
+        self.addContadorT()
+        C3D += "    t" + str(self.getContadorT()) + " = t" + str(temporalT2) + " + 0;\n"
+        temporalT3 = self.getContadorT()
+        self.addContadorT()
+        C3D += "    stack[int(t" + str(temporalT3) + ")] = t" + str(contador) + ";\n"
+        C3D += "    P = P + " + str(self.getNumVariables()) + ";\n"
+        C3D += "    printString();\n"
+        C3D += "    t" + str(self.getContadorT()) + " = stack[int(P)];\n"
+        C3D += "    P = P - " + str(self.getNumVariables()) + ";\n"
+        return C3D
+    
+    def changePot(self):
+        C3D = ""
+        C3D += "    P = P + " + str(self.getNumVariables()) + ";\n"
+        C3D += "    potenciaM();\n"
+        C3D += "    t" + str(self.getContadorT()) + " = P + 3;\n"
+        temporalAux4 = self.getContadorT()
+        self.addContadorT()
+        C3D += "    t" + str(self.getContadorT()) + " = stack[int(t" + str(temporalAux4) + ")];\n"
+        self.addContadorT()
+        C3D += "    P = P - " + str(self.getNumVariables()) + ";\n"
         return C3D
 
     def addCompareString(self):
