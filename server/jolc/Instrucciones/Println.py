@@ -88,7 +88,7 @@ class Println(AST):
         return None
 
     def getC3D(self, c3dObj):
-        C3D = ""
+        C3D = "    /* EJECUCION PRINTLN */\n"
         for expresion in self.expresion:
             if isinstance(expresion, Primitivo):
                 contadorTP = c3dObj.getContadorT()

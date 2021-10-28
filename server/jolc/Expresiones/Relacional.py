@@ -1,3 +1,4 @@
+from Expresiones.Identificador import Identificador
 from tablaSimbolos.Tipo import TIPO_DATO
 from Expresiones.Primitivo import Primitivo
 from Excepciones.Excepcion import Excepcion
@@ -226,10 +227,10 @@ class Relacional(AST):
             return Excepcion("Semantico", "Operador no valido", self.line, self.column)
 
     def getC3D(self, c3dObj):
-        C3D = ""
+        C3D = "    /* ANALIZANDO EXPRESION RELACIONAL */\n"
         # OPERANDO MAYOR QUE >
         if self.operator == OPERADOR_RELACIONAL.MAYORQUE:
-            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating2, Identificador):
                 if isinstance(self.operating1, Primitivo):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo):  # PRIMITIVO > PRIMITIVO
@@ -285,7 +286,7 @@ class Relacional(AST):
                     return str(izquierdo) > str(derecho)
         # OPERANDO MENOR QUE <
         elif self.operator == OPERADOR_RELACIONAL.MENORQUE:
-            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating2, Identificador):
                 if isinstance(self.operating1, Primitivo):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo):  # PRIMITIVO < PRIMITIVO
@@ -341,7 +342,7 @@ class Relacional(AST):
                     return str(izquierdo) < str(derecho)
         # OPERANDO MAYOR IGUAL QUE >=
         elif self.operator == OPERADOR_RELACIONAL.MAYORIGUAL:
-            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating2, Identificador):
                 if isinstance(self.operating1, Primitivo):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo):  # PRIMITIVO >= PRIMITIVO
@@ -397,7 +398,7 @@ class Relacional(AST):
                     return str(izquierdo) >= str(derecho)
         # OPERANDO MENOR IGUAL QUE <=
         elif self.operator == OPERADOR_RELACIONAL.MENORIGUAL:
-            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating2, Identificador):
                 if isinstance(self.operating1, Primitivo):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo):  # PRIMITIVO <= PRIMITIVO
@@ -453,7 +454,7 @@ class Relacional(AST):
                     return str(izquierdo) <= str(derecho)
         # OPERANDO IGUAL IGUAL QUE ==
         elif self.operator == OPERADOR_RELACIONAL.IGUAL:
-            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating2, Identificador):
                 if isinstance(self.operating1, Primitivo):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo):  # PRIMITIVO == PRIMITIVO
@@ -540,7 +541,7 @@ class Relacional(AST):
                 c3dObj.addContadorL()
         # OPERANDO DIFERENTE QUE !=
         elif self.operator == OPERADOR_RELACIONAL.DIFERENTE:
-            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating2, Identificador):
                 if isinstance(self.operating1, Primitivo):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo):  # PRIMITIVO != PRIMITIVO

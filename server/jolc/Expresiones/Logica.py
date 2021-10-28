@@ -79,7 +79,7 @@ class Logica(AST):
             return Excepcion("Semantico", "Operador no valido", self.line, self.column)
 
     def getC3D(self, c3dObj):
-        C3D = ""
+        C3D = "    /* ANALIZANDO EXPRESION LOGICA */\n"
         LV = []
         LF = []
         # OPERACION AND

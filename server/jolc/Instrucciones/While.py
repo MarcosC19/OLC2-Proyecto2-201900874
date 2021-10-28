@@ -3,6 +3,7 @@ from Instrucciones.GlobalVar import Global
 from Instrucciones.If import If
 from Instrucciones.Continue import Continue
 from Instrucciones.Break import Break
+from Expresiones.Relacional import Relacional
 from tablaSimbolos.Tabla import Tabla
 from tablaSimbolos.Tipo import TIPO_DATO
 from Excepciones.Excepcion import Excepcion
@@ -73,5 +74,19 @@ class While(AST):
                 break;
         return None
 
-    def getC3D(self, contador):
-        return ""
+    def getC3D(self, c3dObj):
+        C3D = "    /* EJECUCION WHILE */ \n"
+        resultadoExpC3D = self.condicion.getC3D(c3dObj)
+        codeInt = resultadoExpC3D[0]
+        tempF = ""
+        if isinstance(self.condicion, Relacional):
+            codeInt += "    L" + str(resultadoExpC3D[1]) + ":\n"
+            for instruccion in self.instrucciones:
+                codeInt += instruccion.getC3D(c3dObj)
+            codeInt += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+            tempF = c3dObj.getContadorL()
+            c3dObj.addContadorL()
+            C3D += "    L" + str(tempF) + ":\n"
+            C3D += codeInt
+            C3D += "    L" + str(resultadoExpC3D[2]) + ":\n"
+        return C3D

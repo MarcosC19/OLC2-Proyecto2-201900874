@@ -216,5 +216,18 @@ class For(AST):
         texto += "]"
         return texto
 
-    def getC3D(self, contador):
-        return ""
+    def getC3D(self, c3dObj):
+        C3D = ""
+        codeInt = ""
+        if self.type == TIPO_DATO.CADENA:
+            if isinstance(self.objeto1, Primitivo):
+                cadena = self.objeto1.getValue()
+                for valor in cadena:
+                    newValue = Primitivo(self.type, self.line, self.column, valor)
+                    newVar = Asignacion(self.line, self.column, self.nombre, newValue).getC3D(c3dObj)
+                    codeInt += newVar
+                    for instruccion in self.instrucciones:
+                        codeInt += instruccion.getC3D(c3dObj)
+
+        C3D += codeInt
+        return C3D

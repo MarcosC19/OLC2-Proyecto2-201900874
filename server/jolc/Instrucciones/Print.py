@@ -109,7 +109,7 @@ class Print(AST):
         return texto
 
     def getC3D(self, c3dObj):
-        C3D = "    /* REALIZANDO PRINT */\n"
+        C3D = "    /* EJECUCION PRINT */\n"
         for expresion in self.expresion:
             if isinstance(expresion, Primitivo):
                 contadorTP = c3dObj.getContadorT()

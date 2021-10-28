@@ -338,7 +338,7 @@ class Aritmetica(AST):
             return Excepcion("Semantico", "Operador no valido", self.line, self.column)
 
     def getC3D(self, c3dObj):
-        C3D = ""
+        C3D = "    /* ANALIZANDO EXPRESION ARITMETICA */\n"
         # OPERACION SUMA
         if self.operator == OPERADOR_ARITMETICO.SUMA:
             if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating2, Identificador):
