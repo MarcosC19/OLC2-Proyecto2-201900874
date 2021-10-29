@@ -88,73 +88,358 @@ class Logica(AST):
                 if self.operating2.type == TIPO_DATO.BOOLEANO:
                     self.type = TIPO_DATO.BOOLEANO
                     resultado1C3D = self.operating1.getC3D(c3dObj)
-                    resultado2C3D = self.operating2.getC3D(c3dObj)
-                    C3D += resultado1C3D[0]
-                    if isinstance(resultado1C3D[1], list):
-                        for valor in resultado1C3D[1]:
-                            C3D += "    L" + str(valor) + ":\n"
-                    else:
-                        C3D += "    L" + str(resultado1C3D[1]) + ":\n"
-                    C3D += str(resultado2C3D[0])
-                    if isinstance(resultado2C3D[1], list):
-                        LV.extend(resultado2C3D[1])
-                        if isinstance(resultado1C3D[2], list):
-                            LF.extend(resultado1C3D[2])
+                    if isinstance(self.operating1, Primitivo):
+                        C3D += resultado1C3D
+                        C3D += c3dObj.endString()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        temporalAux1 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux1) + " + 0;\n"
+                        temporalT2 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux1 - 1) + ";\n"
+                        C3D += c3dObj.chargeTrue()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        temporalAux1 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux1) + " + 1;\n"
+                        temporalT2 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux1 - 1) + ";\n"
+                        C3D += "    P = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        C3D += "    compareString();\n"
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + 2;\n"
+                        temporalT3 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalT3) + ")];\n"
+                        temporalT4 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    P = P - " + str(c3dObj.getNumVariables()) + ";\n"
+                        C3D += "    if t" + str(temporalT4) + " == 1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += "    L" + str(temporalL0) + ":\n"
+                        if isinstance(self.operating2, Primitivo):
+                            C3D += resultado2C3D
+                            C3D += c3dObj.endString()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                            temporalAux2 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux2) + " + 0;\n"
+                            temporalT2 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux2 - 1) + ";\n"
+                            C3D += c3dObj.chargeTrue()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                            temporalAux1 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux1) + " + 1;\n"
+                            temporalT2 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux1 - 1) + ";\n"
+                            C3D += "    P = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                            C3D += "    compareString();\n"
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = P + 2;\n"
+                            temporalT3 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalT3) + ")];\n"
+                            temporalT4 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    P = P - " + str(c3dObj.getNumVariables()) + ";\n"
+                            C3D += "    if t" + str(temporalT4) + " == 1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                            temporalL2 = c3dObj.getContadorL()
+                            c3dObj.addContadorL()
+                            C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                            temporalL3 = c3dObj.getContadorL()
+                            c3dObj.addContadorL()
+                            LV.append(temporalL2)
+                            LF.append(temporalL1)
+                            LF.append(temporalL3)
                         else:
-                            LF.append(resultado1C3D[2])
-                        LF.extend(resultado2C3D[2])
+                            C3D += resultado2C3D[0]
+                            if isinstance(resultado2C3D[1], list):
+                                LV.extend(resultado2C3D[1])
+                            else:
+                                LV.append(resultado2C3D[1])
+                            LF.append(temporalL1)
+                            if isinstance(resultado2C3D[2], list):
+                                LF.extend(resultado2C3D[2])
+                            else:
+                                LF.append(resultado2C3D[2])
                     else:
-                        LV.append(resultado2C3D[1])
-                        if isinstance(resultado1C3D[2], list):
-                            LF.extend(resultado1C3D[2])
+                        C3D += resultado1C3D[0]
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        if isinstance(resultado1C3D[1], list):
+                            for valor in resultado1C3D[1]:
+                                C3D += "    L" + str(valor) + ":\n"
                         else:
-                            LF.append(resultado1C3D[2])
-                        LF.append(resultado2C3D[2])
+                            C3D += "    L" + str(resultado1C3D[1]) + ":\n"
+                        if isinstance(self.operating2, Primitivo):
+                            C3D += resultado2C3D
+                            C3D += c3dObj.endString()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                            temporalAux2 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux2) + " + 0;\n"
+                            temporalT2 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux2 - 1) + ";\n"
+                            C3D += c3dObj.chargeTrue()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                            temporalAux1 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux1) + " + 1;\n"
+                            temporalT2 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux1 - 1) + ";\n"
+                            C3D += "    P = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                            C3D += "    compareString();\n"
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = P + 2;\n"
+                            temporalT3 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalT3) + ")];\n"
+                            temporalT4 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    P = P - " + str(c3dObj.getNumVariables()) + ";\n"
+                            C3D += "    if t" + str(temporalT4) + " == 1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                            temporalL2 = c3dObj.getContadorL()
+                            c3dObj.addContadorL()
+                            C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                            temporalL3 = c3dObj.getContadorL()
+                            c3dObj.addContadorL()
+                            LV.append(temporalL2)
+                            if isinstance(resultado1C3D[2], list):
+                                LF.extend(resultado1C3D[2])
+                            else:
+                                LF.append(resultado1C3D[2])
+                            LF.append(temporalL3)
+                        else:
+                            C3D += resultado2C3D[0]
+                            if isinstance(resultado2C3D[1], list):
+                                LV.extend(resultado2C3D[1])
+                                if isinstance(resultado1C3D[2], list):
+                                    LF.extend(resultado1C3D[2])
+                                else:
+                                    LF.append(resultado1C3D[2])
+                                if isinstance(resultado2C3D[2], list):
+                                    LF.extend(resultado2C3D[2])
+                                else:
+                                    LF.append(resultado2C3D[2])
+                            else:
+                                LV.append(resultado2C3D[1])
+                                if isinstance(resultado1C3D[2], list):
+                                    LF.extend(resultado1C3D[2])
+                                else:
+                                    LF.append(resultado1C3D[2])
+                                if isinstance(resultado2C3D[2], list):
+                                    LF.extend(resultado2C3D[2])
+                                else:
+                                    LF.append(resultado2C3D[2])
+
         # OPERACION OR
         elif self.operator == OPERADOR_LOGICO.OR:
             if self.operating1.type == TIPO_DATO.BOOLEANO:
                 if self.operating2.type == TIPO_DATO.BOOLEANO:
                     self.type = TIPO_DATO.BOOLEANO
                     resultado1C3D = self.operating1.getC3D(c3dObj)
-                    resultado2C3D = self.operating2.getC3D(c3dObj)
-                    C3D += resultado1C3D[0]
-                    if isinstance(resultado1C3D[1], list):
-                        for valor in resultado1C3D[2]:
-                            C3D += "    L" + str(valor) + ":\n"
+                    if isinstance(self.operating1, Primitivo):
+                        C3D += resultado1C3D
+                        C3D += c3dObj.endString()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        temporalAux1 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux1) + " + 0;\n"
+                        temporalT2 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux1 - 1) + ";\n"
+                        C3D += c3dObj.chargeTrue()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        temporalAux1 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux1) + " + 1;\n"
+                        temporalT2 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux1 - 1) + ";\n"
+                        C3D += "    P = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        C3D += "    compareString();\n"
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + 2;\n"
+                        temporalT3 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalT3) + ")];\n"
+                        temporalT4 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    P = P - " + str(c3dObj.getNumVariables()) + ";\n"
+                        C3D += "    if t" + str(temporalT4) + " == 1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += "    L" + str(temporalL1) + ":\n"
+                        if isinstance(self.operating2, Primitivo):
+                            C3D += resultado2C3D
+                            C3D += c3dObj.endString()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                            temporalAux2 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux2) + " + 0;\n"
+                            temporalT2 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux2 - 1) + ";\n"
+                            C3D += c3dObj.chargeTrue()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                            temporalAux1 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux1) + " + 1;\n"
+                            temporalT2 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux1 - 1) + ";\n"
+                            C3D += "    P = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                            C3D += "    compareString();\n"
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = P + 2;\n"
+                            temporalT3 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalT3) + ")];\n"
+                            temporalT4 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    P = P - " + str(c3dObj.getNumVariables()) + ";\n"
+                            C3D += "    if t" + str(temporalT4) + " == 1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                            temporalL2 = c3dObj.getContadorL()
+                            c3dObj.addContadorL()
+                            C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                            temporalL3 = c3dObj.getContadorL()
+                            c3dObj.addContadorL()
+                            LV.append(temporalL0)
+                            LV.append(temporalL2)
+                            LF.append(temporalL3)
+                        else:
+                            C3D += resultado2C3D[0]
+                            LV.append(temporalL0)
+                            if isinstance(resultado2C3D[1], list):
+                                LV.extend(resultado2C3D[1])
+                            else:
+                                LV.append(resultado2C3D[1])
+                            if isinstance(resultado2C3D[2], list):
+                                LF.extend(resultado2C3D[2])
+                            else:
+                                LF.append(resultado2C3D[2])
                     else:
-                        C3D += "    L" + str(resultado1C3D[2]) + ":\n"
-                    C3D += str(resultado2C3D[0])
-                    if isinstance(resultado1C3D[1], list):
-                        LV.extend(resultado1C3D[1])
-                        if isinstance(resultado2C3D[1], list):
-                            LV.extend(resultado2C3D[1])
+                        C3D += resultado1C3D[0]
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        if isinstance(resultado1C3D[1], list):
+                            for valor in resultado1C3D[2]:
+                                C3D += "    L" + str(valor) + ":\n"
                         else:
-                            LV.append(resultado2C3D[1])
-                        if isinstance(resultado2C3D[2], list):
-                            LF.extend(resultado2C3D[2])
+                            C3D += "    L" + str(resultado1C3D[2]) + ":\n"
+                        if isinstance(self.operating2, Primitivo):
+                            C3D += resultado2C3D
+                            C3D += c3dObj.endString()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                            temporalAux2 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux2) + " + 0;\n"
+                            temporalT2 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux2 - 1) + ";\n"
+                            C3D += c3dObj.chargeTrue()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                            temporalAux1 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux1) + " + 1;\n"
+                            temporalT2 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux1 - 1) + ";\n"
+                            C3D += "    P = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                            C3D += "    compareString();\n"
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = P + 2;\n"
+                            temporalT3 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalT3) + ")];\n"
+                            temporalT4 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            C3D += "    P = P - " + str(c3dObj.getNumVariables()) + ";\n"
+                            C3D += "    if t" + str(temporalT4) + " == 1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                            temporalL2 = c3dObj.getContadorL()
+                            c3dObj.addContadorL()
+                            C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                            temporalL3 = c3dObj.getContadorL()
+                            c3dObj.addContadorL()
+                            if isinstance(resultado1C3D[1], list):
+                                LV.extend(resultado1C3D[1])
+                                LV.append(temporalL2)
+                                LF.append(temporalL3)
+                            else:
+                                LV.append(resultado1C3D[1])
+                                LV.append(temporalL2)
+                                LF.append(temporalL3)
                         else:
-                            LF.append(resultado2C3D[2])
-                    else:
-                        LV.append(resultado1C3D[1])
-                        if isinstance(resultado2C3D[1], list):
-                            LV.extend(resultado2C3D[1])
-                        else:
-                            LV.append(resultado2C3D[1])
-                        if isinstance(resultado2C3D[2], list):
-                            LF.extend(resultado2C3D[2])
-                        else:
-                            LF.append(resultado2C3D[2])
+                            C3D += resultado2C3D[0]
+                            if isinstance(resultado1C3D[1], list):
+                                LV.extend(resultado1C3D[1])
+                                if isinstance(resultado2C3D[1], list):
+                                    LV.extend(resultado2C3D[1])
+                                else:
+                                    LV.append(resultado2C3D[1])
+                                if isinstance(resultado2C3D[2], list):
+                                    LF.extend(resultado2C3D[2])
+                                else:
+                                    LF.append(resultado2C3D[2])
+                            else:
+                                LV.append(resultado1C3D[1])
+                                if isinstance(resultado2C3D[1], list):
+                                    LV.extend(resultado2C3D[1])
+                                else:
+                                    LV.append(resultado2C3D[1])
+                                if isinstance(resultado2C3D[2], list):
+                                    LF.extend(resultado2C3D[2])
+                                else:
+                                    LF.append(resultado2C3D[2])
         # OPERACION NOT
         elif self.operator == OPERADOR_LOGICO.NOT:
             if self.operating1.type == TIPO_DATO.BOOLEANO:
                 self.type = TIPO_DATO.BOOLEANO
+                resultado1C3D = self.operating1.getC3D(c3dObj)
                 if isinstance(self.operating1, Primitivo):
-                    if self.operating1.value == "true":
-                        C3D += c3dObj.printFalse()
-                    else:
-                        C3D += c3dObj.printTrue()
+                    C3D += resultado1C3D
+                    C3D += c3dObj.endString()
+                    C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                    temporalAux1 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux1) + " + 0;\n"
+                    temporalT2 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux1 - 1) + ";\n"
+                    C3D += c3dObj.chargeTrue()
+                    C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                    temporalAux1 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux1) + " + 1;\n"
+                    temporalT2 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux1 - 1) + ";\n"
+                    C3D += "    P = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                    C3D += "    compareString();\n"
+                    C3D += "    t" + str(c3dObj.getContadorT()) + " = P + 2;\n"
+                    temporalT3 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalT3) + ")];\n"
+                    temporalT4 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    C3D += "    P = P - " + str(c3dObj.getNumVariables()) + ";\n"
+                    C3D += "    if t" + str(temporalT4) + " == 1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                    temporalL0 = c3dObj.getContadorL()
+                    c3dObj.addContadorL()
+                    C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                    temporalL1 = c3dObj.getContadorL()
+                    c3dObj.addContadorL()
+                    LV.append(temporalL1)
+                    LF.append(temporalL0)
                 else:
-                    resultado1C3D = self.operating1.getC3D(c3dObj)
                     C3D += resultado1C3D[0]
                     if isinstance(resultado1C3D[2], list):
                         LV.extend(resultado1C3D[2])

@@ -9,6 +9,7 @@ class C3D():
         self.contadorL = 0
         self.numVariablesG = 0
         self.variables = {}
+        self.mathCont = 0
 
     def addC3D(self, code):
         self.code += code
@@ -215,6 +216,12 @@ class C3D():
             C3D += "    H = H + 1;\n"
         return C3D
 
+    def chargeTrue(self):
+        C3D = ""
+        C3D += self.saveString("true")
+        C3D += self.endString()
+        return C3D
+
     def endString(self):
         C3D = "    /* CERRANDO CADENA */\n"
         C3D += "    heap[int(H)] = -1;\n"
@@ -310,8 +317,14 @@ class C3D():
     def initC3D(self):
         self.code += "package main;\n\n"
         self.code += "import(\n"
-        self.code += "   \"fmt\"\n"
-        self.code += ")\n\n"
+        self.code += "    \"fmt\""
+
+    def addLastIMP(self):
+        self.code += "\n)\n\n"
         self.code += "var stack[32000000]float64;\n"
         self.code += "var heap[32000000]float64;\n"
         self.code += "var P, H float64;\n"
+
+    def addMath(self):
+        self.code += ";\n    \"math\""
+        self.mathCont += 1

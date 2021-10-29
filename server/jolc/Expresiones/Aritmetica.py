@@ -696,9 +696,9 @@ class Aritmetica(AST):
                         C3D += c3dObj.printMathError(resultado2C3D)
                         C3D += "    L" + str(c3dObj.getLastContadorL()) + ":\n"
                         for texto in resultado1C3D:
-                            C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(texto) + " % "
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = math.Mod(" + str(texto) + ", "
                         for texto in resultado2C3D:
-                            C3D += str(texto) + ";\n"
+                            C3D += str(texto) + ");\n"
                         C3D += "    L" + str(c3dObj.getContadorL()) + ":\n"
                         c3dObj.addContadorT()
                         c3dObj.addContadorL()
@@ -708,7 +708,7 @@ class Aritmetica(AST):
                         C3D += c3dObj.printMathError(resultado2C3D[1])
                         C3D += "    L" + str(c3dObj.getLastContadorL()) + ":\n"
                         for texto in resultado1C3D:
-                            C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(texto) +" % t" + str(resultado2C3D[1]) + ";\n"
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = math.Mod(" + str(texto) +", t" + str(resultado2C3D[1]) + ");\n"
                         C3D += "    L" + str(c3dObj.getContadorL()) + ":\n"
                         c3dObj.addContadorT()
                         c3dObj.addContadorL()
@@ -725,12 +725,12 @@ class Aritmetica(AST):
                         for texto in resultado2C3D:
                             if not isinstance(self.operating1, Identificador):
                                 if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
-                                    C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(resultado1C3D[1]) + " % " + str(texto) + ";\n"
+                                    C3D += "    t" + str(c3dObj.getContadorT()) + " = math.Mod(t" + str(resultado1C3D[1]) + ", " + str(texto) + ");\n"
                                 else:
-                                    C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(resultado1C3D[0]) + " % " + str(texto) + ";\n"
+                                    C3D += "    t" + str(c3dObj.getContadorT()) + " = math.Mod(" + str(resultado1C3D[0]) + ", " + str(texto) + ");\n"
                             else:
                                 C3D += resultado1C3D[0]
-                                C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(resultado1C3D[1]) + " % " + str(texto) + ";\n"
+                                C3D += "    t" + str(c3dObj.getContadorT()) + " = math.Mod(t" + str(resultado1C3D[1]) + ", " + str(texto) + ");\n"
                         C3D += "    L" + str(c3dObj.getContadorL()) + ":\n"
                         c3dObj.addContadorT()
                         c3dObj.addContadorL()
@@ -741,25 +741,30 @@ class Aritmetica(AST):
                             C3D += c3dObj.printMathError(resultado2C3D[1])
                             C3D += "    L" + str(c3dObj.getLastContadorL()) + ":\n"
                             if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
-                                C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(resultado1C3D[1]) + " % t" + str(resultado2C3D[1]) + ";\n"
+                                C3D += "    t" + str(c3dObj.getContadorT()) + " = math.Mod(t" + str(resultado1C3D[1]) + ", t" + str(resultado2C3D[1]) + ");\n"
                             else:
-                                C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(resultado1C3D[0]) + " % t" + str(resultado2C3D[1]) + ";\n"
+                                C3D += "    t" + str(c3dObj.getContadorT()) + " = math.Mod(" + str(resultado1C3D[0]) + ", t" + str(resultado2C3D[1]) + ");\n"
                         else:
                             C3D += resultado1C3D[0]
                             C3D += resultado2C3D[0]
                             C3D += c3dObj.printMathError(resultado2C3D[1])
                             C3D += "    L" + str(c3dObj.getLastContadorL()) + ":\n"
-                            C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(resultado1C3D[1]) + " % t" + str(resultado2C3D[1]) + ";\n"
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = math.Mod(t" + str(resultado1C3D[1]) + ", t" + str(resultado2C3D[1]) + ");\n"
                         C3D += "    L" + str(c3dObj.getContadorL()) + ":\n"
                         c3dObj.addContadorT()
                         c3dObj.addContadorL()
+                if c3dObj.mathCont == 0:
+                    c3dObj.addMath()
         # OPERADOR UNARIO "-"
         elif self.operator == OPERADOR_ARITMETICO.UMENOS:
             if self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL or isinstance(self.operating1, Identificador):
                 resultadoC3D = self.operating1.getC3D(c3dObj)
                 self.type = self.operating1.type
+                C3D = "    t" + str(c3dObj.getContadorT()) + " = "
                 for texto in resultadoC3D:
-                    C3D = "-" + str(texto)
+                    C3D += "-" + str(texto)
+                C3D += ";\n"
+                c3dObj.addContadorT()
         return [C3D, c3dObj.getLastContadorT()]
 
     def getTypeOperation(self, tipo1, tipo2):

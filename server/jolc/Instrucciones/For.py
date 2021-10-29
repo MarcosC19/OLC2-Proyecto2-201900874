@@ -217,7 +217,7 @@ class For(AST):
         return texto
 
     def getC3D(self, c3dObj):
-        C3D = ""
+        C3D = "    /* EJECUCION FOR */\n"
         codeInt = ""
         if self.type == TIPO_DATO.CADENA:
             if isinstance(self.objeto1, Primitivo):

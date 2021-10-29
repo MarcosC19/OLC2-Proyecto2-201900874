@@ -1,4 +1,6 @@
 from Expresiones.Identificador import Identificador
+from Expresiones.Aritmetica import Aritmetica
+from tablaSimbolos.Tipo import OPERADOR_ARITMETICO
 from tablaSimbolos.Tipo import TIPO_DATO
 from Expresiones.Primitivo import Primitivo
 from Excepciones.Excepcion import Excepcion
@@ -228,6 +230,8 @@ class Relacional(AST):
 
     def getC3D(self, c3dObj):
         C3D = "    /* ANALIZANDO EXPRESION RELACIONAL */\n"
+        temporalL0 = ""
+        temporalL1 = ""
         # OPERANDO MAYOR QUE >
         if self.operator == OPERADOR_RELACIONAL.MAYORQUE:
             if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating2, Identificador):
@@ -247,10 +251,16 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                     else:                                   # PRIMITIVO > OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += resultado2C3D[0]
+                        if isinstance(self.operating2, Aritmetica):
+                            if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += resultado2C3D[0]
                         for contenido in resultado1C3D:
                             C3D += "    if " + str(contenido) + " > "
-                        C3D += "t" + str(resultado2C3D[1]) + " "
+                        if isinstance(self.operating2, Aritmetica):
+                            if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += "t" + str(resultado2C3D[1]) + " "
+                            else:
+                                C3D += "" + str(resultado2C3D[0]) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
@@ -259,10 +269,16 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                 else:
                     resultado1C3D = self.operating1.getC3D(c3dObj)
-                    C3D += resultado1C3D[0]
+                    if isinstance(self.operating1, Aritmetica):
+                        if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
+                            C3D += resultado1C3D[0]
                     if isinstance(self.operating2, Primitivo):  # OTRO > PRIMITIVO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += "    if t" + str(resultado1C3D[1]) + " > "
+                        if isinstance(self.operating1, Aritmetica):
+                            if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += "    if t" + str(resultado1C3D[1]) + " > "
+                            else:
+                                C3D += "    if " + str(resultado1C3D[0]) + " > "
                         for contenido in resultado2C3D:
                             C3D += str(contenido) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
@@ -273,8 +289,22 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                     else:                                   # OTRO > OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += resultado2C3D[0]
-                        C3D += "    if t" + str(resultado1C3D[1]) + " > t" + str(resultado2C3D[1]) + " "
+                        if isinstance(self.operating2, Aritmetica):
+                            if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += resultado2C3D[0]
+                        if isinstance(self.operating1, Aritmetica):
+                            if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
+                                if isinstance(self.operating2, Aritmetica):
+                                    if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                        C3D += "    if t" + str(resultado1C3D[1]) + " > t" + str(resultado2C3D[1]) + " "
+                                    else:
+                                        C3D += "    if t" + str(resultado1C3D[1]) + " > " + str(resultado2C3D[0]) + " "
+                            else:
+                                if isinstance(self.operating2, Aritmetica):
+                                    if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                        C3D += "    if " + str(resultado1C3D[0]) + " > t" + str(resultado2C3D[1]) + " "
+                                    else:
+                                        C3D += "    if " + str(resultado1C3D[0]) + " > " + str(resultado2C3D[0]) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
@@ -303,10 +333,16 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                     else:                                   # PRIMITIVO < OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += resultado2C3D[0]
+                        if isinstance(self.operating2, Aritmetica):
+                            if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += resultado2C3D[0]
                         for contenido in resultado1C3D:
                             C3D += "    if " + str(contenido) + " < "
-                        C3D += "t" + str(resultado2C3D[1]) + " "
+                        if isinstance(self.operating2, Aritmetica):
+                            if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += "t" + str(resultado2C3D[1]) + " "
+                            else:
+                                C3D += "" + str(resultado2C3D[0]) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
@@ -315,10 +351,16 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                 else:
                     resultado1C3D = self.operating1.getC3D(c3dObj)
-                    C3D += resultado1C3D[0]
+                    if isinstance(self.operating1, Aritmetica):
+                        if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
+                            C3D += resultado1C3D[0]
                     if isinstance(self.operating2, Primitivo):  # OTRO < PRIMITIVO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += "    if t" + str(resultado1C3D[1]) + " < "
+                        if isinstance(self.operating1, Aritmetica):
+                            if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += "    if t" + str(resultado1C3D[1]) + " < "
+                            else:
+                                C3D += "    if " + str(resultado1C3D[0]) + " < "
                         for contenido in resultado2C3D:
                             C3D += str(contenido) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
@@ -329,8 +371,22 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                     else:                                   # OTRO < OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += resultado2C3D[0]
-                        C3D += "    if t" + str(resultado1C3D[1]) + " < t" + str(resultado2C3D[1]) + " "
+                        if isinstance(self.operating2, Aritmetica):
+                            if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += resultado2C3D[0]
+                        if isinstance(self.operating1, Aritmetica):
+                            if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
+                                if isinstance(self.operating2, Aritmetica):
+                                    if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                        C3D += "    if t" + str(resultado1C3D[1]) + " < t" + str(resultado2C3D[1]) + " "
+                                    else:
+                                        C3D += "    if t" + str(resultado1C3D[1]) + " < " + str(resultado2C3D[0]) + " "
+                            else:
+                                if isinstance(self.operating2, Aritmetica):
+                                    if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                        C3D += "    if " + str(resultado1C3D[0]) + " < t" + str(resultado2C3D[1]) + " "
+                                    else:
+                                        C3D += "    if " + str(resultado1C3D[0]) + " < " + str(resultado2C3D[0]) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
@@ -359,10 +415,16 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                     else:                                   # PRIMITIVO >= OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += resultado2C3D[0]
+                        if isinstance(self.operating2, Aritmetica):
+                            if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += resultado2C3D[0]
                         for contenido in resultado1C3D:
                             C3D += "    if " + str(contenido) + " >= "
-                        C3D += "t" + str(resultado2C3D[1]) + " "
+                        if isinstance(self.operating2, Aritmetica):
+                            if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += "t" + str(resultado2C3D[1]) + " "
+                            else:
+                                C3D += "" + str(resultado2C3D[0]) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
@@ -371,10 +433,16 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                 else:
                     resultado1C3D = self.operating1.getC3D(c3dObj)
-                    C3D += resultado1C3D[0]
+                    if isinstance(self.operating1, Aritmetica):
+                        if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
+                            C3D += resultado1C3D[0]
                     if isinstance(self.operating2, Primitivo):  # OTRO >= PRIMITIVO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += "    if t" + str(resultado1C3D[1]) + " >= "
+                        if isinstance(self.operating1, Aritmetica):
+                            if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += "    if t" + str(resultado1C3D[1]) + " >= "
+                            else:
+                                C3D += "    if " + str(resultado1C3D[0]) + " >= "
                         for contenido in resultado2C3D:
                             C3D += str(contenido) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
@@ -385,8 +453,22 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                     else:                                   # OTRO >= OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += resultado2C3D[0]
-                        C3D += "    if t" + str(resultado1C3D[1]) + " >= t" + str(resultado2C3D[1]) + " "
+                        if isinstance(self.operating2, Aritmetica):
+                            if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += resultado2C3D[0]
+                        if isinstance(self.operating1, Aritmetica):
+                            if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
+                                if isinstance(self.operating2, Aritmetica):
+                                    if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                        C3D += "    if t" + str(resultado1C3D[1]) + " >= t" + str(resultado2C3D[1]) + " "
+                                    else:
+                                        C3D += "    if t" + str(resultado1C3D[1]) + " >= " + str(resultado2C3D[0]) + " "
+                            else:
+                                if isinstance(self.operating2, Aritmetica):
+                                    if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                        C3D += "    if " + str(resultado1C3D[0]) + " >= t" + str(resultado2C3D[1]) + " "
+                                    else:
+                                        C3D += "    if " + str(resultado1C3D[0]) + " >= " + str(resultado2C3D[0]) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
@@ -415,10 +497,16 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                     else:                                   # PRIMITIVO <= OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += resultado2C3D[0]
+                        if isinstance(self.operating2, Aritmetica):
+                            if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += resultado2C3D[0]
                         for contenido in resultado1C3D:
                             C3D += "    if " + str(contenido) + " <= "
-                        C3D += "t" + str(resultado2C3D[1]) + " "
+                        if isinstance(self.operating2, Aritmetica):
+                            if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += "t" + str(resultado2C3D[1]) + " "
+                            else:
+                                C3D += "" + str(resultado2C3D[0]) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
@@ -427,10 +515,16 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                 else:
                     resultado1C3D = self.operating1.getC3D(c3dObj)
-                    C3D += resultado1C3D[0]
+                    if isinstance(self.operating1, Aritmetica):
+                        if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
+                            C3D += resultado1C3D[0]
                     if isinstance(self.operating2, Primitivo):  # OTRO <= PRIMITIVO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += "    if t" + str(resultado1C3D[1]) + " <= "
+                        if isinstance(self.operating1, Aritmetica):
+                            if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += "    if t" + str(resultado1C3D[1]) + " <= "
+                            else:
+                                C3D += "    if " + str(resultado1C3D[0]) + " <= "
                         for contenido in resultado2C3D:
                             C3D += str(contenido) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
@@ -441,8 +535,22 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                     else:                                   # OTRO <= OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += resultado2C3D[0]
-                        C3D += "    if t" + str(resultado1C3D[1]) + " <= t" + str(resultado2C3D[1]) + " "
+                        if isinstance(self.operating2, Aritmetica):
+                            if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += resultado2C3D[0]
+                        if isinstance(self.operating1, Aritmetica):
+                            if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
+                                if isinstance(self.operating2, Aritmetica):
+                                    if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                        C3D += "    if t" + str(resultado1C3D[1]) + " <= t" + str(resultado2C3D[1]) + " "
+                                    else:
+                                        C3D += "    if t" + str(resultado1C3D[1]) + " <= " + str(resultado2C3D[0]) + " "
+                            else:
+                                if isinstance(self.operating2, Aritmetica):
+                                    if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                        C3D += "    if " + str(resultado1C3D[0]) + " <= t" + str(resultado2C3D[1]) + " "
+                                    else:
+                                        C3D += "    if " + str(resultado1C3D[0]) + " <= " + str(resultado2C3D[0]) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
@@ -454,7 +562,7 @@ class Relacional(AST):
                     return str(izquierdo) <= str(derecho)
         # OPERANDO IGUAL IGUAL QUE ==
         elif self.operator == OPERADOR_RELACIONAL.IGUAL:
-            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating2, Identificador):
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) or (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating2, Identificador):
                 if isinstance(self.operating1, Primitivo):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo):  # PRIMITIVO == PRIMITIVO
@@ -471,10 +579,16 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                     else:                                   # PRIMITIVO == OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += resultado2C3D[0]
+                        if isinstance(self.operating2, Aritmetica):
+                            if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += resultado2C3D[0]
                         for contenido in resultado1C3D:
                             C3D += "    if " + str(contenido) + " == "
-                        C3D += "t" + str(resultado2C3D[1]) + " "
+                        if isinstance(self.operating2, Aritmetica):
+                            if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += "t" + str(resultado2C3D[1]) + " "
+                            else:
+                                C3D += "" + str(resultado2C3D[0]) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
@@ -483,10 +597,16 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                 else:
                     resultado1C3D = self.operating1.getC3D(c3dObj)
-                    C3D += resultado1C3D[0]
+                    if isinstance(self.operating1, Aritmetica):
+                        if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
+                            C3D += resultado1C3D[0]
                     if isinstance(self.operating2, Primitivo):  # OTRO == PRIMITIVO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += "    if t" + str(resultado1C3D[1]) + " == "
+                        if isinstance(self.operating1, Aritmetica):
+                            if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += "    if t" + str(resultado1C3D[1]) + " == "
+                            else:
+                                C3D += "    if " + str(resultado1C3D[0]) + " == "
                         for contenido in resultado2C3D:
                             C3D += str(contenido) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
@@ -497,8 +617,21 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                     else:                                   # OTRO == OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += resultado2C3D[0]
-                        C3D += "    if t" + str(resultado1C3D[1]) + " == t" + str(resultado2C3D[1]) + " "
+                        if isinstance(self.operating2, Aritmetica):
+                            if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += resultado2C3D[0]
+                        if isinstance(self.operating1, Aritmetica):
+                            if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
+                                if isinstance(self.operating2, Aritmetica):
+                                    if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                        C3D += "    if t" + str(resultado1C3D[1]) + " == t" + str(resultado2C3D[1]) + " "
+                                    else:
+                                        C3D += "    if t" + str(resultado1C3D[1]) + " == " + str(resultado2C3D[0]) + " "
+                            else:
+                                if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                    C3D += "    if " + str(resultado1C3D[0]) + " == t" + str(resultado2C3D[1]) + " "
+                                else:
+                                    C3D += "    if " + str(resultado1C3D[0]) + " == " + str(resultado2C3D[0]) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
@@ -506,39 +639,124 @@ class Relacional(AST):
                         temporalL1 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
             elif (self.operating1.type == TIPO_DATO.CADENA and self.operating2.type == TIPO_DATO.CADENA) or (self.operating1.type == TIPO_DATO.BOOLEANO and self.operating2.type == TIPO_DATO.BOOLEANO):
-                C3D += self.operating1.getC3D(c3dObj)
-                C3D += c3dObj.endString()
-                C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
-                temporalAux1 = c3dObj.getContadorT()
-                c3dObj.addContadorT()
-                C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux1) + " + 0;\n"
-                temporalT2 = c3dObj.getContadorT()
-                c3dObj.addContadorT()
-                C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux1 - 1) + ";\n"
-                C3D += self.operating2.getC3D(c3dObj)
-                C3D += c3dObj.endString()
-                C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
-                temporalAux2 = c3dObj.getContadorT()
-                c3dObj.addContadorT()
-                C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux2) + " + 1;\n"
-                temporalT2 = c3dObj.getContadorT()
-                c3dObj.addContadorT()
-                C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux2 - 1) + ";\n"
-                C3D += "    P = P + " + str(c3dObj.getNumVariables()) + ";\n"
-                C3D += "    compareString();\n"
-                C3D += "    t" + str(c3dObj.getContadorT()) + " = P + 2;\n"
-                temporalT3 = c3dObj.getContadorT()
-                c3dObj.addContadorT()
-                C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalT3) + ")];\n"
-                temporalT4 = c3dObj.getContadorT()
-                c3dObj.addContadorT()
-                C3D += "    P = P - " + str(c3dObj.getNumVariables()) + ";\n"
-                C3D += "    if t" + str(temporalT4) + " == 1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
-                temporalL0 = c3dObj.getContadorL()
-                c3dObj.addContadorL()
-                C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
-                temporalL1 = c3dObj.getContadorL()
-                c3dObj.addContadorL()
+                if isinstance(self.operating1, Primitivo):
+                    if isinstance(self.operating2, Primitivo):
+                        C3D += self.operating1.getC3D(c3dObj)
+                        C3D += c3dObj.endString()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        c3dObj.addContadorT()
+                        temporalAux1 = c3dObj.getLastContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux1) + " + 0;\n"
+                        temporalT2 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux1 - 1) + ";\n"
+                        C3D += self.operating2.getC3D(c3dObj)
+                        C3D += c3dObj.endString()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        c3dObj.addContadorT()
+                        temporalAux2 = c3dObj.getLastContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux2) + " + 1;\n"
+                        temporalT2 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux2 - 1) + ";\n"
+                        C3D += "    P = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        C3D += "    compareString();\n"
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + 2;\n"
+                        temporalT3 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalT3) + ")];\n"
+                        temporalT4 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    P = P - " + str(c3dObj.getNumVariables()) + ";\n"
+                        C3D += "    if t" + str(temporalT4) + " == 1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+
+                else:
+                    resultado1C3D = self.operating1.getC3D(c3dObj)
+                    C3D += resultado1C3D[0]
+                    C3D += "    L" + str(resultado1C3D[1]) + ":\n"
+                   
+                    if isinstance(self.operating2, Primitivo):
+                        C3D += c3dObj.saveString("true")
+                        C3D += c3dObj.endString()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        c3dObj.addContadorT()
+                        temporalAux1 = c3dObj.getLastContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux1) + " + 0;\n"
+                        temporalT2 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux1 - 1) + ";\n"
+                        C3D += self.operating2.getC3D(c3dObj)
+                        C3D += c3dObj.endString()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        c3dObj.addContadorT()
+                        temporalAux2 = c3dObj.getLastContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux2) + " + 1;\n"
+                        temporalT2 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux2 - 1) + ";\n"
+                        C3D += "    P = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        C3D += "    compareString();\n"
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + 2;\n"
+                        temporalT3 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalT3) + ")];\n"
+                        temporalT4 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    P = P - " + str(c3dObj.getNumVariables()) + ";\n"
+                        C3D += "    if t" + str(temporalT4) + " == 1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                    else:
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += resultado2C3D[0]
+                        C3D += "    L" + str(resultado2C3D[1]) + ":\n"
+                        C3D += c3dObj.saveString("true")
+                        C3D += c3dObj.endString()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        c3dObj.addContadorT()
+                        temporalAux1 = c3dObj.getLastContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux1) + " + 0;\n"
+                        temporalT2 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux1 - 1) + ";\n"
+                        C3D += c3dObj.saveString("true")
+                        C3D += c3dObj.endString()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        c3dObj.addContadorT()
+                        temporalAux2 = c3dObj.getLastContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux2) + " + 1;\n"
+                        temporalT2 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux2 - 1) + ";\n"
+                        C3D += "    P = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        C3D += "    compareString();\n"
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + 2;\n"
+                        temporalT3 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalT3) + ")];\n"
+                        temporalT4 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    P = P - " + str(c3dObj.getNumVariables()) + ";\n"
+                        C3D += "    if t" + str(temporalT4) + " == 1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    L" + str(resultado2C3D[2]) + ":\n"
+                        C3D += c3dObj.saveString("false")
+
+
+                    C3D += "    L" + str(resultado1C3D[2]) + ":\n"
+                    C3D += c3dObj.saveString("false")
         # OPERANDO DIFERENTE QUE !=
         elif self.operator == OPERADOR_RELACIONAL.DIFERENTE:
             if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating2, Identificador):
@@ -558,10 +776,16 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                     else:                                   # PRIMITIVO != OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += resultado2C3D[0]
+                        if isinstance(self.operating2, Aritmetica):
+                            if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += resultado2C3D[0]
                         for contenido in resultado1C3D:
                             C3D += "    if " + str(contenido) + " != "
-                        C3D += "t" + str(resultado2C3D[1]) + " "
+                        if isinstance(self.operating2, Aritmetica):
+                            if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += "t" + str(resultado2C3D[1]) + " "
+                            else:
+                                C3D += "" + str(resultado2C3D[0]) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
@@ -570,10 +794,16 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                 else:
                     resultado1C3D = self.operating1.getC3D(c3dObj)
-                    C3D += resultado1C3D[0]
+                    if isinstance(self.operating1, Aritmetica):
+                        if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
+                            C3D += resultado1C3D[0]
                     if isinstance(self.operating2, Primitivo):  # OTRO != PRIMITIVO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += "    if t" + str(resultado1C3D[1]) + " != "
+                        if isinstance(self.operating1, Aritmetica):
+                            if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += "    if t" + str(resultado1C3D[1]) + " != "
+                            else:
+                                C3D += "    if " + str(resultado1C3D[1]) + " != "
                         for contenido in resultado2C3D:
                             C3D += str(contenido) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
@@ -584,8 +814,22 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                     else:                                   # OTRO != OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += resultado2C3D[0]
-                        C3D += "    if t" + str(resultado1C3D[1]) + " != t" + str(resultado2C3D[1]) + " "
+                        if isinstance(self.operating2, Aritmetica):
+                            if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                C3D += resultado2C3D[0]
+                        if isinstance(self.operating1, Aritmetica):
+                            if self.operating1.operator != OPERADOR_ARITMETICO.UMENOS:
+                                if isinstance(self.operating2, Aritmetica):
+                                    if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                        C3D += "    if t" + str(resultado1C3D[1]) + " != t" + str(resultado2C3D[1]) + " "
+                                    else:
+                                        C3D += "    if t" + str(resultado1C3D[1]) + " != " + str(resultado2C3D[0]) + " "
+                            else:
+                                if isinstance(self.operating2, Aritmetica):
+                                    if self.operating2.operator != OPERADOR_ARITMETICO.UMENOS:
+                                        C3D += "    if " + str(resultado1C3D[0]) + " != t" + str(resultado2C3D[1]) + " "
+                                    else:
+                                        C3D += "    if " + str(resultado1C3D[0]) + " != " + str(resultado2C3D[0]) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
@@ -596,6 +840,8 @@ class Relacional(AST):
                 if isinstance(self.operating1, Primitivo):
                     if isinstance(self.operating2, Primitivo):
                         C3D += self.operating1.getC3D(c3dObj)
+                        C3D += c3dObj.endString()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
                         c3dObj.addContadorT()
                         temporalAux1 = c3dObj.getLastContadorT()
                         C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux1) + " + 0;\n"
@@ -603,13 +849,15 @@ class Relacional(AST):
                         c3dObj.addContadorT()
                         C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux1 - 1) + ";\n"
                         C3D += self.operating2.getC3D(c3dObj)
+                        C3D += c3dObj.endString()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
                         c3dObj.addContadorT()
                         temporalAux2 = c3dObj.getLastContadorT()
                         C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux2) + " + 1;\n"
                         temporalT2 = c3dObj.getContadorT()
                         c3dObj.addContadorT()
                         C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux2 - 1) + ";\n"
-                        C3D += "    P = P + 0;\n"
+                        C3D += "    P = P + " + str(c3dObj.getNumVariables()) + ";\n"
                         C3D += "    compareString();\n"
                         C3D += "    t" + str(c3dObj.getContadorT()) + " = P + 2;\n"
                         temporalT3 = c3dObj.getContadorT()
@@ -617,10 +865,93 @@ class Relacional(AST):
                         C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalT3) + ")];\n"
                         temporalT4 = c3dObj.getContadorT()
                         c3dObj.addContadorT()
+                        C3D += "    P = P - " + str(c3dObj.getNumVariables()) + ";\n"
                         C3D += "    if t" + str(temporalT4) + " != 1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
                         C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
                         temporalL1 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
+                else:
+                    resultado1C3D = self.operating1.getC3D(c3dObj)
+                    C3D += resultado1C3D[0]
+                    C3D += "    L" + str(resultado1C3D[1]) + ":\n"
+                    if isinstance(self.operating2, Primitivo):
+                        C3D += c3dObj.saveString("true")
+                        C3D += c3dObj.endString()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        c3dObj.addContadorT()
+                        temporalAux1 = c3dObj.getLastContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux1) + " + 0;\n"
+                        temporalT2 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux1 - 1) + ";\n"
+                        C3D += self.operating2.getC3D(c3dObj)
+                        C3D += c3dObj.endString()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        c3dObj.addContadorT()
+                        temporalAux2 = c3dObj.getLastContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux2) + " + 1;\n"
+                        temporalT2 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux2 - 1) + ";\n"
+                        C3D += "    P = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        C3D += "    compareString();\n"
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + 2;\n"
+                        temporalT3 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalT3) + ")];\n"
+                        temporalT4 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    P = P - " + str(c3dObj.getNumVariables()) + ";\n"
+                        C3D += "    if t" + str(temporalT4) + " != 1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                    else:
+                        resultado2C3D = self.operating2.getC3D(c3dObj)
+                        C3D += resultado2C3D[0]
+                        C3D += "    L" + str(resultado2C3D[1]) + ":\n"
+                        C3D += c3dObj.saveString("true")
+                        C3D += c3dObj.endString()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        c3dObj.addContadorT()
+                        temporalAux1 = c3dObj.getLastContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux1) + " + 0;\n"
+                        temporalT2 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux1 - 1) + ";\n"
+                        C3D += c3dObj.saveString("true")
+                        C3D += c3dObj.endString()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        c3dObj.addContadorT()
+                        temporalAux2 = c3dObj.getLastContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux2) + " + 1;\n"
+                        temporalT2 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    stack[int(t" + str(temporalT2) + ")] = t" + str(temporalAux2 - 1) + ";\n"
+                        C3D += "    P = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                        C3D += "    compareString();\n"
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = P + 2;\n"
+                        temporalT3 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalT3) + ")];\n"
+                        temporalT4 = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += "    P = P - " + str(c3dObj.getNumVariables()) + ";\n"
+                        C3D += "    if t" + str(temporalT4) + " != 1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                        temporalL0 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                        temporalL1 = c3dObj.getContadorL()
+                        c3dObj.addContadorL()
+                        C3D += "    L" + str(resultado2C3D[2]) + ":\n"
+                        C3D += c3dObj.saveString("false")
+
+
+                    C3D += "    L" + str(resultado1C3D[2]) + ":\n"
+                    C3D += c3dObj.saveString("false")
+                    
         return [C3D, temporalL0, temporalL1]    # RETORNO [C3D, ListaV, ListaF]

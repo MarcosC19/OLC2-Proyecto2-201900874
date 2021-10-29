@@ -97,9 +97,9 @@ class Println(AST):
                 if isinstance(contenido, list):
                     for valor in contenido:
                         if expresion.type == TIPO_DATO.ENTERO:
-                            C3D += "    fmt.Printf(\"%d\\n\", int(" + str(valor) + "));\n"
+                            C3D += "    fmt.Printf(\"%d\", int(" + str(valor) + "));\n"
                         elif expresion.type == TIPO_DATO.DECIMAL:
-                            C3D += "    fmt.Printf(\"%f\\n\", " + str(valor) + ");\n"
+                            C3D += "    fmt.Printf(\"%fn\", " + str(valor) + ");\n"
                 else:
                     C3D += contenido
                     C3D += c3dObj.endString()
@@ -110,17 +110,17 @@ class Println(AST):
                 contenido = expresion.getC3D(c3dObj)
                 if expresion.operating2 == None:    # OPERADOR UNARIO
                     if expresion.type == TIPO_DATO.ENTERO:
-                        C3D += "    fmt.Printf(\"%d\\n\", int(" + contenido[0] + "));\n"
+                        C3D += "    fmt.Printf(\"%d\", int(" + contenido[0] + "));\n"
                     elif expresion.type == TIPO_DATO.DECIMAL:
-                        C3D += "    fmt.Printf(\"%f\\n\", " + contenido[0] + ");\n"
+                        C3D += "    fmt.Printf(\"%f\", " + contenido[0] + ");\n"
                 else:                           # OPERACIONES DOS OPERADORES
                     C3D += contenido[0]
-                    C3D += c3dObj.endString()
                     if expresion.type == TIPO_DATO.ENTERO:
-                            C3D += "    fmt.Printf(\"%d\\n\", int(t" + str(contenido[1]) + "));\n"
+                            C3D += "    fmt.Printf(\"%d\", int(t" + str(contenido[1]) + "));\n"
                     elif expresion.type == TIPO_DATO.DECIMAL:
-                        C3D += "    fmt.Printf(\"%f\\n\", t" + str(contenido[1]) + ");\n"
+                        C3D += "    fmt.Printf(\"%f\", t" + str(contenido[1]) + ");\n"
                     else:
+                        C3D += c3dObj.endString()
                         C3D += c3dObj.printString(contadorTP)
             elif isinstance(expresion, Relacional):
                 C3D += "    /* IMPRIMIENDO RELACIONAL */\n"

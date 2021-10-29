@@ -745,6 +745,7 @@ def parseC3D(inp) :
                 instC3D += instruccion.getC3D(c3d)
 
         instC3D += "}"
+        c3d.addLastIMP()
         potCode = c3d.addPotencia()
         printCode = c3d.addPrintString()
         compareStr = c3d.addCompareString()
