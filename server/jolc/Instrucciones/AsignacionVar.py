@@ -9,6 +9,7 @@ from Abstract.AST import AST
 from Abstract.nodoAST import nodeAST
 from C3D.variableC3D import VariableC3D
 from C3D.variableC3D import TipoVar
+from Expresiones.Identificador import Identificador
 
 class Asignacion(AST):
     
@@ -122,18 +123,15 @@ class Asignacion(AST):
             elif isinstance(self.expresion, Aritmetica):
                 contadorTP = c3dObj.getContadorT()
                 resultadoExpresion = self.expresion.getC3D(c3dObj)
+                C3D += resultadoExpresion[0]
                 temporalT0 = resultadoExpresion[1]
-                if self.expresion.operating2 == None:
-                    C3D += "    stack[int(t" + str(temporalTPos) + ")] = " + str(resultadoExpresion[0])  + ";\n"
+                if self.expresion.type == TIPO_DATO.CADENA:
+                    C3D += c3dObj.endString()
+                    C3D += "    stack[int(t" + str(temporalTPos) + ")] = t" + str(contadorTP)  + ";\n"
+                    myNewVariable = VariableC3D(self.identificador, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.APUNTADOR, self.expresion.type)
                 else:
-                    C3D += resultadoExpresion[0]
-                    if self.expresion.type == TIPO_DATO.CADENA:
-                        C3D += c3dObj.endString()
-                        C3D += "    stack[int(t" + str(temporalTPos) + ")] = t" + str(contadorTP)  + ";\n"
-                        myNewVariable = VariableC3D(self.identificador, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.APUNTADOR, self.expresion.type)
-                    else:
-                        C3D += "    stack[int(t" + str(temporalTPos) + ")] = t" + str(temporalT0)  + ";\n"
-                        myNewVariable = VariableC3D(self.identificador, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.VALOR, self.expresion.type)
+                    C3D += "    stack[int(t" + str(temporalTPos) + ")] = t" + str(temporalT0)  + ";\n"
+                    myNewVariable = VariableC3D(self.identificador, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.VALOR, self.expresion.type)
             elif isinstance(self.expresion, Relacional):
                 resultadoExpresion = self.expresion.getC3D(c3dObj)
                 C3D += resultadoExpresion[0]
@@ -172,11 +170,18 @@ class Asignacion(AST):
                 C3D += "    stack[int(t" + str(temporalTPos) + ")] = t" + str(temporalT1) + ";\n"
                 C3D += "    L" + str(temporalLS) + ":\n"
                 myNewVariable = VariableC3D(self.identificador, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.APUNTADOR, self.expresion.type)
+            elif isinstance(self.expresion, Identificador):
+                resultadoExpresion = self.expresion.getC3D(c3dObj)
+                C3D += resultadoExpresion[0]
+                C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(resultadoExpresion[1]) + ";\n"
+                temporalT1 = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                C3D += "    stack[int(t" + str(temporalTPos) + ")] = t" + str(temporalT1) + ";\n"
+                myNewVariable = VariableC3D(self.identificador, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.APUNTADOR, self.expresion.type)
         else:
             C3D += "    t" + str(c3dObj.getContadorT()) + " = " + myVarOld.getPosition()  +";\n"
             temporalTPos = c3dObj.getContadorT()
             c3dObj.addContadorT()
-            c3dObj.addNumVariable()
             if isinstance(self.expresion, Primitivo):
                 resultadoExpresion = self.expresion.getC3D(c3dObj)
                 if isinstance(resultadoExpresion, list):
@@ -194,18 +199,15 @@ class Asignacion(AST):
             elif isinstance(self.expresion, Aritmetica):
                 contadorTP = c3dObj.getContadorT()
                 resultadoExpresion = self.expresion.getC3D(c3dObj)
+                C3D += resultadoExpresion[0]
                 temporalT0 = resultadoExpresion[1]
-                if self.expresion.operating2 == None:
-                    C3D += "    stack[int(t" + str(temporalTPos) + ")] = " + str(resultadoExpresion[0])  + ";\n"
+                if self.expresion.type == TIPO_DATO.CADENA:
+                    C3D += c3dObj.endString()
+                    C3D += "    stack[int(t" + str(temporalTPos) + ")] = t" + str(contadorTP)  + ";\n"
+                    myNewVariable = VariableC3D(self.identificador, myVarOld.getPosition(), TipoVar.APUNTADOR, self.expresion.type)
                 else:
-                    C3D += resultadoExpresion[0]
-                    if self.expresion.type == TIPO_DATO.CADENA:
-                        C3D += c3dObj.endString()
-                        C3D += "    stack[int(t" + str(temporalTPos) + ")] = t" + str(contadorTP)  + ";\n"
-                        myNewVariable = VariableC3D(self.identificador, myVarOld.getPosition(), TipoVar.APUNTADOR, self.expresion.type)
-                    else:
-                        C3D += "    stack[int(t" + str(temporalTPos) + ")] = t" + str(temporalT0)  + ";\n"
-                        myNewVariable = VariableC3D(self.identificador, myVarOld.getPosition(), TipoVar.VALOR, self.expresion.type)
+                    C3D += "    stack[int(t" + str(temporalTPos) + ")] = t" + str(temporalT0)  + ";\n"
+                    myNewVariable = VariableC3D(self.identificador, myVarOld.getPosition(), TipoVar.VALOR, self.expresion.type)
             elif isinstance(self.expresion, Relacional):
                 resultadoExpresion = self.expresion.getC3D(c3dObj)
                 C3D += resultadoExpresion[0]
@@ -243,6 +245,14 @@ class Asignacion(AST):
                 C3D += c3dObj.endString()
                 C3D += "    stack[int(t" + str(temporalTPos) + ")] = t" + str(temporalT1) + ";\n"
                 C3D += "    L" + str(temporalLS) + ":\n"
+                myNewVariable = VariableC3D(self.identificador, myVarOld.getPosition(), TipoVar.APUNTADOR, self.expresion.type)
+            elif isinstance(self.expresion, Identificador):
+                resultadoExpresion = self.expresion.getC3D(c3dObj)
+                C3D += resultadoExpresion[0]
+                C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(resultadoExpresion[1]) + ";\n"
+                temporalT1 = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                C3D += "    stack[int(t" + str(temporalTPos) + ")] = t" + str(temporalT1) + ";\n"
                 myNewVariable = VariableC3D(self.identificador, myVarOld.getPosition(), TipoVar.APUNTADOR, self.expresion.type)
         if myNewVariable != None:
             c3dObj.addVariable(myNewVariable.getName(), myNewVariable)

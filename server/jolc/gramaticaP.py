@@ -759,9 +759,11 @@ def parseC3D(inp) :
             c3d.addC3D(contadores)
         else:
             c3d.addC3D("\n")
+        c3d.addC3D("/* MIS FUNCIONES */\n")
         c3d.addC3D(printCode)
         c3d.addC3D(potCode)
         c3d.addC3D(compareStr)
+        c3d.addC3D("/* MAIN */\n")
         c3d.addC3D("func main(){\n")
         c3d.addC3D(instC3D)
 

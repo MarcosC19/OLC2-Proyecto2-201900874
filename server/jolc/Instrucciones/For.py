@@ -1,10 +1,13 @@
-import re
+from math import isnan
 from Instrucciones.Return import Return
 from Instrucciones.If import If
 from Instrucciones.Continue import Continue
 from Instrucciones.Break import Break
 from Expresiones.Primitivo import Primitivo
 from Instrucciones.AsignacionVar import Asignacion
+from Expresiones.Identificador import Identificador
+from C3D.variableC3D import TipoVar
+from C3D.variableC3D import VariableC3D
 from tablaSimbolos.Tipo import TIPO_DATO
 from Abstract.AST import AST
 from Abstract.nodoAST import nodeAST
@@ -228,6 +231,209 @@ class For(AST):
                     codeInt += newVar
                     for instruccion in self.instrucciones:
                         codeInt += instruccion.getC3D(c3dObj)
+            elif isinstance(self.objeto1, Identificador):
+                resultadoC3D = self.objeto1.getC3D(c3dObj)
+                codeInt += resultadoC3D[0]
+                codeInt2 = "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(resultadoC3D[1]) + ")];\n"
+                temporalPOSHEAP = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                codeInt2 += "    /* ASIGNANDO VARIABLE */\n"
+                codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                temporalPos = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                c3dObj.addNumVariable()
+                codeInt2 += "    if t" + str(temporalPOSHEAP) + " == -1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                temporalS = c3dObj.getContadorL()
+                c3dObj.addContadorL()
+                codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = H;\n"
+                temporalAsi = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(resultadoC3D[1]) +")];\n"
+                temporalHeap = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                codeInt2 += "    heap[int(H)] = t" + str(temporalHeap) +";\n"
+                c3dObj.addContadorT()
+                
+                codeInt2 += "    H = H + 1;\n"
+                c3dObj.addContadorT()
+                codeInt2 += "    t" + str(resultadoC3D[1]) + " = t" + str(resultadoC3D[1]) + " + 1;\n"
+                codeInt2 += "    heap[int(H)] = -1;\n"
+
+                codeInt2 += "    stack[int(t" + str(temporalPos) + ")] = t" + str(temporalAsi) + ";\n"
+                myNewVariable = VariableC3D(self.nombre, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.APUNTADOR, self.objeto1.type)
+                c3dObj.addVariable(myNewVariable.getName(), myNewVariable)
+                for instruccion in self.instrucciones:
+                    codeInt2 += instruccion.getC3D(c3dObj)
+                codeInt2 += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                temporalLini =c3dObj.getContadorL()
+                c3dObj.addContadorL()
+
+                codeInt += "    L" + str(temporalLini) + ":\n"
+                codeInt += codeInt2
+                codeInt += "    L" + str(temporalS) + ":\n"
+        elif self.type == TIPO_DATO.ENTERO:
+            if isinstance(self.objeto1, Primitivo):
+                if isinstance(self.objeto2, Primitivo):
+                    valorIni = int(self.objeto1.getValue())
+                    valorFin = int(self.objeto2.getValue())
+                    for numero in range(valorIni, valorFin + 1):
+                        newValue = Primitivo(self.type, self.line, self.column, numero)
+                        newVar = Asignacion(self.line, self.column, self.nombre, newValue).getC3D(c3dObj)
+                        codeInt += newVar
+                        for instruccion in self.instrucciones:
+                            codeInt += instruccion.getC3D(c3dObj)
+                else:
+                    valorIni = self.objeto1.getC3D(c3dObj)
+                    valorFin = self.objeto2.getC3D(c3dObj)
+                    codeInt += valorFin[0]
+                    codeInt += "    /* ASIGNANDO VARIABLE */\n"
+                    codeInt += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                    temporalPos = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    c3dObj.addNumVariable()
+                    for valor in valorIni: # ASIGNANDO VALOR INICIO
+                        codeInt += "    t" + str(c3dObj.getContadorT()) + " = " + str(valor) + ";\n"
+                        temporalVal = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        codeInt += "    stack[int(t" + str(temporalPos) + ")] = t" + str(temporalVal) + ";\n"
+                    myNewVariable = VariableC3D(self.nombre, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.VALOR, self.objeto1.type)
+                    c3dObj.addVariable(myNewVariable.getName(), myNewVariable)
+                    codeInt2 = "    /* VALIDANDO FOR */\n"
+                    myOldVariable = c3dObj.getVariable(self.nombre)
+                    codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = " + str(myOldVariable.getPosition()) + ";\n"
+                    temporalAux1 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalAux1) + ")];\n"
+                    temporalAux2 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    codeInt2 += "    if t" + str(temporalAux2) + " > t" + str(valorFin[1]) + " { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                    temporalLSal = c3dObj.getContadorL()
+                    c3dObj.addContadorL()
+                    for instruccion in self.instrucciones:
+                        codeInt2 += instruccion.getC3D(c3dObj)
+                    codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = " + str(myOldVariable.getPosition()) + ";\n"
+                    temporalAux3 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = " + str(myOldVariable.getPosition()) + ";\n"
+                    temporalAux4 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalAux4) + ")];\n"
+                    temporalAux5 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux5) + " + 1;\n"
+                    temporalAux6 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    codeInt2 += "    stack[int(t" + str(temporalAux3) + ")] = t" + str(temporalAux6) + ";\n"
+                    codeInt2 += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                    temporalLReg = c3dObj.getContadorL()
+                    c3dObj.addContadorL()
+
+                    codeInt += "    L" + str(temporalLReg) + ":\n"
+                    codeInt += codeInt2
+                    codeInt += "    L" + str(temporalLSal) + ":\n"
+            else:
+                if isinstance(self.objeto2, Primitivo):
+                    valorIni = self.objeto1.getC3D(c3dObj)
+                    valorFin = self.objeto2.getC3D(c3dObj)
+                    codeInt += valorIni[0]
+                    codeInt += "    /* ASIGNANDO VARIABLE */\n"
+                    codeInt += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                    temporalPos = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    c3dObj.addNumVariable()
+                    codeInt += "    t" + str(c3dObj.getContadorT()) + " = t" + str(valorIni[1]) + ";\n"
+                    temporalVal = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    codeInt += "    stack[int(t" + str(temporalPos) + ")] = t" + str(temporalVal) + ";\n"
+                    myNewVariable = VariableC3D(self.nombre, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.VALOR, self.objeto1.type)
+                    c3dObj.addVariable(myNewVariable.getName(), myNewVariable)
+                    
+                    
+                    codeInt2 = "    /* VALIDANDO FOR */\n"
+                    myOldVariable = c3dObj.getVariable(self.nombre)
+                    codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = " + str(myOldVariable.getPosition()) + ";\n"
+                    temporalAux1 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalAux1) + ")];\n"
+                    temporalAux2 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    for valor in valorFin:
+                        codeInt2 += "    if t" + str(temporalAux2) + " > " + str(valor) + " { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                    temporalLSal = c3dObj.getContadorL()
+                    c3dObj.addContadorL()
+                    for instruccion in self.instrucciones:
+                        codeInt2 += instruccion.getC3D(c3dObj)
+                    codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = " + str(myOldVariable.getPosition()) + ";\n"
+                    temporalAux3 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = " + str(myOldVariable.getPosition()) + ";\n"
+                    temporalAux4 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalAux4) + ")];\n"
+                    temporalAux5 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux5) + " + 1;\n"
+                    temporalAux6 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    codeInt2 += "    stack[int(t" + str(temporalAux3) + ")] = t" + str(temporalAux6) + ";\n"
+                    codeInt2 += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                    temporalLReg = c3dObj.getContadorL()
+                    c3dObj.addContadorL()
+
+                    codeInt += "    L" + str(temporalLReg) + ":\n"
+                    codeInt += codeInt2
+                    codeInt += "    L" + str(temporalLSal) + ":\n"
+                else:
+                    valorIni = self.objeto1.getC3D(c3dObj)
+                    valorFin = self.objeto2.getC3D(c3dObj)
+                    codeInt += valorIni[0]
+                    codeInt += valorFin[0]
+                    codeInt += "    /* ASIGNANDO VARIABLE */\n"
+                    codeInt += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                    temporalPos = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    c3dObj.addNumVariable()
+                    codeInt += "    t" + str(c3dObj.getContadorT()) + " = t" + str(valorIni[1]) + ";\n"
+                    temporalVal = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    codeInt += "    stack[int(t" + str(temporalPos) + ")] = t" + str(temporalVal) + ";\n"
+                    myNewVariable = VariableC3D(self.nombre, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.VALOR, self.objeto1.type)
+                    c3dObj.addVariable(myNewVariable.getName(), myNewVariable)
+                    
+                    
+                    codeInt2 = "    /* VALIDANDO FOR */\n"
+                    myOldVariable = c3dObj.getVariable(self.nombre)
+                    codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = " + str(myOldVariable.getPosition()) + ";\n"
+                    temporalAux1 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalAux1) + ")];\n"
+                    temporalAux2 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    codeInt2 += "    if t" + str(temporalAux2) + " > t" + str(valorFin[1]) + " { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                    temporalLSal = c3dObj.getContadorL()
+                    c3dObj.addContadorL()
+                    for instruccion in self.instrucciones:
+                        codeInt2 += instruccion.getC3D(c3dObj)
+                    codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = " + str(myOldVariable.getPosition()) + ";\n"
+                    temporalAux3 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = " + str(myOldVariable.getPosition()) + ";\n"
+                    temporalAux4 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalAux4) + ")];\n"
+                    temporalAux5 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAux5) + " + 1;\n"
+                    temporalAux6 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    codeInt2 += "    stack[int(t" + str(temporalAux3) + ")] = t" + str(temporalAux6) + ";\n"
+                    codeInt2 += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+                    temporalLReg = c3dObj.getContadorL()
+                    c3dObj.addContadorL()
+
+                    codeInt += "    L" + str(temporalLReg) + ":\n"
+                    codeInt += codeInt2
+                    codeInt += "    L" + str(temporalLSal) + ":\n"
 
         C3D += codeInt
         return C3D
