@@ -741,12 +741,17 @@ def parseC3D(inp) :
             if isinstance(instruccion, Excepcion): 
                 errores.append(instruccion)
                 ast.updateConsole(instruccion.imprimir())
+            elif isinstance(instruccion, If):
+                instC3D += instruccion.getC3D(c3d, None, None)
+            elif isinstance(instruccion, Break):
+                instC3D += instruccion.getC3D(c3d, None)
             else:
                 instC3D += instruccion.getC3D(c3d)
 
         instC3D += "}"
         c3d.addLastIMP()
         potCode = c3d.addPotencia()
+        printList = c3d.addPrintList()
         printCode = c3d.addPrintString()
         compareStr = c3d.addCompareString()
         if c3d.getContadorT() > 0:
@@ -760,8 +765,9 @@ def parseC3D(inp) :
         else:
             c3d.addC3D("\n")
         c3d.addC3D("/* MIS FUNCIONES */\n")
-        c3d.addC3D(printCode)
         c3d.addC3D(potCode)
+        c3d.addC3D(printList)
+        c3d.addC3D(printCode)
         c3d.addC3D(compareStr)
         c3d.addC3D("/* MAIN */\n")
         c3d.addC3D("func main(){\n")

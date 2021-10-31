@@ -128,7 +128,7 @@ class If(AST):
                         if isinstance(instr, Continue): return Excepcion("Semantico", "Continue se encuentra fuera de un ciclo", instr.line, instr.column)
         return None
 
-    def getC3D(self, c3dObj):
+    def getC3D(self, c3dObj, finalL, inicioL):
         C3D = ""
         resultadoCondicion = self.condicion.getC3D(c3dObj)
         # [C3D, LV, LF]
@@ -137,31 +137,59 @@ class If(AST):
         if isinstance(self.condicion, Relacional):
             C3D += "    L" + str(resultadoCondicion[1]) + ":\n"
             for instruccion in self.instruccionIf:
-                C3D += instruccion.getC3D(c3dObj)
+                if isinstance(instruccion, Break):
+                    C3D += instruccion.getC3D(c3dObj, finalL)
+                elif isinstance(instruccion, Continue):
+                    C3D += instruccion.getC3D(c3dObj, inicioL)
+                elif isinstance(instruccion, If):
+                    C3D += instruccion.getC3D(c3dObj, finalL, inicioL)
+                else:
+                    C3D += instruccion.getC3D(c3dObj)
             C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
             temporalLS = c3dObj.getContadorL()
             c3dObj.addContadorL()
             C3D += "    L" + str(resultadoCondicion[2]) + ":\n"
             if self.instruccionesElseIf != None: # ELSE IF
-                C3D += self.instruccionesElseIf.getC3D(c3dObj)
+                C3D += self.instruccionesElseIf.getC3D(c3dObj, finalL, inicioL)
             elif self.instruccionesElse != None: # ELSE
                 for insElse in self.instruccionesElse:
-                    C3D += insElse.getC3D(c3dObj)
+                    if isinstance(insElse, Break):
+                        C3D += insElse.getC3D(c3dObj, finalL)
+                    elif isinstance(insElse, Continue):
+                        C3D += insElse.getC3D(c3dObj, inicioL)
+                    elif isinstance(insElse, If):
+                        C3D += insElse.getC3D(c3dObj, finalL, inicioL)
+                    else:
+                        C3D += insElse.getC3D(c3dObj)
             C3D += "    L" + str(temporalLS) + ":\n"
         elif isinstance(self.condicion, Logica):
             for valor in resultadoCondicion[1]:
                 C3D += "    L" + str(valor) + ":\n"
             for instruccion in self.instruccionIf:
-                C3D += instruccion.getC3D(c3dObj)
+                if isinstance(instruccion, Break):
+                    C3D += instruccion.getC3D(c3dObj, finalL)
+                elif isinstance(instruccion, Continue):
+                    C3D += instruccion.getC3D(c3dObj, inicioL)
+                elif isinstance(instruccion, If):
+                    C3D += instruccion.getC3D(c3dObj, finalL, inicioL)
+                else:
+                    C3D += instruccion.getC3D(c3dObj)
             C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
             temporalLS = c3dObj.getContadorL()
             c3dObj.addContadorL()
             for valor in resultadoCondicion[2]:
                 C3D += "    L" + str(valor) + ":\n"
             if self.instruccionesElseIf != None: # ELSE IF
-                C3D += self.instruccionesElseIf.getC3D(c3dObj)
+                C3D += self.instruccionesElseIf.getC3D(c3dObj, finalL, inicioL)
             elif self.instruccionesElse != None: # ELSE
                 for insElse in self.instruccionesElse:
-                    C3D += insElse.getC3D(c3dObj)
+                    if isinstance(insElse, Break):
+                        C3D += insElse.getC3D(c3dObj, finalL)
+                    elif isinstance(insElse, Continue):
+                        C3D += insElse.getC3D(c3dObj, inicioL)
+                    elif isinstance(insElse, If):
+                        C3D += insElse.getC3D(c3dObj, finalL, inicioL)
+                    else:
+                        C3D += insElse.getC3D(c3dObj)
             C3D += "    L" + str(temporalLS) + ":\n"
         return C3D

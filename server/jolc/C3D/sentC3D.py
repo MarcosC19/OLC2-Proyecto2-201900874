@@ -175,6 +175,32 @@ class C3D():
         codePot += "}\n\n"
         return codePot
 
+    def addPrintList(self):
+        codePrint = "func printList(){\n"
+        codePrint += "  t" + str(self.getContadorT()) + " = P + 0;\n"
+        temporalT1 = self.getContadorT()
+        self.addContadorT()
+        codePrint += "  t" + str(self.getContadorT()) + " = stack[int(t" + str(self.getLastContadorT()) + ")];\n"
+        temporalT2 = self.getContadorT()
+        self.addContadorT()
+        printCode = "      t" + str(self.getContadorT()) + " = heap[int(t" + str(self.getLastContadorT()) + ")];\n"
+        temporalT3 = self.getContadorT()
+        self.addContadorT()
+        printCode += "      if t" + str(temporalT3) + " == -1 { goto L" +  str(self.getContadorL()) + "; }\n"
+        temporalL1 = self.getContadorL() # dfag
+        self.addContadorL()
+        printCode += "      fmt.Printf(\"%f \", t" + str(temporalT3) + ");\n"
+        printCode += "      t" + str(temporalT2) + " = t" + str(temporalT2) + " + 1;\n"
+        printCode += "      goto L" + str(self.getContadorL()) + ";\n"
+        temporalL2 = self.getContadorL() # dfag
+        self.addContadorL()
+        printCode += "      L" + str(temporalL1) + ":\n"
+        printCode += "          return;"
+        codePrint += "  L" + str(temporalL2) + ":\n"
+        codePrint += printCode + "\n"
+        codePrint += "}\n\n"
+        return codePrint
+
     def printTrue(self):
         C3D = ""
         for i in 'true':
@@ -240,6 +266,22 @@ class C3D():
         C3D += "    stack[int(t" + str(temporalT3) + ")] = t" + str(contador) + ";\n"
         C3D += "    P = P + " + str(self.getNumVariables()) + ";\n"
         C3D += "    printString();\n"
+        C3D += "    t" + str(self.getContadorT()) + " = stack[int(P)];\n"
+        C3D += "    P = P - " + str(self.getNumVariables()) + ";\n"
+        return C3D
+
+    def printList(self, contador):
+        C3D = "    /* IMPRIMIENDO STRING */\n"
+        C3D += "    t" + str(self.getContadorT()) + " = P + " + str(self.getNumVariables()) + ";\n"
+        temporalT1 = self.getLastContadorT()
+        temporalT2 = self.getContadorT()
+        self.addContadorT()
+        C3D += "    t" + str(self.getContadorT()) + " = t" + str(temporalT2) + " + 0;\n"
+        temporalT3 = self.getContadorT()
+        self.addContadorT()
+        C3D += "    stack[int(t" + str(temporalT3) + ")] = t" + str(contador) + ";\n"
+        C3D += "    P = P + " + str(self.getNumVariables()) + ";\n"
+        C3D += "    printList();\n"
         C3D += "    t" + str(self.getContadorT()) + " = stack[int(P)];\n"
         C3D += "    P = P - " + str(self.getNumVariables()) + ";\n"
         return C3D

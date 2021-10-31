@@ -230,7 +230,14 @@ class For(AST):
                     newVar = Asignacion(self.line, self.column, self.nombre, newValue).getC3D(c3dObj)
                     codeInt += newVar
                     for instruccion in self.instrucciones:
-                        codeInt += instruccion.getC3D(c3dObj)
+                        if isinstance(instruccion, Break):
+                            codeInt += instruccion.getC3D(c3dObj, None)
+                        elif isinstance(instruccion, Continue):
+                            codeInt += instruccion.getC3D(c3dObj, None)
+                        elif isinstance(instruccion, If):
+                            codeInt += instruccion.getC3D(c3dObj, None, None)
+                        else:
+                            codeInt += instruccion.getC3D(c3dObj)
             elif isinstance(self.objeto1, Identificador):
                 resultadoC3D = self.objeto1.getC3D(c3dObj)
                 codeInt += resultadoC3D[0]
@@ -263,7 +270,14 @@ class For(AST):
                 myNewVariable = VariableC3D(self.nombre, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.APUNTADOR, self.objeto1.type)
                 c3dObj.addVariable(myNewVariable.getName(), myNewVariable)
                 for instruccion in self.instrucciones:
-                    codeInt2 += instruccion.getC3D(c3dObj)
+                    if isinstance(instruccion, Break):
+                        codeInt2 += instruccion.getC3D(c3dObj, None)
+                    elif isinstance(instruccion, Continue):
+                        codeInt2 += instruccion.getC3D(c3dObj, None)
+                    elif isinstance(instruccion, If):
+                        codeInt2 += instruccion.getC3D(c3dObj, None)
+                    else:
+                        codeInt2 += instruccion.getC3D(c3dObj)
                 codeInt2 += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
                 temporalLini =c3dObj.getContadorL()
                 c3dObj.addContadorL()
@@ -281,7 +295,14 @@ class For(AST):
                         newVar = Asignacion(self.line, self.column, self.nombre, newValue).getC3D(c3dObj)
                         codeInt += newVar
                         for instruccion in self.instrucciones:
-                            codeInt += instruccion.getC3D(c3dObj)
+                            if isinstance(instruccion, Break):
+                                codeInt += instruccion.getC3D(c3dObj, None)
+                            elif isinstance(instruccion, Continue):
+                                codeInt += instruccion.getC3D(c3dObj, None)
+                            elif isinstance(instruccion, If):
+                                codeInt += instruccion.getC3D(c3dObj, None)
+                            else:
+                                codeInt += instruccion.getC3D(c3dObj)
                 else:
                     valorIni = self.objeto1.getC3D(c3dObj)
                     valorFin = self.objeto2.getC3D(c3dObj)
@@ -310,7 +331,14 @@ class For(AST):
                     temporalLSal = c3dObj.getContadorL()
                     c3dObj.addContadorL()
                     for instruccion in self.instrucciones:
-                        codeInt2 += instruccion.getC3D(c3dObj)
+                        if isinstance(instruccion, Break):
+                            codeInt2 += instruccion.getC3D(c3dObj, None)
+                        elif isinstance(instruccion, Continue):
+                            codeInt2 += instruccion.getC3D(c3dObj, None)
+                        elif isinstance(instruccion, If):
+                            codeInt2 += instruccion.getC3D(c3dObj, None)
+                        else:
+                            codeInt2 += instruccion.getC3D(c3dObj)
                     codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = " + str(myOldVariable.getPosition()) + ";\n"
                     temporalAux3 = c3dObj.getContadorT()
                     c3dObj.addContadorT()
@@ -362,7 +390,14 @@ class For(AST):
                     temporalLSal = c3dObj.getContadorL()
                     c3dObj.addContadorL()
                     for instruccion in self.instrucciones:
-                        codeInt2 += instruccion.getC3D(c3dObj)
+                        if isinstance(instruccion, Break):
+                            codeInt2 += instruccion.getC3D(c3dObj, None)
+                        elif isinstance(instruccion, Continue):
+                            codeInt2 += instruccion.getC3D(c3dObj, None)
+                        elif isinstance(instruccion, If):
+                            codeInt2 += instruccion.getC3D(c3dObj, None)
+                        else:
+                            codeInt2 += instruccion.getC3D(c3dObj)
                     codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = " + str(myOldVariable.getPosition()) + ";\n"
                     temporalAux3 = c3dObj.getContadorT()
                     c3dObj.addContadorT()
@@ -413,7 +448,14 @@ class For(AST):
                     temporalLSal = c3dObj.getContadorL()
                     c3dObj.addContadorL()
                     for instruccion in self.instrucciones:
-                        codeInt2 += instruccion.getC3D(c3dObj)
+                        if isinstance(instruccion, Break):
+                            codeInt2 += instruccion.getC3D(c3dObj, None)
+                        elif isinstance(instruccion, Continue):
+                            codeInt2 += instruccion.getC3D(c3dObj, None)
+                        elif isinstance(instruccion, If):
+                            codeInt2 += instruccion.getC3D(c3dObj, None)
+                        else:
+                            codeInt2 += instruccion.getC3D(c3dObj)
                     codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = " + str(myOldVariable.getPosition()) + ";\n"
                     temporalAux3 = c3dObj.getContadorT()
                     c3dObj.addContadorT()

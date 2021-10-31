@@ -153,13 +153,18 @@ class Println(AST):
                 myVar = expresion.getC3D(c3dObj)
                 if myVar != None:
                     C3D += myVar[0]
-                    if myVar[2] == TipoVar.VALOR:
-                        if expresion.type == TIPO_DATO.DECIMAL:
-                            C3D += "    fmt.Printf(\"%f\", t" + str(myVar[1]) + ");\n"
-                        elif expresion.type == TIPO_DATO.ENTERO:
-                            C3D += "    fmt.Printf(\"%d\", int(t" + str(myVar[1]) + "));\n"
-                    elif myVar[2] == TipoVar.APUNTADOR:
-                        C3D += c3dObj.printString(myVar[1])
+                    if myVar[3] != TIPO_DATO.LISTA:
+                        if myVar[2] == TipoVar.VALOR:
+                            if expresion.type == TIPO_DATO.DECIMAL:
+                                C3D += "    fmt.Printf(\"%f\", t" + str(myVar[1]) + ");\n"
+                            elif expresion.type == TIPO_DATO.ENTERO:
+                                C3D += "    fmt.Printf(\"%d\", int(t" + str(myVar[1]) + "));\n"
+                        elif myVar[2] == TipoVar.APUNTADOR:
+                            C3D += c3dObj.printString(myVar[1])
+                    else:
+                        C3D += "    fmt.Printf(\"%c\", 91);\n"
+                        C3D += c3dObj.printList(myVar[1])
+                        C3D += "    fmt.Printf(\"%c\", 93);\n"
         C3D += "    fmt.Printf(\"%c\\n\", 32);\n"
         return C3D
         

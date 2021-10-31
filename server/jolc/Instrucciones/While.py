@@ -81,11 +81,19 @@ class While(AST):
         tempF = ""
         if isinstance(self.condicion, Relacional):
             codeInt += "    L" + str(resultadoExpC3D[1]) + ":\n"
-            for instruccion in self.instrucciones:
-                codeInt += instruccion.getC3D(c3dObj)
-            codeInt += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
+            codeInt2 = "    goto L" + str(c3dObj.getContadorL()) + ";\n"
             tempF = c3dObj.getContadorL()
             c3dObj.addContadorL()
+            for instruccion in self.instrucciones:
+                if isinstance(instruccion, Break):
+                    codeInt += instruccion.getC3D(c3dObj, resultadoExpC3D[2])
+                elif isinstance(instruccion, Continue):
+                    codeInt += instruccion.getC3D(c3dObj, tempF)
+                elif isinstance(instruccion, If):
+                    codeInt += instruccion.getC3D(c3dObj, resultadoExpC3D[2], tempF)
+                else:
+                    codeInt += instruccion.getC3D(c3dObj)
+            codeInt += codeInt2
             C3D += "    L" + str(tempF) + ":\n"
             C3D += codeInt
             C3D += "    L" + str(resultadoExpC3D[2]) + ":\n"

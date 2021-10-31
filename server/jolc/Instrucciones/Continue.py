@@ -16,5 +16,9 @@ class Continue(AST):
     def interpretar(self, table, tree):
         return self
 
-    def getC3D(self, contador):
+    def getC3D(self, c3dObj, inicioL):
+        if inicioL != None:
+            C3D = "    /* EJECUCION CONTINUE */\n"
+            C3D += "    goto L" + str(inicioL) + ";\n"
+            return C3D
         return ""
