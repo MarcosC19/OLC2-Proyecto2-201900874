@@ -6,9 +6,11 @@ from Expresiones.Aritmetica import Aritmetica
 from Expresiones.Logica import Logica
 from Expresiones.Identificador import Identificador
 from C3D.variableC3D import TipoVar
+from C3D.variableC3D import TipoVariable
 from tablaSimbolos.Tipo import TIPO_DATO
 from tablaSimbolos.Simbolo import Simbolo
 from Expresiones.Relacional import Relacional
+from Expresiones.IdLista import IdLista
 
 
 class Print(AST):
@@ -113,21 +115,21 @@ class Print(AST):
         for expresion in self.expresion:
             if isinstance(expresion, Primitivo):
                 contadorTP = c3dObj.getContadorT()
-                C3D += "    /* PRINT PRIMITIVO */\n"
+                C3D += "    /* IMPRIMIENDO PRIMITIVO */\n"
                 contenido = expresion.getC3D(c3dObj)
                 if isinstance(contenido, list):
                     for valor in contenido:
                         if expresion.type == TIPO_DATO.ENTERO:
                             C3D += "    fmt.Printf(\"%d\", int(" + str(valor) + "));\n"
                         elif expresion.type == TIPO_DATO.DECIMAL:
-                            C3D += "    fmt.Printf(\"%f\", " + str(valor) + ");\n"
+                            C3D += "    fmt.Printf(\"%fn\", " + str(valor) + ");\n"
                 else:
                     C3D += contenido
                     C3D += c3dObj.endString()
                     C3D += c3dObj.printString(contadorTP)
             elif isinstance(expresion, Aritmetica):
                 contadorTP = c3dObj.getContadorT()
-                C3D += "    /* PRINT ARITMETICA */\n"
+                C3D += "    /* IMPRIMIENDO ARITMETICA */\n"
                 contenido = expresion.getC3D(c3dObj)
                 if expresion.operating2 == None:    # OPERADOR UNARIO
                     if expresion.type == TIPO_DATO.ENTERO:
@@ -137,14 +139,14 @@ class Print(AST):
                 else:                           # OPERACIONES DOS OPERADORES
                     C3D += contenido[0]
                     if expresion.type == TIPO_DATO.ENTERO:
-                        C3D += "    fmt.Printf(\"%d\", int(t" + str(contenido[1]) + "));\n"
+                            C3D += "    fmt.Printf(\"%d\", int(t" + str(contenido[1]) + "));\n"
                     elif expresion.type == TIPO_DATO.DECIMAL:
                         C3D += "    fmt.Printf(\"%f\", t" + str(contenido[1]) + ");\n"
                     else:
                         C3D += c3dObj.endString()
                         C3D += c3dObj.printString(contadorTP)
             elif isinstance(expresion, Relacional):
-                C3D += "    /* PRINT RELACIONAL */\n"
+                C3D += "    /* IMPRIMIENDO RELACIONAL */\n"
                 contenido = expresion.getC3D(c3dObj)
                 C3D += contenido[0]
                 C3D += "    L" + str(contenido[1]) + ":\n"
@@ -156,7 +158,7 @@ class Print(AST):
                 C3D += c3dObj.printFalse()
                 C3D += "    L" + str(temporalLS) + ":\n"
             elif isinstance(expresion, Logica):
-                C3D += "    /* PRINT LOGICA */\n"
+                C3D += "    /* IMPRIMIENDO LOGICA */\n"
                 contenido = expresion.getC3D(c3dObj)
                 C3D += contenido[0]
                 for valor in contenido[1]:
@@ -170,6 +172,22 @@ class Print(AST):
                 C3D += c3dObj.printFalse()
                 C3D += "    L" + str(temporalLS) + ":\n"
             elif isinstance(expresion, Identificador):
+                C3D += "    /* IMPRIMIENDO VARIABLE */\n"
+                myVar = expresion.getC3D(c3dObj)
+                if myVar != None:
+                    C3D += myVar[0]
+                    if myVar[2].getTypeVariable() == TipoVariable.VARIABLE:
+                        if myVar[2].getType() == TipoVar.VALOR:
+                            if expresion.type == TIPO_DATO.DECIMAL:
+                                C3D += "    fmt.Printf(\"%f\", t" + str(myVar[1]) + ");\n"
+                            elif expresion.type == TIPO_DATO.ENTERO:
+                                C3D += "    fmt.Printf(\"%d\", int(t" + str(myVar[1]) + "));\n"
+                        elif myVar[2].getType() == TipoVar.APUNTADOR:
+                            C3D += c3dObj.printString(myVar[1])
+                    if myVar[2].getTypeVariable() == TipoVariable.LISTA:
+                        C3D += "    fmt.Printf(\"%c\", 91);\n"
+                        C3D += c3dObj.printList(myVar[1])
+                        C3D += "    fmt.Printf(\"%c\", 93);\n"
                 myVar = expresion.getC3D(c3dObj)
                 if myVar != None:
                     C3D += myVar[0]
@@ -180,6 +198,13 @@ class Print(AST):
                             C3D += "    fmt.Printf(\"%d\", int(t" + str(myVar[1]) + "));\n"
                     elif myVar[2] == TipoVar.APUNTADOR:
                         C3D += c3dObj.printString(myVar[1])
+            elif isinstance(expresion, IdLista):
+                C3D += "    /* IMPRIMIENDO VALOR LISTA */\n"
+                resultado = expresion.getC3D(c3dObj)
+                C3D += resultado[0]
+                C3D += "    fmt.Printf(\"%f\", t" + str(resultado[1]) + ");\n"
+                for etiqueta in resultado[2]:
+                    C3D += "    L" + str(etiqueta) + ":\n"
         return C3D
             
     def recorrerAtr(self, valor, table, tree):

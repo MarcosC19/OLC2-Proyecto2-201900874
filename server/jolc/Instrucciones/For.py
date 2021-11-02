@@ -13,6 +13,7 @@ from Abstract.AST import AST
 from Abstract.nodoAST import nodeAST
 from Excepciones.Excepcion import Excepcion
 from tablaSimbolos.Tabla import Tabla
+from C3D.variableC3D import TipoVariable
 
 class For(AST):
 
@@ -267,7 +268,7 @@ class For(AST):
                 codeInt2 += "    heap[int(H)] = -1;\n"
 
                 codeInt2 += "    stack[int(t" + str(temporalPos) + ")] = t" + str(temporalAsi) + ";\n"
-                myNewVariable = VariableC3D(self.nombre, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.APUNTADOR, self.objeto1.type)
+                myNewVariable = VariableC3D(self.nombre, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.APUNTADOR, self.objeto1.type, TipoVariable.VARIABLE)
                 c3dObj.addVariable(myNewVariable.getName(), myNewVariable)
                 for instruccion in self.instrucciones:
                     if isinstance(instruccion, Break):
@@ -317,7 +318,7 @@ class For(AST):
                         temporalVal = c3dObj.getContadorT()
                         c3dObj.addContadorT()
                         codeInt += "    stack[int(t" + str(temporalPos) + ")] = t" + str(temporalVal) + ";\n"
-                    myNewVariable = VariableC3D(self.nombre, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.VALOR, self.objeto1.type)
+                    myNewVariable = VariableC3D(self.nombre, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.VALOR, self.objeto1.type, TipoVariable.VARIABLE)
                     c3dObj.addVariable(myNewVariable.getName(), myNewVariable)
                     codeInt2 = "    /* VALIDANDO FOR */\n"
                     myOldVariable = c3dObj.getVariable(self.nombre)
@@ -373,7 +374,7 @@ class For(AST):
                     temporalVal = c3dObj.getContadorT()
                     c3dObj.addContadorT()
                     codeInt += "    stack[int(t" + str(temporalPos) + ")] = t" + str(temporalVal) + ";\n"
-                    myNewVariable = VariableC3D(self.nombre, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.VALOR, self.objeto1.type)
+                    myNewVariable = VariableC3D(self.nombre, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.VALOR, self.objeto1.type, TipoVariable.VARIABLE)
                     c3dObj.addVariable(myNewVariable.getName(), myNewVariable)
                     
                     
@@ -432,7 +433,7 @@ class For(AST):
                     temporalVal = c3dObj.getContadorT()
                     c3dObj.addContadorT()
                     codeInt += "    stack[int(t" + str(temporalPos) + ")] = t" + str(temporalVal) + ";\n"
-                    myNewVariable = VariableC3D(self.nombre, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.VALOR, self.objeto1.type)
+                    myNewVariable = VariableC3D(self.nombre, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.VALOR, self.objeto1.type, TipoVariable.VARIABLE)
                     c3dObj.addVariable(myNewVariable.getName(), myNewVariable)
                     
                     

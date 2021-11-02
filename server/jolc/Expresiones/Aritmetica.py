@@ -451,93 +451,97 @@ class Aritmetica(AST):
                         resultado2C3D = self.operating2.getC3D(c3dObj)
                         C3D += resultado2C3D[0]
 
-                        recorriendo = "     /* AGREGANDO CADENA 2*/\n"
-                        recorriendo += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(resultado2C3D[1]) + ")];\n"
-                        temporalTR1 = c3dObj.getContadorT()
-                        c3dObj.addContadorT()
-                        recorriendo += "    if t" + str(temporalTR1) + " == -1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
-                        temporalLSal = c3dObj.getContadorL()
-                        c3dObj.addContadorL()
-                        recorriendo += "    heap[int(H)] = t" + str(temporalTR1) + ";\n"
-                        recorriendo += "    H = H + 1;\n"
-                        recorriendo += "    t" + str(resultado2C3D[1]) + " = t" + str(resultado2C3D[1]) + " + 1;\n"
-                        
-                        recorriendo += "    goto L" + str(c3dObj.getContadorL()) + "; \n"
-                        temporalLReg = c3dObj.getContadorL()
-                        c3dObj.addContadorL()
+                        if isinstance(self.operating2, Identificador):        
+                            recorriendo = "     /* AGREGANDO CADENA 2 */\n"
+                            recorriendo += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(resultado2C3D[1]) + ")];\n"
+                            temporalTR1 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            recorriendo += "    if t" + str(temporalTR1) + " == -1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                            temporalLSal = c3dObj.getContadorL()
+                            c3dObj.addContadorL()
+                            recorriendo += "    heap[int(H)] = t" + str(temporalTR1) + ";\n"
+                            recorriendo += "    H = H + 1;\n"
+                            recorriendo += "    t" + str(resultado2C3D[1]) + " = t" + str(resultado2C3D[1]) + " + 1;\n"
+                            
+                            recorriendo += "    goto L" + str(c3dObj.getContadorL()) + "; \n"
+                            temporalLReg = c3dObj.getContadorL()
+                            c3dObj.addContadorL()
 
-                        C3D += "    L" + str(temporalLReg) + ":\n"
-                        C3D += recorriendo
-                        C3D += "    L" + str(temporalLSal) + ":\n"
+                            C3D += "    L" + str(temporalLReg) + ":\n"
+                            C3D += recorriendo
+                            C3D += "    L" + str(temporalLSal) + ":\n"
                 else:
                     C3D += "    t" + str(c3dObj.getContadorT()) + " = H;\n"
                     c3dObj.addContadorT()
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     C3D += resultado1C3D[0]
                     if isinstance(self.operating2, Primitivo):  # OTRO * PRIMITIVO
-                        recorriendo = "     /* AGREGANDO CADENA 1*/\n"
-                        recorriendo += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(resultado1C3D[1]) + ")];\n"
-                        temporalTR1 = c3dObj.getContadorT()
-                        c3dObj.addContadorT()
-                        recorriendo += "    if t" + str(temporalTR1) + " == -1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
-                        temporalLSal = c3dObj.getContadorL()
-                        c3dObj.addContadorL()
-                        recorriendo += "    heap[int(H)] = t" + str(temporalTR1) + ";\n"
-                        recorriendo += "    H = H + 1;\n"
-                        recorriendo += "    t" + str(resultado1C3D[1]) + " = t" + str(resultado1C3D[1]) + " + 1;\n"
-                        
-                        recorriendo += "    goto L" + str(c3dObj.getContadorL()) + "; \n"
-                        temporalLReg = c3dObj.getContadorL()
-                        c3dObj.addContadorL()
+                        if isinstance(self.operating1, Identificador):
+                            recorriendo = "     /* AGREGANDO CADENA 1 */\n"
+                            recorriendo += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(resultado1C3D[1]) + ")];\n"
+                            temporalTR1 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            recorriendo += "    if t" + str(temporalTR1) + " == -1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                            temporalLSal = c3dObj.getContadorL()
+                            c3dObj.addContadorL()
+                            recorriendo += "    heap[int(H)] = t" + str(temporalTR1) + ";\n"
+                            recorriendo += "    H = H + 1;\n"
+                            recorriendo += "    t" + str(resultado1C3D[1]) + " = t" + str(resultado1C3D[1]) + " + 1;\n"
+                            
+                            recorriendo += "    goto L" + str(c3dObj.getContadorL()) + "; \n"
+                            temporalLReg = c3dObj.getContadorL()
+                            c3dObj.addContadorL()
 
-                        C3D += "    L" + str(temporalLReg) + ":\n"
-                        C3D += recorriendo
-                        C3D += "    L" + str(temporalLSal) + ":\n"
+                            C3D += "    L" + str(temporalLReg) + ":\n"
+                            C3D += recorriendo
+                            C3D += "    L" + str(temporalLSal) + ":\n"
 
                         resultado2C3D = self.operating2.getC3D(c3dObj)
                         C3D += resultado2C3D
                     else:
-                        recorriendo = "     /* AGREGANDO CADENA 1*/\n"
-                        recorriendo += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(resultado1C3D[1]) + ")];\n"
-                        temporalTR1 = c3dObj.getContadorT()
-                        c3dObj.addContadorT()
-                        recorriendo += "    if t" + str(temporalTR1) + " == -1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
-                        temporalLSal = c3dObj.getContadorL()
-                        c3dObj.addContadorL()
-                        recorriendo += "    heap[int(H)] = t" + str(temporalTR1) + ";\n"
-                        recorriendo += "    H = H + 1;\n"
-                        recorriendo += "    t" + str(resultado1C3D[1]) + " = t" + str(resultado1C3D[1]) + " + 1;\n"
-                        
-                        recorriendo += "    goto L" + str(c3dObj.getContadorL()) + "; \n"
-                        temporalLReg = c3dObj.getContadorL()
-                        c3dObj.addContadorL()
+                        if isinstance(self.operating1, Identificador):
+                            recorriendo = "     /* AGREGANDO CADENA 1 */\n"
+                            recorriendo += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(resultado1C3D[1]) + ")];\n"
+                            temporalTR1 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            recorriendo += "    if t" + str(temporalTR1) + " == -1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                            temporalLSal = c3dObj.getContadorL()
+                            c3dObj.addContadorL()
+                            recorriendo += "    heap[int(H)] = t" + str(temporalTR1) + ";\n"
+                            recorriendo += "    H = H + 1;\n"
+                            recorriendo += "    t" + str(resultado1C3D[1]) + " = t" + str(resultado1C3D[1]) + " + 1;\n"
+                            
+                            recorriendo += "    goto L" + str(c3dObj.getContadorL()) + "; \n"
+                            temporalLReg = c3dObj.getContadorL()
+                            c3dObj.addContadorL()
 
-                        C3D += "    L" + str(temporalLReg) + ":\n"
-                        C3D += recorriendo
-                        C3D += "    L" + str(temporalLSal) + ":\n"
+                            C3D += "    L" + str(temporalLReg) + ":\n"
+                            C3D += recorriendo
+                            C3D += "    L" + str(temporalLSal) + ":\n"
 
 
                         resultado2C3D = self.operating2.getC3D(c3dObj)
                         C3D += resultado2C3D[0]
 
-                        recorriendo = "     /* AGREGANDO CADENA 2*/\n"
-                        recorriendo += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(resultado2C3D[1]) + ")];\n"
-                        temporalTR1 = c3dObj.getContadorT()
-                        c3dObj.addContadorT()
-                        recorriendo += "    if t" + str(temporalTR1) + " == -1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
-                        temporalLSal = c3dObj.getContadorL()
-                        c3dObj.addContadorL()
-                        recorriendo += "    heap[int(H)] = t" + str(temporalTR1) + ";\n"
-                        recorriendo += "    H = H + 1;\n"
-                        recorriendo += "    t" + str(resultado2C3D[1]) + " = t" + str(resultado2C3D[1]) + " + 1;\n"
-                        
-                        recorriendo += "    goto L" + str(c3dObj.getContadorL()) + "; \n"
-                        temporalLReg = c3dObj.getContadorL()
-                        c3dObj.addContadorL()
+                        if isinstance(self.operating2, Identificador):
+                            recorriendo = "     /* AGREGANDO CADENA 2 */\n"
+                            recorriendo += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(resultado2C3D[1]) + ")];\n"
+                            temporalTR1 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            recorriendo += "    if t" + str(temporalTR1) + " == -1 { goto L" + str(c3dObj.getContadorL()) + "; }\n"
+                            temporalLSal = c3dObj.getContadorL()
+                            c3dObj.addContadorL()
+                            recorriendo += "    heap[int(H)] = t" + str(temporalTR1) + ";\n"
+                            recorriendo += "    H = H + 1;\n"
+                            recorriendo += "    t" + str(resultado2C3D[1]) + " = t" + str(resultado2C3D[1]) + " + 1;\n"
+                            
+                            recorriendo += "    goto L" + str(c3dObj.getContadorL()) + "; \n"
+                            temporalLReg = c3dObj.getContadorL()
+                            c3dObj.addContadorL()
 
-                        C3D += "    L" + str(temporalLReg) + ":\n"
-                        C3D += recorriendo
-                        C3D += "    L" + str(temporalLSal) + ":\n"
+                            C3D += "    L" + str(temporalLReg) + ":\n"
+                            C3D += recorriendo
+                            C3D += "    L" + str(temporalLSal) + ":\n"
         # OPERACION DIVISION
         elif self.operator == OPERADOR_ARITMETICO.DIVISON:
             if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or (isinstance(self.operating1, Identificador) and (self.operating2.type == TIPO_DATO.DECIMAL or self.operating2.type == TIPO_DATO.ENTERO)) or ((self.operating1.type == TIPO_DATO.DECIMAL or self.operating1.type == TIPO_DATO.ENTERO) and isinstance(self.operating2, Identificador)):

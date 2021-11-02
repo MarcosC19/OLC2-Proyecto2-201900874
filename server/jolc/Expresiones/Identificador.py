@@ -42,5 +42,5 @@ class Identificador(AST):
             C3D += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalT0) + ")];\n"
             temporalTV = c3dObj.getContadorT()
             c3dObj.addContadorT()
-            return [C3D, temporalTV, myVar.type, myVar.typeVal]
+            return [C3D, temporalTV, myVar]
         return None

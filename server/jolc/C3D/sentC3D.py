@@ -187,12 +187,12 @@ class C3D():
         temporalT3 = self.getContadorT()
         self.addContadorT()
         printCode += "      if t" + str(temporalT3) + " == -1 { goto L" +  str(self.getContadorL()) + "; }\n"
-        temporalL1 = self.getContadorL() # dfag
+        temporalL1 = self.getContadorL()
         self.addContadorL()
         printCode += "      fmt.Printf(\"%f \", t" + str(temporalT3) + ");\n"
         printCode += "      t" + str(temporalT2) + " = t" + str(temporalT2) + " + 1;\n"
         printCode += "      goto L" + str(self.getContadorL()) + ";\n"
-        temporalL2 = self.getContadorL() # dfag
+        temporalL2 = self.getContadorL()
         self.addContadorL()
         printCode += "      L" + str(temporalL1) + ":\n"
         printCode += "          return;"
@@ -370,3 +370,33 @@ class C3D():
     def addMath(self):
         self.code += ";\n    \"math\""
         self.mathCont += 1
+
+    def printBoundsError(self, position, limiteS):
+        C3D = "    /* COMPROBACION DINAMICA BOUNDS-ERROR*/\n"
+        C3D += "    t" + str(self.getContadorT()) + " = " + str(position) + ";\n"
+        C3D += "    if t" + str(self.getContadorT()) + " < 1 { goto L" + str(self.getContadorL()) + "; }\n"
+        C3D += "    if t" + str(self.getContadorT()) + " > " + str(limiteS) +" { goto L" + str(self.getContadorL()) + "; }\n"
+        temporalErr = self.getContadorL()
+        self.addContadorL()
+        C3D += "    goto L" + str(self.getContadorL()) + ";\n"
+        temporalB = self.getContadorL()
+        self.addContadorL()
+        C3D += "    L" + str(temporalErr) + ":\n"
+        C3D += "    fmt.Printf(\"%c\", 66);\n"
+        C3D += "    fmt.Printf(\"%c\", 111);\n"
+        C3D += "    fmt.Printf(\"%c\", 117);\n"
+        C3D += "    fmt.Printf(\"%c\", 110);\n"
+        C3D += "    fmt.Printf(\"%c\", 100);\n"
+        C3D += "    fmt.Printf(\"%c\", 115);\n"
+        C3D += "    fmt.Printf(\"%c\", 69);\n"
+        C3D += "    fmt.Printf(\"%c\", 114);\n"
+        C3D += "    fmt.Printf(\"%c\", 114);\n"
+        C3D += "    fmt.Printf(\"%c\", 111);\n"
+        C3D += "    fmt.Printf(\"%c\\n\", 114);\n"
+        C3D += "    goto L" + str(self.getContadorL()) + ";\n"
+        temporalN = self.getContadorL()
+        self.addContadorL()
+        C3D += "    L" + str(temporalB) + ":\n"
+
+        self.addContadorT()
+        return [C3D, temporalN]

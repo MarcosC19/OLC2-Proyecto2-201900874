@@ -1,5 +1,6 @@
 from Expresiones.Aritmetica import Aritmetica
 from Expresiones.Relacional import Relacional
+from Expresiones.IdLista import IdLista
 from tablaSimbolos.Simbolo import Simbolo
 from Excepciones.Excepcion import Excepcion
 from Expresiones.Primitivo import Primitivo
@@ -9,6 +10,7 @@ from Abstract.AST import AST
 from tablaSimbolos.Tipo import TIPO_DATO
 from Expresiones.Identificador import Identificador
 from C3D.variableC3D import TipoVar
+from C3D.variableC3D import TipoVariable
 
 
 class Println(AST):
@@ -153,18 +155,28 @@ class Println(AST):
                 myVar = expresion.getC3D(c3dObj)
                 if myVar != None:
                     C3D += myVar[0]
-                    if myVar[3] != TIPO_DATO.LISTA:
-                        if myVar[2] == TipoVar.VALOR:
+                    if myVar[2].getTypeVariable() == TipoVariable.VARIABLE:
+                        if myVar[2].getType() == TipoVar.VALOR:
                             if expresion.type == TIPO_DATO.DECIMAL:
                                 C3D += "    fmt.Printf(\"%f\", t" + str(myVar[1]) + ");\n"
                             elif expresion.type == TIPO_DATO.ENTERO:
                                 C3D += "    fmt.Printf(\"%d\", int(t" + str(myVar[1]) + "));\n"
-                        elif myVar[2] == TipoVar.APUNTADOR:
+                        elif myVar[2].getType() == TipoVar.APUNTADOR:
                             C3D += c3dObj.printString(myVar[1])
-                    else:
+                    elif myVar[2].getTypeVariable() == TipoVariable.LISTA:
                         C3D += "    fmt.Printf(\"%c\", 91);\n"
-                        C3D += c3dObj.printList(myVar[1])
+                        if myVar[2].getTypeVal() == TIPO_DATO.CADENA:
+                            C3D += c3dObj.printString(myVar[1])
+                        else:
+                            C3D += c3dObj.printList(myVar[1])
                         C3D += "    fmt.Printf(\"%c\", 93);\n"
+            elif isinstance(expresion, IdLista):
+                C3D += "    /* IMPRIMIENDO VALOR LISTA */\n"
+                resultado = expresion.getC3D(c3dObj)
+                C3D += resultado[0]
+                C3D += "    fmt.Printf(\"%f\", t" + str(resultado[1]) + ");\n"
+                for etiqueta in resultado[2]:
+                    C3D += "    L" + str(etiqueta) + ":\n"
         C3D += "    fmt.Printf(\"%c\\n\", 32);\n"
         return C3D
         
