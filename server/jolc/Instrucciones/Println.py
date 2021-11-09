@@ -174,7 +174,11 @@ class Println(AST):
                 C3D += "    /* IMPRIMIENDO VALOR LISTA */\n"
                 resultado = expresion.getC3D(c3dObj)
                 C3D += resultado[0]
-                C3D += "    fmt.Printf(\"%f\", t" + str(resultado[1]) + ");\n"
+                temporalF = resultado[1]
+                C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(temporalF) +")];\n"
+                temporalENV = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                C3D += "    fmt.Printf(\"%f\", t" + str(temporalENV) + ");\n"
                 for etiqueta in resultado[2]:
                     C3D += "    L" + str(etiqueta) + ":\n"
         C3D += "    fmt.Printf(\"%c\\n\", 32);\n"

@@ -1,6 +1,6 @@
 from Expresiones.Identificador import Identificador
 from Expresiones.Aritmetica import Aritmetica
-from tablaSimbolos.Tipo import OPERADOR_ARITMETICO
+from Expresiones.IdLista import IdLista
 from tablaSimbolos.Tipo import TIPO_DATO
 from Expresiones.Primitivo import Primitivo
 from Excepciones.Excepcion import Excepcion
@@ -234,7 +234,7 @@ class Relacional(AST):
         temporalL1 = ""
         # OPERANDO MAYOR QUE >
         if self.operator == OPERADOR_RELACIONAL.MAYORQUE:
-            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating2, Identificador):
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating1, IdLista) or isinstance(self.operating2, Identificador) or isinstance(self.operating2, IdLista):
                 if isinstance(self.operating1, Primitivo):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo):  # PRIMITIVO > PRIMITIVO
@@ -252,9 +252,18 @@ class Relacional(AST):
                     else:                                   # PRIMITIVO > OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
                         C3D += resultado2C3D[0]
+                        contadorVal2 = resultado2C3D[1]
+                        
+                        if isinstance(self.operating2, IdLista):
+                            contadorPos = resultado2C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal2 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
                         for contenido in resultado1C3D:
                             C3D += "    if " + str(contenido) + " > "
-                        C3D += "t" + str(resultado2C3D[1]) + " "
+
+                        C3D += "t" + str(contadorVal2) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
@@ -263,13 +272,17 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                 else:
                     resultado1C3D = self.operating1.getC3D(c3dObj)
-                    if isinstance(self.operating1, Aritmetica):
-                        C3D += resultado1C3D[0]
-                    elif isinstance(self.operating1, Identificador):
-                        C3D += resultado1C3D[0]
+                    C3D += resultado1C3D[0]
+                    contadorVal = resultado1C3D[1]
                     if isinstance(self.operating2, Primitivo):  # OTRO > PRIMITIVO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += "    if t" + str(resultado1C3D[1]) + " > "
+                        if isinstance(self.operating1, IdLista):
+                            contadorPos = resultado1C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                            
+                        C3D += "    if t" + str(contadorVal) + " > "
                         for contenido in resultado2C3D:
                             C3D += str(contenido) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
@@ -280,20 +293,37 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                     else:                                   # OTRO > OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
+                        if isinstance(self.operating1, IdLista):
+                            contadorPos = resultado1C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
                         C3D += resultado2C3D[0]
-                        C3D += "    if t" + str(resultado1C3D[1]) + " > t" + str(resultado2C3D[1]) + " "
+                        contadorVal2 = resultado2C3D[1]
+                        
+                        if isinstance(self.operating2, IdLista):
+                            contadorPos = resultado2C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
+                        C3D += "    if t" + str(contadorVal) + " > t" + str(contadorVal2) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
                         C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
                         temporalL1 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
-            elif self.operating1.type == TIPO_DATO.CADENA:
-                if self.operating2.type == TIPO_DATO.CADENA:
-                    return str(izquierdo) > str(derecho)
+
+                if isinstance(self.operating1, IdLista):
+                    for etiqueta in resultado1C3D[2]:
+                        C3D += "    L" + str(etiqueta) + ":\n"
+                if isinstance(self.operating2, IdLista):
+                    for etiqueta in resultado2C3D[2]:
+                        C3D += "    L" + str(etiqueta) + ":\n"
         # OPERANDO MENOR QUE <
         elif self.operator == OPERADOR_RELACIONAL.MENORQUE:
-            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating2, Identificador):
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating1, IdLista) or isinstance(self.operating2, Identificador) or isinstance(self.operating2, IdLista):
                 if isinstance(self.operating1, Primitivo):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo):  # PRIMITIVO < PRIMITIVO
@@ -311,9 +341,18 @@ class Relacional(AST):
                     else:                                   # PRIMITIVO < OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
                         C3D += resultado2C3D[0]
+                        contadorVal2 = resultado2C3D[1]
+                        
+                        if isinstance(self.operating2, IdLista):
+                            contadorPos = resultado2C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal2 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
                         for contenido in resultado1C3D:
                             C3D += "    if " + str(contenido) + " < "
-                        C3D += "t" + str(resultado2C3D[1]) + " "
+
+                        C3D += "t" + str(contadorVal2) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
@@ -322,13 +361,17 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                 else:
                     resultado1C3D = self.operating1.getC3D(c3dObj)
-                    if isinstance(self.operating1, Aritmetica):
-                        C3D += resultado1C3D[0]
-                    elif isinstance(self.operating1, Identificador):
-                        C3D += resultado1C3D[0]
+                    C3D += resultado1C3D[0]
+                    contadorVal = resultado1C3D[1]
                     if isinstance(self.operating2, Primitivo):  # OTRO < PRIMITIVO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += "    if t" + str(resultado1C3D[1]) + " < "
+                        if isinstance(self.operating1, IdLista):
+                            contadorPos = resultado1C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
+                        C3D += "    if t" + str(contadorVal) + " < "
                         for contenido in resultado2C3D:
                             C3D += str(contenido) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
@@ -339,20 +382,38 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                     else:                                   # OTRO < OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
+                        if isinstance(self.operating1, IdLista):
+                            contadorPos = resultado1C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
                         C3D += resultado2C3D[0]
-                        C3D += "    if t" + str(resultado1C3D[1]) + " < t" + str(resultado2C3D[1]) + " "
+                        contadorVal2 = resultado2C3D[1]
+                        
+                        if isinstance(self.operating2, IdLista):
+                            contadorPos = resultado2C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
+                        C3D += "    if t" + str(contadorVal) + " < t" + str(contadorVal2) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
                         C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
                         temporalL1 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
-            elif self.operating1.type == TIPO_DATO.CADENA:
-                if self.operating2.type == TIPO_DATO.CADENA:
-                    return str(izquierdo) < str(derecho)
+
+                if isinstance(self.operating1, IdLista):
+                    for etiqueta in resultado1C3D[2]:
+                        C3D += "    L" + str(etiqueta) + ":\n"
+                if isinstance(self.operating2, IdLista):
+                    for etiqueta in resultado2C3D[2]:
+                        C3D += "    L" + str(etiqueta) + ":\n"
         # OPERANDO MAYOR IGUAL QUE >=
         elif self.operator == OPERADOR_RELACIONAL.MAYORIGUAL:
-            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating2, Identificador):
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating1, IdLista) or isinstance(self.operating2, Identificador) or isinstance(self.operating2, IdLista):
                 if isinstance(self.operating1, Primitivo):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo):  # PRIMITIVO >= PRIMITIVO
@@ -370,9 +431,18 @@ class Relacional(AST):
                     else:                                   # PRIMITIVO >= OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
                         C3D += resultado2C3D[0]
+                        contadorVal2 = resultado2C3D[1]
+                        
+                        if isinstance(self.operating2, IdLista):
+                            contadorPos = resultado2C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal2 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
                         for contenido in resultado1C3D:
                             C3D += "    if " + str(contenido) + " >= "
-                        C3D += "t" + str(resultado2C3D[1]) + " "
+
+                        C3D += "t" + str(contadorVal2) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
@@ -381,13 +451,17 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                 else:
                     resultado1C3D = self.operating1.getC3D(c3dObj)
-                    if isinstance(self.operating1, Aritmetica):
-                        C3D += resultado1C3D[0]
-                    elif isinstance(self.operating1, Identificador):
-                        C3D += resultado1C3D[0]
+                    C3D += resultado1C3D[0]
+                    contadorVal = resultado1C3D[1]
                     if isinstance(self.operating2, Primitivo):  # OTRO >= PRIMITIVO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += "    if t" + str(resultado1C3D[1]) + " >= "
+                        if isinstance(self.operating1, IdLista):
+                            contadorPos = resultado1C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
+                        C3D += "    if t" + str(contadorVal) + " >= "
                         for contenido in resultado2C3D:
                             C3D += str(contenido) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
@@ -398,20 +472,38 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                     else:                                   # OTRO >= OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
+                        if isinstance(self.operating1, IdLista):
+                            contadorPos = resultado1C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
                         C3D += resultado2C3D[0]
-                        C3D += "    if t" + str(resultado1C3D[1]) + " >= t" + str(resultado2C3D[1]) + " "
+                        contadorVal2 = resultado2C3D[1]
+                        
+                        if isinstance(self.operating2, IdLista):
+                            contadorPos = resultado2C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
+                        C3D += "    if t" + str(contadorVal) + " >= t" + str(contadorVal2) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
                         C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
                         temporalL1 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
-            elif self.operating1.type == TIPO_DATO.CADENA:
-                if self.operating2.type == TIPO_DATO.CADENA:
-                    return str(izquierdo) >= str(derecho)
+
+                if isinstance(self.operating1, IdLista):
+                    for etiqueta in resultado1C3D[2]:
+                        C3D += "    L" + str(etiqueta) + ":\n"
+                if isinstance(self.operating2, IdLista):
+                    for etiqueta in resultado2C3D[2]:
+                        C3D += "    L" + str(etiqueta) + ":\n"
         # OPERANDO MENOR IGUAL QUE <=
         elif self.operator == OPERADOR_RELACIONAL.MENORIGUAL:
-            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating2, Identificador):
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating1, IdLista) or isinstance(self.operating2, Identificador) or isinstance(self.operating2, IdLista):
                 if isinstance(self.operating1, Primitivo):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo):  # PRIMITIVO <= PRIMITIVO
@@ -429,9 +521,18 @@ class Relacional(AST):
                     else:                                   # PRIMITIVO <= OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
                         C3D += resultado2C3D[0]
+                        contadorVal2 = resultado2C3D[1]
+                        
+                        if isinstance(self.operating2, IdLista):
+                            contadorPos = resultado2C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal2 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
                         for contenido in resultado1C3D:
                             C3D += "    if " + str(contenido) + " <= "
-                        C3D += "t" + str(resultado2C3D[1]) + " "
+                        C3D += "t" + str(contadorVal2) + " "
+
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
@@ -440,13 +541,17 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                 else:
                     resultado1C3D = self.operating1.getC3D(c3dObj)
-                    if isinstance(self.operating1, Aritmetica):
-                        C3D += resultado1C3D[0]
-                    elif isinstance(self.operating1, Identificador):
-                        C3D += resultado1C3D[0]
+                    C3D += resultado1C3D[0]
+                    contadorVal = resultado1C3D[1]
                     if isinstance(self.operating2, Primitivo):  # OTRO <= PRIMITIVO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += "    if t" + str(resultado1C3D[1]) + " <= "
+                        if isinstance(self.operating1, IdLista):
+                            contadorPos = resultado1C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
+                        C3D += "    if t" + str(contadorVal) + " <= "
                         for contenido in resultado2C3D:
                             C3D += str(contenido) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
@@ -457,20 +562,38 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                     else:                                   # OTRO <= OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
+                        if isinstance(self.operating1, IdLista):
+                            contadorPos = resultado1C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
                         C3D += resultado2C3D[0]
-                        C3D += "    if t" + str(resultado1C3D[1]) + " <= t" + str(resultado2C3D[1]) + " "
+                        contadorVal2 = resultado2C3D[1]
+                        
+                        if isinstance(self.operating2, IdLista):
+                            contadorPos = resultado2C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
+                        C3D += "    if t" + str(contadorVal) + " <= t" + str(contadorVal2) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
                         C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
                         temporalL1 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
-            elif self.operating1.type == TIPO_DATO.CADENA:
-                if self.operating2.type == TIPO_DATO.CADENA:
-                    return str(izquierdo) <= str(derecho)
+
+                if isinstance(self.operating1, IdLista):
+                    for etiqueta in resultado1C3D[2]:
+                        C3D += "    L" + str(etiqueta) + ":\n"
+                if isinstance(self.operating2, IdLista):
+                    for etiqueta in resultado2C3D[2]:
+                        C3D += "    L" + str(etiqueta) + ":\n"
         # OPERANDO IGUAL IGUAL QUE ==
         elif self.operator == OPERADOR_RELACIONAL.IGUAL:
-            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) or (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating2, Identificador):
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) or (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating1, IdLista) or isinstance(self.operating2, Identificador) or isinstance(self.operating2, IdLista):
                 if isinstance(self.operating1, Primitivo):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo):  # PRIMITIVO == PRIMITIVO
@@ -488,9 +611,17 @@ class Relacional(AST):
                     else:                                   # PRIMITIVO == OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
                         C3D += resultado2C3D[0]
+                        contadorVal2 = resultado2C3D[1]
+                        
+                        if isinstance(self.operating2, IdLista):
+                            contadorPos = resultado2C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal2 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
                         for contenido in resultado1C3D:
                             C3D += "    if " + str(contenido) + " == "
-                        C3D += "t" + str(resultado2C3D[1]) + " "
+                        C3D += "t" + str(contadorVal2) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
@@ -499,13 +630,17 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                 else:
                     resultado1C3D = self.operating1.getC3D(c3dObj)
-                    if isinstance(self.operating1, Aritmetica):
-                        C3D += resultado1C3D[0]
-                    elif isinstance(self.operating1, Identificador):
-                        C3D += resultado1C3D[0]
+                    C3D += resultado1C3D[0]
+                    contadorVal = resultado1C3D[1]
                     if isinstance(self.operating2, Primitivo):  # OTRO == PRIMITIVO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += "    if t" + str(resultado1C3D[1]) + " == "
+                        if isinstance(self.operating1, IdLista):
+                            contadorPos = resultado1C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
+                        C3D += "    if t" + str(contadorVal) + " == "
                         for contenido in resultado2C3D:
                             C3D += str(contenido) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
@@ -516,14 +651,35 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                     else:                                   # OTRO == OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
+                        if isinstance(self.operating1, IdLista):
+                            contadorPos = resultado1C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
                         C3D += resultado2C3D[0]
-                        C3D += "    if t" + str(resultado1C3D[1]) + " == t" + str(resultado2C3D[1]) + " "
+                        contadorVal2 = resultado2C3D[1]
+                        
+                        if isinstance(self.operating2, IdLista):
+                            contadorPos = resultado2C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
+                        C3D += "    if t" + str(contadorVal) + " == t" + str(contadorVal2) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
                         C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
                         temporalL1 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
+
+                if isinstance(self.operating1, IdLista):
+                    for etiqueta in resultado1C3D[2]:
+                        C3D += "    L" + str(etiqueta) + ":\n"
+                if isinstance(self.operating2, IdLista):
+                    for etiqueta in resultado2C3D[2]:
+                        C3D += "    L" + str(etiqueta) + ":\n"
             elif (self.operating1.type == TIPO_DATO.CADENA and self.operating2.type == TIPO_DATO.CADENA) or (self.operating1.type == TIPO_DATO.BOOLEANO and self.operating2.type == TIPO_DATO.BOOLEANO):
                 if isinstance(self.operating1, Primitivo):
                     if isinstance(self.operating2, Primitivo):
@@ -645,7 +801,7 @@ class Relacional(AST):
                     C3D += c3dObj.saveString("false")
         # OPERANDO DIFERENTE QUE !=
         elif self.operator == OPERADOR_RELACIONAL.DIFERENTE:
-            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating2, Identificador):
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or isinstance(self.operating1, Identificador) or isinstance(self.operating1, IdLista) or isinstance(self.operating2, Identificador) or isinstance(self.operating2, IdLista):
                 if isinstance(self.operating1, Primitivo):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo):  # PRIMITIVO != PRIMITIVO
@@ -663,9 +819,18 @@ class Relacional(AST):
                     else:                                   # PRIMITIVO != OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
                         C3D += resultado2C3D[0]
+                        contadorVal2 = resultado2C3D[1]
+                        
+                        if isinstance(self.operating2, IdLista):
+                            contadorPos = resultado2C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal2 = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
                         for contenido in resultado1C3D:
                             C3D += "    if " + str(contenido) + " != "
-                        C3D += "t" + str(resultado2C3D[1]) + " "
+                        C3D += "t" + str(contadorVal2) + " "
+
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
@@ -674,13 +839,17 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                 else:
                     resultado1C3D = self.operating1.getC3D(c3dObj)
-                    if isinstance(self.operating1, Aritmetica):
-                        C3D += resultado1C3D[0]
-                    elif isinstance(self.operating1, Identificador):
-                        C3D += resultado1C3D[0]
+                    C3D += resultado1C3D[0]
+                    contadorVal = resultado1C3D[1]
                     if isinstance(self.operating2, Primitivo):  # OTRO != PRIMITIVO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += "    if t" + str(resultado1C3D[1]) + " != "
+                        if isinstance(self.operating1, IdLista):
+                            contadorPos = resultado1C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
+                        C3D += "    if t" + str(contadorVal) + " != "
                         for contenido in resultado2C3D:
                             C3D += str(contenido) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
@@ -691,14 +860,35 @@ class Relacional(AST):
                         c3dObj.addContadorL()
                     else:                                   # OTRO != OTRO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
+                        if isinstance(self.operating1, IdLista):
+                            contadorPos = resultado1C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
                         C3D += resultado2C3D[0]
-                        C3D += "    if t" + str(resultado1C3D[1]) + " != t" + str(resultado2C3D[1]) + " "
+                        contadorVal2 = resultado2C3D[1]
+                        
+                        if isinstance(self.operating2, IdLista):
+                            contadorPos = resultado2C3D[1]
+                            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
+                            contadorVal = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+
+                        C3D += "    if t" + str(contadorVal) + " != t" + str(contadorVal2) + " "
                         C3D += "{ goto L" + str(c3dObj.getContadorL()) + "; }\n"
                         temporalL0 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
                         C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
                         temporalL1 = c3dObj.getContadorL()
                         c3dObj.addContadorL()
+
+                if isinstance(self.operating1, IdLista):
+                    for etiqueta in resultado1C3D[2]:
+                        C3D += "    L" + str(etiqueta) + ":\n"
+                if isinstance(self.operating2, IdLista):
+                    for etiqueta in resultado2C3D[2]:
+                        C3D += "    L" + str(etiqueta) + ":\n"
             elif (self.operating1.type == TIPO_DATO.CADENA and self.operating2.type == TIPO_DATO.CADENA) or (self.operating1.type == TIPO_DATO.BOOLEANO and self.operating2.type == TIPO_DATO.BOOLEANO):
                 if isinstance(self.operating1, Primitivo):
                     if isinstance(self.operating2, Primitivo):

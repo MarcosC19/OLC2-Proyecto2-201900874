@@ -110,7 +110,7 @@ class IdLista(AST):
                     dimension += 1
                 else:
                     if isinstance(posicion, Primitivo):
-                        if len(valPos) > numPos:
+                        if len(valPos) >= numPos:
                             numPos -= 1
                             valPos3 = valPos.pop(numPos)
                             valor = posicion.getValue()
@@ -132,7 +132,6 @@ class IdLista(AST):
                     else:
                         longitud = 0
                         for value in valPos:
-                            print(value)
                             if isinstance(value, list):
                                 if value[0][dimension] > longitud:
                                     longitud = value[0][dimension]
@@ -168,14 +167,10 @@ class IdLista(AST):
                                     else:
                                         nuevoPos = []
                         valPos = nuevoPos
-                        print(nuevoPos)
                         numPos += 1
                     dimension += 1
 
             C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporalAsig) + " + t" + str(temporalSUM)  +";\n"
-            temporalF = c3dObj.getContadorT()
-            c3dObj.addContadorT()
-            C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(temporalF) +")];\n"
             temporalENV = c3dObj.getContadorT()
             c3dObj.addContadorT()
         return [C3D, temporalENV, temporalULT]
