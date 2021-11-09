@@ -38,5 +38,8 @@ class Funcion(AST):
     def interpretar(self, table, tree):
         return self
 
-    def getC3D(self, contador):
-        return ""
+    def getC3D(self, c3dObj):
+        C3D = "    /* DECLARACION DE FUNCION */\n"
+
+
+        return C3D

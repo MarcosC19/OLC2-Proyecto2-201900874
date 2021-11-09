@@ -276,7 +276,7 @@ class For(AST):
                     elif isinstance(instruccion, Continue):
                         codeInt2 += instruccion.getC3D(c3dObj, None)
                     elif isinstance(instruccion, If):
-                        codeInt2 += instruccion.getC3D(c3dObj, None)
+                        codeInt2 += instruccion.getC3D(c3dObj, None, None)
                     else:
                         codeInt2 += instruccion.getC3D(c3dObj)
                 codeInt2 += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
@@ -286,6 +286,21 @@ class For(AST):
                 codeInt += "    L" + str(temporalLini) + ":\n"
                 codeInt += codeInt2
                 codeInt += "    L" + str(temporalS) + ":\n"
+            elif isinstance(self.objeto1, list):
+                for elemento in self.objeto1:
+                    resultadoC3D = elemento.getC3D(c3dObj)
+                    if isinstance(elemento, Primitivo):
+                        newVar = Asignacion(self.line, self.column, self.nombre, elemento).getC3D(c3dObj)
+                        codeInt += newVar
+                        for instruccion in self.instrucciones:
+                            if isinstance(instruccion, Break):
+                                codeInt += instruccion.getC3D(c3dObj, None)
+                            elif isinstance(instruccion, Continue):
+                                codeInt += instruccion.getC3D(c3dObj, None)
+                            elif isinstance(instruccion, If):
+                                codeInt += instruccion.getC3D(c3dObj, None, None)
+                            else:
+                                codeInt += instruccion.getC3D(c3dObj)
         elif self.type == TIPO_DATO.ENTERO:
             if isinstance(self.objeto1, Primitivo):
                 if isinstance(self.objeto2, Primitivo):
@@ -301,7 +316,7 @@ class For(AST):
                             elif isinstance(instruccion, Continue):
                                 codeInt += instruccion.getC3D(c3dObj, None)
                             elif isinstance(instruccion, If):
-                                codeInt += instruccion.getC3D(c3dObj, None)
+                                codeInt += instruccion.getC3D(c3dObj, None, None)
                             else:
                                 codeInt += instruccion.getC3D(c3dObj)
                 else:
@@ -337,7 +352,7 @@ class For(AST):
                         elif isinstance(instruccion, Continue):
                             codeInt2 += instruccion.getC3D(c3dObj, None)
                         elif isinstance(instruccion, If):
-                            codeInt2 += instruccion.getC3D(c3dObj, None)
+                            codeInt2 += instruccion.getC3D(c3dObj, None, None)
                         else:
                             codeInt2 += instruccion.getC3D(c3dObj)
                     codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = " + str(myOldVariable.getPosition()) + ";\n"
@@ -396,7 +411,7 @@ class For(AST):
                         elif isinstance(instruccion, Continue):
                             codeInt2 += instruccion.getC3D(c3dObj, None)
                         elif isinstance(instruccion, If):
-                            codeInt2 += instruccion.getC3D(c3dObj, None)
+                            codeInt2 += instruccion.getC3D(c3dObj, None, None)
                         else:
                             codeInt2 += instruccion.getC3D(c3dObj)
                     codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = " + str(myOldVariable.getPosition()) + ";\n"
@@ -454,7 +469,7 @@ class For(AST):
                         elif isinstance(instruccion, Continue):
                             codeInt2 += instruccion.getC3D(c3dObj, None)
                         elif isinstance(instruccion, If):
-                            codeInt2 += instruccion.getC3D(c3dObj, None)
+                            codeInt2 += instruccion.getC3D(c3dObj, None, None)
                         else:
                             codeInt2 += instruccion.getC3D(c3dObj)
                     codeInt2 += "    t" + str(c3dObj.getContadorT()) + " = " + str(myOldVariable.getPosition()) + ";\n"

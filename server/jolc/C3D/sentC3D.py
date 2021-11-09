@@ -61,12 +61,12 @@ class C3D():
         temporalT3 = self.getContadorT()
         self.addContadorT()
         printCode += "      if t" + str(temporalT3) + " == -1 { goto L" +  str(self.getContadorL()) + "; }\n"
-        temporalL1 = self.getContadorL() # dfag
+        temporalL1 = self.getContadorL()
         self.addContadorL()
         printCode += "      fmt.Printf(\"%c\", int(t" + str(temporalT3) + "));\n"
         printCode += "      t" + str(temporalT2) + " = t" + str(temporalT2) + " + 1;\n"
         printCode += "      goto L" + str(self.getContadorL()) + ";\n"
-        temporalL2 = self.getContadorL() # dfag
+        temporalL2 = self.getContadorL()
         self.addContadorL()
         printCode += "      L" + str(temporalL1) + ":\n"
         printCode += "          return;"
@@ -201,6 +201,78 @@ class C3D():
         codePrint += "}\n\n"
         return codePrint
 
+    def addUpper(self):
+        codePrint = "func upperCase(){\n"
+
+        codePrint += "  t" + str(self.getContadorT()) + " = P + 0;\n"
+        temporalT1 = self.getContadorT()
+        self.addContadorT()
+        codePrint += "  t" + str(self.getContadorT()) + " = stack[int(t" + str(self.getLastContadorT()) + ")];\n"
+        temporalT2 = self.getContadorT()
+        self.addContadorT()
+        printCode = "      t" + str(self.getContadorT()) + " = heap[int(t" + str(self.getLastContadorT()) + ")];\n"
+        temporalT3 = self.getContadorT()
+        self.addContadorT()
+        printCode += "      if t" + str(temporalT3) + " == -1 { goto L" +  str(self.getContadorL()) + "; }\n"
+        temporalL1 = self.getContadorL()
+        self.addContadorL()
+        printCode += "      if t" + str(temporalT3) + " < 97 { goto L" + str(self.getContadorL()) + "; }\n"
+        printCode += "      if t" + str(temporalT3) + " > 123 { goto L" + str(self.getContadorL()) + "; }\n"
+        temporalL10 = self.getContadorL()
+        self.addContadorL()
+
+        printCode += "      t" + str(temporalT3) + " = t" + str(temporalT3) + " - 32;\n"
+        printCode += "      L" + str(temporalL10) + ":\n"
+        printCode += "      heap[int(H)] = t" + str(temporalT3) + ";\n"
+        printCode += "      H = H + 1;\n"
+        printCode += "      t" + str(temporalT2) + " = t" + str(temporalT2) + " + 1;\n"
+        printCode += "      goto L" + str(self.getContadorL()) + ";\n"
+        temporalL2 = self.getContadorL()
+        self.addContadorL()
+        printCode += "      L" + str(temporalL1) + ":\n"
+        printCode += "          return;"
+        codePrint += "  L" + str(temporalL2) + ":\n"
+        codePrint += printCode + "\n"
+        
+        codePrint += "}\n\n"
+        return codePrint
+
+    def addLower(self):
+        codePrint = "func lowerCase(){\n"
+
+        codePrint += "  t" + str(self.getContadorT()) + " = P + 0;\n"
+        temporalT1 = self.getContadorT()
+        self.addContadorT()
+        codePrint += "  t" + str(self.getContadorT()) + " = stack[int(t" + str(self.getLastContadorT()) + ")];\n"
+        temporalT2 = self.getContadorT()
+        self.addContadorT()
+        printCode = "      t" + str(self.getContadorT()) + " = heap[int(t" + str(self.getLastContadorT()) + ")];\n"
+        temporalT3 = self.getContadorT()
+        self.addContadorT()
+        printCode += "      if t" + str(temporalT3) + " == -1 { goto L" +  str(self.getContadorL()) + "; }\n"
+        temporalL1 = self.getContadorL()
+        self.addContadorL()
+        printCode += "      if t" + str(temporalT3) + " < 65 { goto L" + str(self.getContadorL()) + "; }\n"
+        printCode += "      if t" + str(temporalT3) + " > 91 { goto L" + str(self.getContadorL()) + "; }\n"
+        temporalL10 = self.getContadorL()
+        self.addContadorL()
+
+        printCode += "      t" + str(temporalT3) + " = t" + str(temporalT3) + " + 32;\n"
+        printCode += "      L" + str(temporalL10) + ":\n"
+        printCode += "      heap[int(H)] = t" + str(temporalT3) + ";\n"
+        printCode += "      H = H + 1;\n"
+        printCode += "      t" + str(temporalT2) + " = t" + str(temporalT2) + " + 1;\n"
+        printCode += "      goto L" + str(self.getContadorL()) + ";\n"
+        temporalL2 = self.getContadorL()
+        self.addContadorL()
+        printCode += "      L" + str(temporalL1) + ":\n"
+        printCode += "          return;"
+        codePrint += "  L" + str(temporalL2) + ":\n"
+        codePrint += printCode + "\n"
+        
+        codePrint += "}\n\n"
+        return codePrint
+
     def printTrue(self):
         C3D = ""
         for i in 'true':
@@ -266,6 +338,38 @@ class C3D():
         C3D += "    stack[int(t" + str(temporalT3) + ")] = t" + str(contador) + ";\n"
         C3D += "    P = P + " + str(self.getNumVariables()) + ";\n"
         C3D += "    printString();\n"
+        C3D += "    t" + str(self.getContadorT()) + " = stack[int(P)];\n"
+        C3D += "    P = P - " + str(self.getNumVariables()) + ";\n"
+        return C3D
+
+    def printUpper(self, contador):
+        C3D = "    /* UPPERCASE STRING */\n"
+        C3D += "    t" + str(self.getContadorT()) + " = P + " + str(self.getNumVariables()) + ";\n"
+        temporalT1 = self.getLastContadorT()
+        temporalT2 = self.getContadorT()
+        self.addContadorT()
+        C3D += "    t" + str(self.getContadorT()) + " = t" + str(temporalT2) + " + 0;\n"
+        temporalT3 = self.getContadorT()
+        self.addContadorT()
+        C3D += "    stack[int(t" + str(temporalT3) + ")] = t" + str(contador) + ";\n"
+        C3D += "    P = P + " + str(self.getNumVariables()) + ";\n"
+        C3D += "    upperCase();\n"
+        C3D += "    t" + str(self.getContadorT()) + " = stack[int(P)];\n"
+        C3D += "    P = P - " + str(self.getNumVariables()) + ";\n"
+        return C3D
+
+    def printLower(self, contador):
+        C3D = "    /* LOWERCASE STRING */\n"
+        C3D += "    t" + str(self.getContadorT()) + " = P + " + str(self.getNumVariables()) + ";\n"
+        temporalT1 = self.getLastContadorT()
+        temporalT2 = self.getContadorT()
+        self.addContadorT()
+        C3D += "    t" + str(self.getContadorT()) + " = t" + str(temporalT2) + " + 0;\n"
+        temporalT3 = self.getContadorT()
+        self.addContadorT()
+        C3D += "    stack[int(t" + str(temporalT3) + ")] = t" + str(contador) + ";\n"
+        C3D += "    P = P + " + str(self.getNumVariables()) + ";\n"
+        C3D += "    lowerCase();\n"
         C3D += "    t" + str(self.getContadorT()) + " = stack[int(P)];\n"
         C3D += "    P = P - " + str(self.getNumVariables()) + ";\n"
         return C3D
@@ -400,3 +504,40 @@ class C3D():
 
         self.addContadorT()
         return [C3D, temporalN]
+
+    def addLength(self):
+        C3D = "func getLength(){\n"
+
+        C3D += "    t" + str(self.getContadorT()) + " = 0;\n"
+        contadorR = self.getContadorT()
+        self.addContadorT()
+
+        codePrint = "    t" + str(self.getContadorT()) + " = P + 0;\n"
+        temporalT1 = self.getContadorT()
+        self.addContadorT()
+        codePrint += "    t" + str(self.getContadorT()) + " = stack[int(t" + str(self.getLastContadorT()) + ")];\n"
+        temporalT2 = self.getContadorT()
+        self.addContadorT()
+        printCode = "      t" + str(self.getContadorT()) + " = heap[int(t" + str(self.getLastContadorT()) + ")];\n"
+        temporalT3 = self.getContadorT()
+        self.addContadorT()
+        printCode += "      if t" + str(temporalT3) + " == -1 { goto L" +  str(self.getContadorL()) + "; }\n"
+        temporalL1 = self.getContadorL()
+        self.addContadorL()
+        printCode += "      t" + str(temporalT2) + " = t" + str(temporalT2) + " + 1;\n"
+        printCode += "      t" + str(contadorR) + " = t" + str(contadorR) + " + 1;\n"
+        printCode += "      goto L" + str(self.getContadorL()) + ";\n"
+        temporalL2 = self.getContadorL()
+        self.addContadorL()
+        printCode += "      L" + str(temporalL1) + ":\n"
+        printCode += "      t" + str(self.getContadorT()) + " = P + 1;\n"
+        otroC = self.getContadorT()
+        self.addContadorT()
+        printCode += "          stack[int(t" + str(otroC) + ")] = t" + str(contadorR) + ";\n"
+        printCode += "          return;"
+        codePrint += "    L" + str(temporalL2) + ":\n"
+        codePrint += printCode + "\n"
+
+        C3D += codePrint + "\n"
+        C3D += "}\n\n"
+        return C3D

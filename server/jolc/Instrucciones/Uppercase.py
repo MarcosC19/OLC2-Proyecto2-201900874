@@ -28,5 +28,26 @@ class UpperCase(AST):
         else:
             return Excepcion("Semantico", "Se esperaba una cadena o caracter", self.line, self.column)
 
-    def getC3D(self, contador):
-        return ""
+    def getC3D(self, c3dObj):
+        contadorTP = c3dObj.getContadorT()
+        C3D = "    /* UPPERCASE */\n"
+        resultado = self.expresion.getC3D(c3dObj)
+
+        if isinstance(self.expresion, Primitivo):
+            C3D += resultado
+            C3D += c3dObj.endString()
+            C3D += "    t" + str(c3dObj.getContadorT()) + " = H;\n"
+            contadorTP2 = c3dObj.getContadorT()
+            c3dObj.addContadorT()
+            C3D += c3dObj.printUpper(contadorTP)
+            C3D += c3dObj.endString()
+            contadorTP = contadorTP2
+        else:
+            C3D += resultado[0]
+            C3D += "    t" + str(c3dObj.getContadorT()) + " = H;\n"
+            contadorTP2 = c3dObj.getContadorT()
+            c3dObj.addContadorT()
+            C3D += c3dObj.printUpper(resultado[1])
+            C3D += c3dObj.endString()
+            contadorTP = contadorTP2
+        return [C3D, contadorTP]

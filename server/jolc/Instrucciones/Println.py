@@ -1,6 +1,9 @@
 from Expresiones.Aritmetica import Aritmetica
 from Expresiones.Relacional import Relacional
 from Expresiones.IdLista import IdLista
+from Instrucciones.Lowercase import LowerCase
+from Instrucciones.Uppercase import UpperCase
+from Instrucciones.Length import Length
 from tablaSimbolos.Simbolo import Simbolo
 from Excepciones.Excepcion import Excepcion
 from Expresiones.Primitivo import Primitivo
@@ -181,6 +184,15 @@ class Println(AST):
                 C3D += "    fmt.Printf(\"%f\", t" + str(temporalENV) + ");\n"
                 for etiqueta in resultado[2]:
                     C3D += "    L" + str(etiqueta) + ":\n"
+            elif isinstance(expresion, Length):
+                resultado = expresion.getC3D(c3dObj)
+                C3D += resultado[0]
+                C3D += "    fmt.Printf(\"%f\", t" + str(resultado[1]) + ");\n"
+            else:
+                resultado = expresion.getC3D(c3dObj)
+                C3D += resultado[0]
+                C3D += c3dObj.printString(resultado[1])
+
         C3D += "    fmt.Printf(\"%c\\n\", 32);\n"
         return C3D
         

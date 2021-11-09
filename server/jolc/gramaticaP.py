@@ -754,6 +754,9 @@ def parseC3D(inp) :
         printList = c3d.addPrintList()
         printCode = c3d.addPrintString()
         compareStr = c3d.addCompareString()
+        upperCode = c3d.addUpper()
+        lowerCode = c3d.addLower()
+        lengthCode = c3d.addLength()
         if c3d.getContadorT() > 0:
             contadores = "var "
             for i in range(0, c3d.getContadorT()):
@@ -769,6 +772,9 @@ def parseC3D(inp) :
         c3d.addC3D(printList)
         c3d.addC3D(printCode)
         c3d.addC3D(compareStr)
+        c3d.addC3D(upperCode)
+        c3d.addC3D(lowerCode)
+        c3d.addC3D(lengthCode)
         c3d.addC3D("/* MAIN */\n")
         c3d.addC3D("func main(){\n")
         c3d.addC3D(instC3D)

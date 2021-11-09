@@ -11,6 +11,7 @@ from tablaSimbolos.Tipo import TIPO_DATO
 from tablaSimbolos.Simbolo import Simbolo
 from Expresiones.Relacional import Relacional
 from Expresiones.IdLista import IdLista
+from Instrucciones.Length import Length
 
 
 class Print(AST):
@@ -209,6 +210,14 @@ class Print(AST):
                 C3D += "    fmt.Printf(\"%f\", t" + str(temporalENV) + ");\n"
                 for etiqueta in resultado[2]:
                     C3D += "    L" + str(etiqueta) + ":\n"
+            elif isinstance(expresion, Length):
+                resultado = expresion.getC3D(c3dObj)
+                C3D += resultado[0]
+                C3D += "    fmt.Printf(\"%f\", t" + str(resultado[1]) + ");\n"
+            else:
+                resultado = expresion.getC3D(c3dObj)
+                C3D += resultado[0]
+                C3D += c3dObj.printString(resultado[1])
         return C3D
             
     def recorrerAtr(self, valor, table, tree):
