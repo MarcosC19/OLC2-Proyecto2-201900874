@@ -4,6 +4,7 @@ from Expresiones.IdLista import IdLista
 from Instrucciones.Lowercase import LowerCase
 from Instrucciones.Uppercase import UpperCase
 from Instrucciones.Length import Length
+from Instrucciones.LlamFuncion import LlamadaFuncion
 from tablaSimbolos.Simbolo import Simbolo
 from Excepciones.Excepcion import Excepcion
 from Expresiones.Primitivo import Primitivo
@@ -188,6 +189,11 @@ class Println(AST):
                 resultado = expresion.getC3D(c3dObj)
                 C3D += resultado[0]
                 C3D += "    fmt.Printf(\"%f\", t" + str(resultado[1]) + ");\n"
+            elif isinstance(expresion, LlamadaFuncion):
+                resultado = expresion.getC3D(c3dObj)
+                C3D += resultado[0]
+                if resultado[1] is not None:
+                    C3D += "    fmt.Printf(\"%f\", t" + str(resultado[1]) + ");\n"
             else:
                 resultado = expresion.getC3D(c3dObj)
                 C3D += resultado[0]

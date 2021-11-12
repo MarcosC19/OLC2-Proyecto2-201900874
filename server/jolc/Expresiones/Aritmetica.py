@@ -1,6 +1,6 @@
-from Instrucciones.Return import Return
 from Expresiones.Identificador import Identificador
 from Expresiones.IdLista import IdLista
+from C3D.sentC3D import C3DT
 from tablaSimbolos.Tipo import TIPO_DATO
 from Expresiones.Primitivo import Primitivo
 from tablaSimbolos.Tipo import OPERADOR_ARITMETICO
@@ -82,27 +82,27 @@ class Aritmetica(AST):
             izquierdo = self.operating1.interpretar(table, tree)
             if isinstance(izquierdo, Excepcion):
                 return izquierdo
-            if isinstance(izquierdo, Return):
-                izquierdo = izquierdo.interpretar(table, tree)
             if isinstance(izquierdo, Primitivo):
                 self.operating1.type = izquierdo.type
+                izquierdo = izquierdo.interpretar(table, tree)
+            else:
                 izquierdo = izquierdo.interpretar(table, tree)
         else:
             izquierdo = self.operating1.interpretar(table, tree)
             if isinstance(izquierdo, Excepcion):
                 return izquierdo
-            if isinstance(izquierdo, Return):
-                izquierdo = izquierdo.interpretar(table, tree)
             if isinstance(izquierdo, Primitivo):
                 self.operating1.type = izquierdo.type
+                izquierdo = izquierdo.interpretar(table, tree)
+            else:
                 izquierdo = izquierdo.interpretar(table, tree)
             derecho = self.operating2.interpretar(table, tree)
             if isinstance(derecho, Excepcion):
                 return derecho
-            if isinstance(derecho, Return):
-                derecho = derecho.interpretar(table, tree)
             if isinstance(derecho, Primitivo):
                 self.operating2.type = derecho.type
+                derecho = derecho.interpretar(table, tree)
+            else:
                 derecho = derecho.interpretar(table, tree)
         # RETORNANDO VALORES
         # OPERACION SUMA
@@ -339,10 +339,18 @@ class Aritmetica(AST):
             return Excepcion("Semantico", "Operador no valido", self.line, self.column)
 
     def getC3D(self, c3dObj):
+        nuevoC3D = C3DT()
+        nuevoC3D.variables = c3dObj.variables
+        nuevoC3D.numVariablesG = c3dObj.numVariablesG
+
+        primerC3D = self.operating1.getC3D(nuevoC3D)
+        if self.operating2 is not None:
+            segundoC3D = self.operating2.getC3D(nuevoC3D)
+        
         C3D = "    /* ANALIZANDO EXPRESION ARITMETICA */\n"
         # OPERACION SUMA
         if self.operator == OPERADOR_ARITMETICO.SUMA:
-            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or ((isinstance(self.operating1, Identificador) or isinstance(self.operating1, IdLista)) and (self.operating2.type == TIPO_DATO.DECIMAL or self.operating2.type == TIPO_DATO.ENTERO)) or ((self.operating1.type == TIPO_DATO.DECIMAL or self.operating1.type == TIPO_DATO.ENTERO) and (isinstance(self.operating2, Identificador) or isinstance(self.operating2, IdLista)) or (isinstance(self.operating1, Identificador) and isinstance(self.operating2, IdLista)) or (isinstance(self.operating2, Identificador) and isinstance(self.operating1, IdLista))):
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
                 if isinstance(self.operating1, Primitivo):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo): # PRIMITIVO + PRIMITIVO
@@ -404,7 +412,7 @@ class Aritmetica(AST):
                 self.type = self.getTypeOperation(self.operating1.type, self.operating2.type)             
         # OPERACION RESTA
         elif self.operator == OPERADOR_ARITMETICO.RESTA:
-            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or ((isinstance(self.operating1, Identificador) or isinstance(self.operating1, IdLista)) and (self.operating2.type == TIPO_DATO.DECIMAL or self.operating2.type == TIPO_DATO.ENTERO)) or ((self.operating1.type == TIPO_DATO.DECIMAL or self.operating1.type == TIPO_DATO.ENTERO) and (isinstance(self.operating2, Identificador) or isinstance(self.operating2, IdLista)) or (isinstance(self.operating1, Identificador) and isinstance(self.operating2, IdLista)) or (isinstance(self.operating2, Identificador) and isinstance(self.operating1, IdLista))):
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
                 if isinstance(self.operating1, Primitivo):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo): # PRIMITIVO - PRIMITIVO
@@ -468,7 +476,7 @@ class Aritmetica(AST):
                 self.type = self.getTypeOperation(self.operating1.type, self.operating2.type)
         # OPERACION MULTIPLICACION
         elif self.operator == OPERADOR_ARITMETICO.MULTIPLICACION:
-            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or ((isinstance(self.operating1, Identificador) or isinstance(self.operating1, IdLista)) and (self.operating2.type == TIPO_DATO.DECIMAL or self.operating2.type == TIPO_DATO.ENTERO)) or ((self.operating1.type == TIPO_DATO.DECIMAL or self.operating1.type == TIPO_DATO.ENTERO) and (isinstance(self.operating2, Identificador) or isinstance(self.operating2, IdLista)) or (isinstance(self.operating1, Identificador) and isinstance(self.operating2, IdLista)) or (isinstance(self.operating2, Identificador) and isinstance(self.operating1, IdLista))):
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
                 if isinstance(self.operating1, Primitivo):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo): # PRIMITIVO * PRIMITIVO
@@ -634,7 +642,7 @@ class Aritmetica(AST):
                             C3D += "    L" + str(temporalLSal) + ":\n"
         # OPERACION DIVISION
         elif self.operator == OPERADOR_ARITMETICO.DIVISON:
-            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or ((isinstance(self.operating1, Identificador) or isinstance(self.operating1, IdLista)) and (self.operating2.type == TIPO_DATO.DECIMAL or self.operating2.type == TIPO_DATO.ENTERO)) or ((self.operating1.type == TIPO_DATO.DECIMAL or self.operating1.type == TIPO_DATO.ENTERO) and (isinstance(self.operating2, Identificador) or isinstance(self.operating2, IdLista))  or (isinstance(self.operating1, Identificador) and isinstance(self.operating2, IdLista)) or (isinstance(self.operating2, Identificador) and isinstance(self.operating1, IdLista))):
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
                 if isinstance(self.operating1, Primitivo):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo): # PRIMITIVO / PRIMITIVO
@@ -715,7 +723,7 @@ class Aritmetica(AST):
                 self.type = self.getTypeOperation(self.operating1.type, self.operating2.type)
         # OPERACION POTENCIA
         elif self.operator == OPERADOR_ARITMETICO.POTENCIA:
-            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or ((isinstance(self.operating1, Identificador) or isinstance(self.operating1, IdLista)) and (self.operating2.type == TIPO_DATO.DECIMAL or self.operating2.type == TIPO_DATO.ENTERO)) or ((self.operating1.type == TIPO_DATO.DECIMAL or self.operating1.type == TIPO_DATO.ENTERO) and (isinstance(self.operating2, Identificador) or isinstance(self.operating2, IdLista)) or (isinstance(self.operating1, Identificador) and isinstance(self.operating2, IdLista)) or (isinstance(self.operating2, Identificador) and isinstance(self.operating1, IdLista))):
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
                 if isinstance(self.operating1, Primitivo):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo): # PRIMITIVO ^ PRIMITIVO
@@ -840,7 +848,7 @@ class Aritmetica(AST):
                         C3D += c3Dop1
         # OPERACION MODULO
         elif self.operator == OPERADOR_ARITMETICO.MODULO:
-            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL) or ((isinstance(self.operating1, Identificador) or isinstance(self.operating1, IdLista)) and (self.operating2.type == TIPO_DATO.DECIMAL or self.operating2.type == TIPO_DATO.ENTERO)) or ((self.operating1.type == TIPO_DATO.DECIMAL or self.operating1.type == TIPO_DATO.ENTERO) and (isinstance(self.operating2, Identificador) or isinstance(self.operating2, IdLista)) or (isinstance(self.operating1, Identificador) and isinstance(self.operating2, IdLista)) or (isinstance(self.operating2, Identificador) and isinstance(self.operating1, IdLista))):
+            if (self.operating1.type == TIPO_DATO.ENTERO or self.operating1.type == TIPO_DATO.DECIMAL) and (self.operating2.type == TIPO_DATO.ENTERO or self.operating2.type == TIPO_DATO.DECIMAL):
                 if isinstance(self.operating1, Primitivo):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo): # PRIMITIVO % PRIMITIVO
@@ -873,6 +881,7 @@ class Aritmetica(AST):
                 else:
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     C3D += resultado1C3D[0]
+                    contadorVal = resultado1C3D[1]
                     if isinstance(self.operating2, Primitivo): # OTRO % PRIMITIVO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
                         C3D += c3dObj.printMathError(resultado2C3D)

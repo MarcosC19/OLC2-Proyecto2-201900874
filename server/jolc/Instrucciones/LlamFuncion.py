@@ -4,6 +4,7 @@ from Expresiones.Primitivo import Primitivo
 from Instrucciones.AsignacionVar import Asignacion
 from Instrucciones.Return import Return
 from Instrucciones.If import If
+from Expresiones.IdLista import IdLista
 from tablaSimbolos.Tabla import Tabla
 from Instrucciones.Continue import Continue
 from Instrucciones.Break import Break
@@ -175,5 +176,53 @@ class LlamadaFuncion(AST):
             valor = valor.interpretar(table, tree)
             valor = self.recorrerSimbolo(valor, table, tree)
 
-    def getC3D(self, contador):
-        return ""
+    def getC3D(self, c3dObj):
+        C3D1 = "    /* LLAMADA FUNCION */\n"
+        C3D2 = ""
+        myFuncion = c3dObj.getFunction(self.identificador)
+        numVars = len(self.parametros)
+        isReturn = False
+        for instruccion in myFuncion.value.instrucciones:
+            if isinstance(instruccion, Return):
+                isReturn = True
+            if isinstance(instruccion, Asignacion):
+                numVars += 1
+        isList = False
+        temporalF = None
+        if myFuncion != None:
+            if self.parametros is not None:
+                C3D1 += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(c3dObj.getNumVariables()) + ";\n"
+                temporal1 = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                for i in range(len(self.parametros)):
+                    parametro = self.parametros[i]
+                    C3D1 += "    t" + str(c3dObj.getContadorT()) + " = t" + str(temporal1) + " + " + str(i) + ";\n"
+                    temporal2 = c3dObj.getContadorT()
+                    c3dObj.addContadorT()
+                    if isinstance(parametro, Primitivo):
+                        valor = parametro.interpretar(None, None)
+                        C3D1 += "    stack[int(t" + str(temporal2) + ")] = " + str(valor) + ";\n"
+                    else:
+                        resultado = parametro.getC3D(c3dObj)
+                        C3D1 += resultado[0]
+                        contadorR = resultado[1]
+                        if isinstance(parametro, IdLista):
+                            for etiqueta in resultado[2]:
+                                C3D2 += "    L" + str(etiqueta) + ":\n"
+                            C3D1 += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorR) + ")];\n"
+                            contadorR = c3dObj.getContadorT()
+                            c3dObj.addContadorT()
+                        C3D1 += "    stack[int(t" + str(temporal2) + ")] = t" + str(contadorR) + ";\n"
+            C3D1 += "    P = P + " + str(c3dObj.getNumVariables()) + ";\n"
+            C3D1 += "    " + str(self.identificador) + "();\n"
+            if isReturn:
+                C3D1 += "    t" + str(c3dObj.getContadorT()) + " = P + " + str(numVars) + ";\n"
+                temporalT1 = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                C3D1 += "    t" + str(c3dObj.getContadorT()) + " = stack[int(t" + str(temporalT1) + ")];\n"
+                temporalF = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+            C3D1 += "    P = P - " + str(c3dObj.getNumVariables()) + ";\n"
+            C3D1 += C3D2
+            C3D1 += "    /* FIN LLAMADA FUNCION */\n"
+        return [C3D1, temporalF]

@@ -35,7 +35,7 @@ from Expresiones.Logica import Logica
 from tablaSimbolos.Tipo import OPERADOR_ARITMETICO
 from Expresiones.Aritmetica import Aritmetica
 from tablaSimbolos.Tipo import TIPO_DATO
-from C3D.sentC3D import C3D
+from C3D.sentC3D import C3DT
 import re
 
 errores = []
@@ -57,6 +57,7 @@ reservadas = {
     'Bool'          : 'TIPBOOL',
     'Char'          : 'TIPCHAR',
     'String'        : 'TIPSTRING',
+    'Vector'        : 'TIPLIST',
     'parse'         : 'RPARSE',
     'trunc'         : 'RTRUNC',
     'float'         : 'RFLOAT',
@@ -93,6 +94,8 @@ tokens = [
     'PARDER',
     'CORIZQ',
     'CORDER',
+    'LLAVIZQ',
+    'LLAVDER',
     'MAS',
     'MENOS',
     'POR',
@@ -123,6 +126,8 @@ t_DOSPTS            = r':'
 t_COMA              = r','
 t_PARIZQ            = r'\('
 t_PARDER            = r'\)'
+t_LLAVIZQ           = r'\{'
+t_LLAVDER           = r'\}'
 t_CORIZQ            = r'\['
 t_CORDER            = r'\]'
 t_MAS               = r'\+'
@@ -303,6 +308,7 @@ def p_tipo_val(t):
                         |   TIPBOOL
                         |   TIPCHAR
                         |   TIPSTRING
+                        |   TIPLIST LLAVIZQ TIPOVAL LLAVDER
                         |   ID'''
 
     if t[1] == 'Int64':
@@ -317,6 +323,8 @@ def p_tipo_val(t):
         t[0] = TIPO_DATO.CARACTER
     elif t[1] == 'String':
         t[0] = TIPO_DATO.CADENA
+    elif t[1] == 'Vector':
+        t[0] = TIPO_DATO.LISTA
     else:
         t[0] = t[1]
 
@@ -420,6 +428,10 @@ def p_lista_parametro(t):
 def p_parametro_id(t):
     '''parametro        : expresion'''
     t[0] = t[1]
+
+def p_parametro_id_T(t):
+    '''parametro        : ID DOSPTS DOSPTS TIPOVAL'''
+    t[0] = Parametro(t.lineno(1), find_column(input, t.slice[1]), t[1], t[4])
 
 # ------------ LLAMADA DE FUNCIONES ------------   
 def p_llamada_funcion_params(t):
@@ -719,7 +731,7 @@ def parseC3D(inp) :
     global lexer
     global parser
     errores = []
-    c3d = C3D()
+    c3d = C3DT()
     c3d.initC3D()
     instC3D = ""
     lexer = lex.lex(reflags= re.IGNORECASE)
@@ -730,12 +742,15 @@ def parseC3D(inp) :
     ast = Arbol(instrucciones)
     TSGlobal = Tabla()
     ast.setGlobal(TSGlobal)
+    funciones = ""
 
     if ast.getInstructions() != None:
         for instruccion in ast.getInstructions():
             if isinstance(instruccion, Funcion):
                 simbolo = Simbolo(TIPO_DATO.FUNCION, instruccion.identificador, instruccion.line, instruccion.column, instruccion)
                 TSGlobal.setVariable(simbolo)
+                c3d.addFunction(simbolo.getId(), simbolo)
+                funciones += instruccion.getC3D(c3d)
 
         for instruccion in ast.getInstructions():
             if isinstance(instruccion, Excepcion): 
@@ -745,7 +760,9 @@ def parseC3D(inp) :
                 instC3D += instruccion.getC3D(c3d, None, None)
             elif isinstance(instruccion, Break):
                 instC3D += instruccion.getC3D(c3d, None)
-            else:
+            elif isinstance(instruccion, Continue):
+                instC3D += instruccion.getC3D(c3d, None)
+            elif not isinstance(instruccion, Funcion):
                 instC3D += instruccion.getC3D(c3d)
 
         instC3D += "}"
@@ -767,6 +784,8 @@ def parseC3D(inp) :
             c3d.addC3D(contadores)
         else:
             c3d.addC3D("\n")
+        c3d.addC3D("/* FUNCIONES ALTO NIVEL */\n")
+        c3d.addC3D(funciones)
         c3d.addC3D("/* MIS FUNCIONES */\n")
         c3d.addC3D(potCode)
         c3d.addC3D(printList)

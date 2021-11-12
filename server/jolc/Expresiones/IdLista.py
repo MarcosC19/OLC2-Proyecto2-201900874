@@ -69,6 +69,7 @@ class IdLista(AST):
         # ((i - 1)* N2 + j - 1)* N3 + k - 1
         C3D = "    /* ACCEDIENDO A LISTA */\n"
         myLista = c3dObj.getVariable(self.identificador)
+        self.type = myLista.getTypeVal()
         listado = myLista.tamanios.copy()
         valPos = listado.copy()
         Pos0 = valPos[0][0]
@@ -101,7 +102,6 @@ class IdLista(AST):
                         resBE = c3dObj.printBoundsError("t" + str(resultado[1]), Pos0)
                         C3D += resBE[0]
                         temporalULT.append(resBE[1])
-                        variable = resultado[2]
                         C3D += "    t" + str(c3dObj.getContadorT()) + " = t" + str(resultado[1]) + " - 1;\n"
                         temporalSUM = c3dObj.getContadorT()
                         c3dObj.addContadorT()

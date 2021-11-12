@@ -64,14 +64,22 @@ class ModLista(AST):
         C3D += myId[0]
 
         resultadoExp = self.expresion.getC3D(c3dObj)
-        
         if isinstance(self.expresion, Primitivo):
             if isinstance(resultadoExp, list):
                 for valor in resultadoExp:
                     C3D += "    heap[int(t" + str(contadorPos) + ")] = " + str(valor) + ";\n"
         else:
             C3D += resultadoExp[0]
-            C3D += "    heap[int(t" + str(contadorPos) + ")] = t" + str(resultadoExp[1]) + ";\n"
+            if isinstance(self.expresion, IdLista):
+                C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(resultadoExp[1]) + ")];\n"
+                otroT = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                C3D += "    heap[int(t" + str(contadorPos) + ")] = t" + str(otroT) + ";\n"
+
+                for etiqueta in resultadoExp[2]:
+                    C3D += "    L" + str(etiqueta) + ":\n"
+            else:
+                C3D += "    heap[int(t" + str(contadorPos) + ")] = t" + str(resultadoExp[1]) + ";\n"
 
         for etiqueta in myId[2]:
             C3D += "    L" + str(etiqueta) + ":\n"

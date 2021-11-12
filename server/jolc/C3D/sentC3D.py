@@ -1,7 +1,7 @@
 import re
 
 
-class C3D():
+class C3DT():
 
     def __init__(self):
         self.code = ""
@@ -9,7 +9,16 @@ class C3D():
         self.contadorL = 0
         self.numVariablesG = 0
         self.variables = {}
+        self.funciones = {}
         self.mathCont = 0
+
+    def addFunction(self, nombre, funcion):
+        self.funciones[nombre] = funcion
+
+    def getFunction(self, nombre):
+        if nombre in self.funciones:
+            return self.funciones[nombre]
+        return None
 
     def addC3D(self, code):
         self.code += code

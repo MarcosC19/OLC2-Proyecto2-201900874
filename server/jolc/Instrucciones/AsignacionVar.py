@@ -11,6 +11,7 @@ from C3D.variableC3D import VariableC3D
 from C3D.variableC3D import TipoVar
 from Expresiones.Identificador import Identificador
 from C3D.variableC3D import TipoVariable
+from Expresiones.IdLista import IdLista
 
 class Asignacion(AST):
     
@@ -179,6 +180,16 @@ class Asignacion(AST):
                 c3dObj.addContadorT()
                 C3D += "    stack[int(t" + str(temporalTPos) + ")] = t" + str(temporalT1) + ";\n"
                 myNewVariable = VariableC3D(self.identificador, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.APUNTADOR, self.expresion.type, TipoVariable.VARIABLE)
+            elif isinstance(self.expresion, IdLista):
+                resultadoExpresion = self.expresion.getC3D(c3dObj)
+                C3D += resultadoExpresion[0]
+                C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(resultadoExpresion[1]) + ")];\n"
+                temporalT1 = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                C3D += "    stack[int(t" + str(temporalTPos) + ")] = t" + str(temporalT1) + ";\n"
+                myNewVariable = VariableC3D(self.identificador, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.VALOR, self.expresion.type, TipoVariable.VARIABLE)
+                for etiqueta in resultadoExpresion[2]:
+                    C3D += "    L" + str(etiqueta) + ":\n"
         else:
             C3D += "    t" + str(c3dObj.getContadorT()) + " = " + myVarOld.getPosition()  +";\n"
             temporalTPos = c3dObj.getContadorT()
@@ -255,6 +266,16 @@ class Asignacion(AST):
                 c3dObj.addContadorT()
                 C3D += "    stack[int(t" + str(temporalTPos) + ")] = t" + str(temporalT1) + ";\n"
                 myNewVariable = VariableC3D(self.identificador, myVarOld.getPosition(), TipoVar.APUNTADOR, self.expresion.type, TipoVariable.VARIABLE)
+            elif isinstance(self.expresion, IdLista):
+                resultadoExpresion = self.expresion.getC3D(c3dObj)
+                C3D += resultadoExpresion[0]
+                C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(resultadoExpresion[1]) + ")];\n"
+                temporalT1 = c3dObj.getContadorT()
+                c3dObj.addContadorT()
+                C3D += "    stack[int(t" + str(temporalTPos) + ")] = t" + str(temporalT1) + ";\n"
+                myNewVariable = VariableC3D(self.identificador, myVarOld.getPosition(), TipoVar.VALOR, self.expresion.type, TipoVariable.VARIABLE)
+                for etiqueta in resultadoExpresion[2]:
+                    C3D += "    L" + str(etiqueta) + ":\n"
         if myNewVariable != None:
             c3dObj.addVariable(myNewVariable.getName(), myNewVariable)
         return C3D

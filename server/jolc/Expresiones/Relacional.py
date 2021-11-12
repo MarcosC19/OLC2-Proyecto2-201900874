@@ -304,7 +304,7 @@ class Relacional(AST):
                         if isinstance(self.operating2, IdLista):
                             contadorPos = resultado2C3D[1]
                             C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
-                            contadorVal = c3dObj.getContadorT()
+                            contadorVal2 = c3dObj.getContadorT()
                             c3dObj.addContadorT()
 
                         C3D += "    if t" + str(contadorVal) + " > t" + str(contadorVal2) + " "
@@ -394,7 +394,7 @@ class Relacional(AST):
                         if isinstance(self.operating2, IdLista):
                             contadorPos = resultado2C3D[1]
                             C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
-                            contadorVal = c3dObj.getContadorT()
+                            contadorVal2 = c3dObj.getContadorT()
                             c3dObj.addContadorT()
 
                         C3D += "    if t" + str(contadorVal) + " < t" + str(contadorVal2) + " "
@@ -484,7 +484,7 @@ class Relacional(AST):
                         if isinstance(self.operating2, IdLista):
                             contadorPos = resultado2C3D[1]
                             C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
-                            contadorVal = c3dObj.getContadorT()
+                            contadorVal2 = c3dObj.getContadorT()
                             c3dObj.addContadorT()
 
                         C3D += "    if t" + str(contadorVal) + " >= t" + str(contadorVal2) + " "
@@ -574,7 +574,7 @@ class Relacional(AST):
                         if isinstance(self.operating2, IdLista):
                             contadorPos = resultado2C3D[1]
                             C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
-                            contadorVal = c3dObj.getContadorT()
+                            contadorVal2 = c3dObj.getContadorT()
                             c3dObj.addContadorT()
 
                         C3D += "    if t" + str(contadorVal) + " <= t" + str(contadorVal2) + " "
@@ -663,7 +663,7 @@ class Relacional(AST):
                         if isinstance(self.operating2, IdLista):
                             contadorPos = resultado2C3D[1]
                             C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
-                            contadorVal = c3dObj.getContadorT()
+                            contadorVal2 = c3dObj.getContadorT()
                             c3dObj.addContadorT()
 
                         C3D += "    if t" + str(contadorVal) + " == t" + str(contadorVal2) + " "
@@ -872,7 +872,7 @@ class Relacional(AST):
                         if isinstance(self.operating2, IdLista):
                             contadorPos = resultado2C3D[1]
                             C3D += "    t" + str(c3dObj.getContadorT()) + " = heap[int(t" + str(contadorPos) + ")];\n"
-                            contadorVal = c3dObj.getContadorT()
+                            contadorVal2 = c3dObj.getContadorT()
                             c3dObj.addContadorT()
 
                         C3D += "    if t" + str(contadorVal) + " != t" + str(contadorVal2) + " "

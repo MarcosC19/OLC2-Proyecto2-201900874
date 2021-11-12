@@ -10,6 +10,12 @@ class Parametro(AST):
         super().__init__(type, line, column)
         self.identificador = identifier
 
+    def getIdentifier(self):
+        return self.identificador
+
+    def getType(self):
+        return self.type
+
     def getNode(self):
         node = nodeAST("PARAMETRO")
         node.addChildrenNode(self.identificador)
