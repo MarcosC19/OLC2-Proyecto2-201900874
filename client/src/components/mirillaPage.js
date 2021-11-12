@@ -31,7 +31,7 @@ export default class Compiler extends Component {
     }
 
     compiler(){
-        fetch('http://localhost:5000/Compiler', {
+        fetch('http://localhost:5000/Mirilla', {
             method: 'POST',
             body: JSON.stringify(this.state),
             headers: {
@@ -59,7 +59,7 @@ export default class Compiler extends Component {
                     <CodeMirror
                         value={ this.state.entrada }
                         options={{
-                            mode: 'julia',
+                            mode: 'go',
                             theme: 'dracula',
                             smartIndent: true,
                             lineNumbers: true,

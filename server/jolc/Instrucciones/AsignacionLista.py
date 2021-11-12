@@ -83,7 +83,7 @@ class Lista(AST):
             C3D += "    heap[int(H)] = -1;\n"
             C3D += "    H = H + 1;\n"
             C3D += "    stack[int(t" + str(temporalTPos) + ")] = t" + str(temporalHEAP) + ";\n"
-            myNewVariable = VariableC3D(self.identificador, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.APUNTADOR, self.type, TipoVariable.LISTA)
+            myNewVariable = VariableC3D(self.identificador, "P + " + str(c3dObj.getNumVariables() - 1), TipoVar.APUNTADOR, self.type, TipoVariable.LISTA, self.line, self.column)
             
             myNewVariable.setTam(tamanios)
         else:
@@ -125,7 +125,7 @@ class Lista(AST):
             C3D += "    heap[int(H)] = -1;\n"
             C3D += "    H = H + 1;\n"
             C3D += "    stack[int(t" + str(temporalTPos) + ")] = t" + str(temporalHEAP) + ";\n"
-            myNewVariable = VariableC3D(self.identificador, myVarOld.getPosition(), TipoVar.APUNTADOR, self.type, TipoVariable.LISTA)
+            myNewVariable = VariableC3D(self.identificador, myVarOld.getPosition(), TipoVar.APUNTADOR, self.type, TipoVariable.LISTA, self.line, self.column)
             
             myNewVariable.setTam(tamanios)
         

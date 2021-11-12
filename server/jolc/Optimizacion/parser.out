@@ -1,0 +1,2747 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    COMI
+    PORCENTAJE
+
+Grammar
+
+Rule 0     S' -> init
+Rule 1     init -> encabezado
+Rule 2     encabezado -> RPACK RMAIN PTCOMA sigEnc funciones
+Rule 3     sigEnc -> RIMPORT PARIZQ conjLibs
+Rule 4     conjLibs -> CADENA PARDER variables
+Rule 5     conjLibs -> CADENA PTCOMA CADENA PARDER variables
+Rule 6     variables -> RVAR RSTACK CORIZQ ENTERO CORDER RFLOAT PTCOMA variables1
+Rule 7     variables1 -> RVAR RHEAP CORIZQ ENTERO CORDER RFLOAT PTCOMA variables2
+Rule 8     variables2 -> RVAR RP COMA RH RFLOAT PTCOMA variables3
+Rule 9     variables3 -> RVAR listaTMP RFLOAT PTCOMA
+Rule 10    listaTMP -> listaTMP COMA ID
+Rule 11    listaTMP -> ID
+Rule 12    funciones -> funciones funcion
+Rule 13    funciones -> funcion
+Rule 14    funcion -> RFUNC ID PARIZQ PARDER LLAVIZQ instrucciones LLAVDER
+Rule 15    funcion -> RFUNC RMAIN PARIZQ PARDER LLAVIZQ instrucciones LLAVDER
+Rule 16    instrucciones -> instrucciones instruccion
+Rule 17    instrucciones -> instruccion
+Rule 18    instruccion -> asignacion PTCOMA
+Rule 19    instruccion -> imprimir PTCOMA
+Rule 20    instruccion -> salto
+Rule 21    instruccion -> if_inst
+Rule 22    instruccion -> llamada_func PTCOMA
+Rule 23    instruccion -> etiqueta_instr
+Rule 24    instruccion -> return_instr PTCOMA
+Rule 25    llamada_func -> ID PARIZQ PARDER
+Rule 26    return_instr -> RRETURN
+Rule 27    etiqueta_instr -> ID DOSPTS
+Rule 28    if_inst -> RIF expresion LLAVIZQ salto LLAVDER
+Rule 29    salto -> RGOTO ID PTCOMA
+Rule 30    imprimir -> RFMT PUNTO RPRINT PARIZQ CADENA COMA expresion PARDER
+Rule 31    asignacion -> expresion IGUAL expresion MAS expresion
+Rule 32    asignacion -> expresion IGUAL expresion MENOS expresion
+Rule 33    asignacion -> expresion IGUAL expresion POR expresion
+Rule 34    asignacion -> expresion IGUAL expresion DIV expresion
+Rule 35    asignacion -> expresion IGUAL expresion
+Rule 36    asignacion -> expresion IGUAL RSTACK CORIZQ RINT PARIZQ expresion PARDER CORDER
+Rule 37    asignacion -> expresion IGUAL RHEAP CORIZQ RINT PARIZQ expresion PARDER CORDER
+Rule 38    asignacion -> RSTACK CORIZQ RINT PARIZQ expresion PARDER CORDER IGUAL expresion
+Rule 39    asignacion -> RHEAP CORIZQ RINT PARIZQ expresion PARDER CORDER IGUAL expresion
+Rule 40    asignacion -> expresion IGUAL RMATH PUNTO RMOD PARIZQ expresion COMA expresion PARDER
+Rule 41    expresion -> DECIMAL
+Rule 42    expresion -> ENTERO
+Rule 43    expresion -> RP
+Rule 44    expresion -> RH
+Rule 45    expresion -> ID
+Rule 46    expresion -> expresion MAYOR expresion
+Rule 47    expresion -> expresion MAYORIGUAL expresion
+Rule 48    expresion -> expresion MENOR expresion
+Rule 49    expresion -> expresion MENORIGUAL expresion
+Rule 50    expresion -> expresion IGUALDAD expresion
+Rule 51    expresion -> expresion DIFERENTE expresion
+Rule 52    expresion -> RINT PARIZQ expresion PARDER
+Rule 53    expresion -> MENOS expresion
+
+Terminals, with rules where they appear
+
+CADENA               : 4 5 5 30
+COMA                 : 8 10 30 40
+COMI                 : 
+CORDER               : 6 7 36 37 38 39
+CORIZQ               : 6 7 36 37 38 39
+DECIMAL              : 41
+DIFERENTE            : 51
+DIV                  : 34
+DOSPTS               : 27
+ENTERO               : 6 7 42
+ID                   : 10 11 14 25 27 29 45
+IGUAL                : 31 32 33 34 35 36 37 38 39 40
+IGUALDAD             : 50
+LLAVDER              : 14 15 28
+LLAVIZQ              : 14 15 28
+MAS                  : 31
+MAYOR                : 46
+MAYORIGUAL           : 47
+MENOR                : 48
+MENORIGUAL           : 49
+MENOS                : 32 53
+PARDER               : 4 5 14 15 25 30 36 37 38 39 40 52
+PARIZQ               : 3 14 15 25 30 36 37 38 39 40 52
+POR                  : 33
+PORCENTAJE           : 
+PTCOMA               : 2 5 6 7 8 9 18 19 22 24 29
+PUNTO                : 30 40
+RFLOAT               : 6 7 8 9
+RFMT                 : 30
+RFUNC                : 14 15
+RGOTO                : 29
+RH                   : 8 44
+RHEAP                : 7 37 39
+RIF                  : 28
+RIMPORT              : 3
+RINT                 : 36 37 38 39 52
+RMAIN                : 2 15
+RMATH                : 40
+RMOD                 : 40
+RP                   : 8 43
+RPACK                : 2
+RPRINT               : 30
+RRETURN              : 26
+RSTACK               : 6 36 38
+RVAR                 : 6 7 8 9
+error                : 
+
+Nonterminals, with rules where they appear
+
+asignacion           : 18
+conjLibs             : 3
+encabezado           : 1
+etiqueta_instr       : 23
+expresion            : 28 30 31 31 31 32 32 32 33 33 33 34 34 34 35 35 36 36 37 37 38 38 39 39 40 40 40 46 46 47 47 48 48 49 49 50 50 51 51 52 53
+funcion              : 12 13
+funciones            : 2 12
+if_inst              : 21
+imprimir             : 19
+init                 : 0
+instruccion          : 16 17
+instrucciones        : 14 15 16
+listaTMP             : 9 10
+llamada_func         : 22
+return_instr         : 24
+salto                : 20 28
+sigEnc               : 2
+variables            : 4 5
+variables1           : 6
+variables2           : 7
+variables3           : 8
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . init
+    (1) init -> . encabezado
+    (2) encabezado -> . RPACK RMAIN PTCOMA sigEnc funciones
+
+    RPACK           shift and go to state 3
+
+    init                           shift and go to state 1
+    encabezado                     shift and go to state 2
+
+state 1
+
+    (0) S' -> init .
+
+
+
+state 2
+
+    (1) init -> encabezado .
+
+    $end            reduce using rule 1 (init -> encabezado .)
+
+
+state 3
+
+    (2) encabezado -> RPACK . RMAIN PTCOMA sigEnc funciones
+
+    RMAIN           shift and go to state 4
+
+
+state 4
+
+    (2) encabezado -> RPACK RMAIN . PTCOMA sigEnc funciones
+
+    PTCOMA          shift and go to state 5
+
+
+state 5
+
+    (2) encabezado -> RPACK RMAIN PTCOMA . sigEnc funciones
+    (3) sigEnc -> . RIMPORT PARIZQ conjLibs
+
+    RIMPORT         shift and go to state 7
+
+    sigEnc                         shift and go to state 6
+
+state 6
+
+    (2) encabezado -> RPACK RMAIN PTCOMA sigEnc . funciones
+    (12) funciones -> . funciones funcion
+    (13) funciones -> . funcion
+    (14) funcion -> . RFUNC ID PARIZQ PARDER LLAVIZQ instrucciones LLAVDER
+    (15) funcion -> . RFUNC RMAIN PARIZQ PARDER LLAVIZQ instrucciones LLAVDER
+
+    RFUNC           shift and go to state 10
+
+    funciones                      shift and go to state 8
+    funcion                        shift and go to state 9
+
+state 7
+
+    (3) sigEnc -> RIMPORT . PARIZQ conjLibs
+
+    PARIZQ          shift and go to state 11
+
+
+state 8
+
+    (2) encabezado -> RPACK RMAIN PTCOMA sigEnc funciones .
+    (12) funciones -> funciones . funcion
+    (14) funcion -> . RFUNC ID PARIZQ PARDER LLAVIZQ instrucciones LLAVDER
+    (15) funcion -> . RFUNC RMAIN PARIZQ PARDER LLAVIZQ instrucciones LLAVDER
+
+    $end            reduce using rule 2 (encabezado -> RPACK RMAIN PTCOMA sigEnc funciones .)
+    RFUNC           shift and go to state 10
+
+    funcion                        shift and go to state 12
+
+state 9
+
+    (13) funciones -> funcion .
+
+    RFUNC           reduce using rule 13 (funciones -> funcion .)
+    $end            reduce using rule 13 (funciones -> funcion .)
+
+
+state 10
+
+    (14) funcion -> RFUNC . ID PARIZQ PARDER LLAVIZQ instrucciones LLAVDER
+    (15) funcion -> RFUNC . RMAIN PARIZQ PARDER LLAVIZQ instrucciones LLAVDER
+
+    ID              shift and go to state 13
+    RMAIN           shift and go to state 14
+
+
+state 11
+
+    (3) sigEnc -> RIMPORT PARIZQ . conjLibs
+    (4) conjLibs -> . CADENA PARDER variables
+    (5) conjLibs -> . CADENA PTCOMA CADENA PARDER variables
+
+    CADENA          shift and go to state 16
+
+    conjLibs                       shift and go to state 15
+
+state 12
+
+    (12) funciones -> funciones funcion .
+
+    RFUNC           reduce using rule 12 (funciones -> funciones funcion .)
+    $end            reduce using rule 12 (funciones -> funciones funcion .)
+
+
+state 13
+
+    (14) funcion -> RFUNC ID . PARIZQ PARDER LLAVIZQ instrucciones LLAVDER
+
+    PARIZQ          shift and go to state 17
+
+
+state 14
+
+    (15) funcion -> RFUNC RMAIN . PARIZQ PARDER LLAVIZQ instrucciones LLAVDER
+
+    PARIZQ          shift and go to state 18
+
+
+state 15
+
+    (3) sigEnc -> RIMPORT PARIZQ conjLibs .
+
+    RFUNC           reduce using rule 3 (sigEnc -> RIMPORT PARIZQ conjLibs .)
+
+
+state 16
+
+    (4) conjLibs -> CADENA . PARDER variables
+    (5) conjLibs -> CADENA . PTCOMA CADENA PARDER variables
+
+    PARDER          shift and go to state 19
+    PTCOMA          shift and go to state 20
+
+
+state 17
+
+    (14) funcion -> RFUNC ID PARIZQ . PARDER LLAVIZQ instrucciones LLAVDER
+
+    PARDER          shift and go to state 21
+
+
+state 18
+
+    (15) funcion -> RFUNC RMAIN PARIZQ . PARDER LLAVIZQ instrucciones LLAVDER
+
+    PARDER          shift and go to state 22
+
+
+state 19
+
+    (4) conjLibs -> CADENA PARDER . variables
+    (6) variables -> . RVAR RSTACK CORIZQ ENTERO CORDER RFLOAT PTCOMA variables1
+
+    RVAR            shift and go to state 24
+
+    variables                      shift and go to state 23
+
+state 20
+
+    (5) conjLibs -> CADENA PTCOMA . CADENA PARDER variables
+
+    CADENA          shift and go to state 25
+
+
+state 21
+
+    (14) funcion -> RFUNC ID PARIZQ PARDER . LLAVIZQ instrucciones LLAVDER
+
+    LLAVIZQ         shift and go to state 26
+
+
+state 22
+
+    (15) funcion -> RFUNC RMAIN PARIZQ PARDER . LLAVIZQ instrucciones LLAVDER
+
+    LLAVIZQ         shift and go to state 27
+
+
+state 23
+
+    (4) conjLibs -> CADENA PARDER variables .
+
+    RFUNC           reduce using rule 4 (conjLibs -> CADENA PARDER variables .)
+
+
+state 24
+
+    (6) variables -> RVAR . RSTACK CORIZQ ENTERO CORDER RFLOAT PTCOMA variables1
+
+    RSTACK          shift and go to state 28
+
+
+state 25
+
+    (5) conjLibs -> CADENA PTCOMA CADENA . PARDER variables
+
+    PARDER          shift and go to state 29
+
+
+state 26
+
+    (14) funcion -> RFUNC ID PARIZQ PARDER LLAVIZQ . instrucciones LLAVDER
+    (16) instrucciones -> . instrucciones instruccion
+    (17) instrucciones -> . instruccion
+    (18) instruccion -> . asignacion PTCOMA
+    (19) instruccion -> . imprimir PTCOMA
+    (20) instruccion -> . salto
+    (21) instruccion -> . if_inst
+    (22) instruccion -> . llamada_func PTCOMA
+    (23) instruccion -> . etiqueta_instr
+    (24) instruccion -> . return_instr PTCOMA
+    (31) asignacion -> . expresion IGUAL expresion MAS expresion
+    (32) asignacion -> . expresion IGUAL expresion MENOS expresion
+    (33) asignacion -> . expresion IGUAL expresion POR expresion
+    (34) asignacion -> . expresion IGUAL expresion DIV expresion
+    (35) asignacion -> . expresion IGUAL expresion
+    (36) asignacion -> . expresion IGUAL RSTACK CORIZQ RINT PARIZQ expresion PARDER CORDER
+    (37) asignacion -> . expresion IGUAL RHEAP CORIZQ RINT PARIZQ expresion PARDER CORDER
+    (38) asignacion -> . RSTACK CORIZQ RINT PARIZQ expresion PARDER CORDER IGUAL expresion
+    (39) asignacion -> . RHEAP CORIZQ RINT PARIZQ expresion PARDER CORDER IGUAL expresion
+    (40) asignacion -> . expresion IGUAL RMATH PUNTO RMOD PARIZQ expresion COMA expresion PARDER
+    (30) imprimir -> . RFMT PUNTO RPRINT PARIZQ CADENA COMA expresion PARDER
+    (29) salto -> . RGOTO ID PTCOMA
+    (28) if_inst -> . RIF expresion LLAVIZQ salto LLAVDER
+    (25) llamada_func -> . ID PARIZQ PARDER
+    (27) etiqueta_instr -> . ID DOSPTS
+    (26) return_instr -> . RRETURN
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    RSTACK          shift and go to state 42
+    RHEAP           shift and go to state 44
+    RFMT            shift and go to state 45
+    RGOTO           shift and go to state 46
+    RIF             shift and go to state 47
+    ID              shift and go to state 30
+    RRETURN         shift and go to state 48
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    instrucciones                  shift and go to state 31
+    instruccion                    shift and go to state 32
+    asignacion                     shift and go to state 33
+    imprimir                       shift and go to state 34
+    salto                          shift and go to state 35
+    if_inst                        shift and go to state 36
+    llamada_func                   shift and go to state 37
+    etiqueta_instr                 shift and go to state 38
+    return_instr                   shift and go to state 39
+    expresion                      shift and go to state 40
+
+state 27
+
+    (15) funcion -> RFUNC RMAIN PARIZQ PARDER LLAVIZQ . instrucciones LLAVDER
+    (16) instrucciones -> . instrucciones instruccion
+    (17) instrucciones -> . instruccion
+    (18) instruccion -> . asignacion PTCOMA
+    (19) instruccion -> . imprimir PTCOMA
+    (20) instruccion -> . salto
+    (21) instruccion -> . if_inst
+    (22) instruccion -> . llamada_func PTCOMA
+    (23) instruccion -> . etiqueta_instr
+    (24) instruccion -> . return_instr PTCOMA
+    (31) asignacion -> . expresion IGUAL expresion MAS expresion
+    (32) asignacion -> . expresion IGUAL expresion MENOS expresion
+    (33) asignacion -> . expresion IGUAL expresion POR expresion
+    (34) asignacion -> . expresion IGUAL expresion DIV expresion
+    (35) asignacion -> . expresion IGUAL expresion
+    (36) asignacion -> . expresion IGUAL RSTACK CORIZQ RINT PARIZQ expresion PARDER CORDER
+    (37) asignacion -> . expresion IGUAL RHEAP CORIZQ RINT PARIZQ expresion PARDER CORDER
+    (38) asignacion -> . RSTACK CORIZQ RINT PARIZQ expresion PARDER CORDER IGUAL expresion
+    (39) asignacion -> . RHEAP CORIZQ RINT PARIZQ expresion PARDER CORDER IGUAL expresion
+    (40) asignacion -> . expresion IGUAL RMATH PUNTO RMOD PARIZQ expresion COMA expresion PARDER
+    (30) imprimir -> . RFMT PUNTO RPRINT PARIZQ CADENA COMA expresion PARDER
+    (29) salto -> . RGOTO ID PTCOMA
+    (28) if_inst -> . RIF expresion LLAVIZQ salto LLAVDER
+    (25) llamada_func -> . ID PARIZQ PARDER
+    (27) etiqueta_instr -> . ID DOSPTS
+    (26) return_instr -> . RRETURN
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    RSTACK          shift and go to state 42
+    RHEAP           shift and go to state 44
+    RFMT            shift and go to state 45
+    RGOTO           shift and go to state 46
+    RIF             shift and go to state 47
+    ID              shift and go to state 30
+    RRETURN         shift and go to state 48
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    instrucciones                  shift and go to state 53
+    instruccion                    shift and go to state 32
+    asignacion                     shift and go to state 33
+    imprimir                       shift and go to state 34
+    salto                          shift and go to state 35
+    if_inst                        shift and go to state 36
+    llamada_func                   shift and go to state 37
+    etiqueta_instr                 shift and go to state 38
+    return_instr                   shift and go to state 39
+    expresion                      shift and go to state 40
+
+state 28
+
+    (6) variables -> RVAR RSTACK . CORIZQ ENTERO CORDER RFLOAT PTCOMA variables1
+
+    CORIZQ          shift and go to state 54
+
+
+state 29
+
+    (5) conjLibs -> CADENA PTCOMA CADENA PARDER . variables
+    (6) variables -> . RVAR RSTACK CORIZQ ENTERO CORDER RFLOAT PTCOMA variables1
+
+    RVAR            shift and go to state 24
+
+    variables                      shift and go to state 55
+
+state 30
+
+    (25) llamada_func -> ID . PARIZQ PARDER
+    (27) etiqueta_instr -> ID . DOSPTS
+    (45) expresion -> ID .
+
+    PARIZQ          shift and go to state 56
+    DOSPTS          shift and go to state 57
+    IGUAL           reduce using rule 45 (expresion -> ID .)
+    MAYOR           reduce using rule 45 (expresion -> ID .)
+    MAYORIGUAL      reduce using rule 45 (expresion -> ID .)
+    MENOR           reduce using rule 45 (expresion -> ID .)
+    MENORIGUAL      reduce using rule 45 (expresion -> ID .)
+    IGUALDAD        reduce using rule 45 (expresion -> ID .)
+    DIFERENTE       reduce using rule 45 (expresion -> ID .)
+
+
+state 31
+
+    (14) funcion -> RFUNC ID PARIZQ PARDER LLAVIZQ instrucciones . LLAVDER
+    (16) instrucciones -> instrucciones . instruccion
+    (18) instruccion -> . asignacion PTCOMA
+    (19) instruccion -> . imprimir PTCOMA
+    (20) instruccion -> . salto
+    (21) instruccion -> . if_inst
+    (22) instruccion -> . llamada_func PTCOMA
+    (23) instruccion -> . etiqueta_instr
+    (24) instruccion -> . return_instr PTCOMA
+    (31) asignacion -> . expresion IGUAL expresion MAS expresion
+    (32) asignacion -> . expresion IGUAL expresion MENOS expresion
+    (33) asignacion -> . expresion IGUAL expresion POR expresion
+    (34) asignacion -> . expresion IGUAL expresion DIV expresion
+    (35) asignacion -> . expresion IGUAL expresion
+    (36) asignacion -> . expresion IGUAL RSTACK CORIZQ RINT PARIZQ expresion PARDER CORDER
+    (37) asignacion -> . expresion IGUAL RHEAP CORIZQ RINT PARIZQ expresion PARDER CORDER
+    (38) asignacion -> . RSTACK CORIZQ RINT PARIZQ expresion PARDER CORDER IGUAL expresion
+    (39) asignacion -> . RHEAP CORIZQ RINT PARIZQ expresion PARDER CORDER IGUAL expresion
+    (40) asignacion -> . expresion IGUAL RMATH PUNTO RMOD PARIZQ expresion COMA expresion PARDER
+    (30) imprimir -> . RFMT PUNTO RPRINT PARIZQ CADENA COMA expresion PARDER
+    (29) salto -> . RGOTO ID PTCOMA
+    (28) if_inst -> . RIF expresion LLAVIZQ salto LLAVDER
+    (25) llamada_func -> . ID PARIZQ PARDER
+    (27) etiqueta_instr -> . ID DOSPTS
+    (26) return_instr -> . RRETURN
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    LLAVDER         shift and go to state 58
+    RSTACK          shift and go to state 42
+    RHEAP           shift and go to state 44
+    RFMT            shift and go to state 45
+    RGOTO           shift and go to state 46
+    RIF             shift and go to state 47
+    ID              shift and go to state 30
+    RRETURN         shift and go to state 48
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    instruccion                    shift and go to state 59
+    asignacion                     shift and go to state 33
+    imprimir                       shift and go to state 34
+    salto                          shift and go to state 35
+    if_inst                        shift and go to state 36
+    llamada_func                   shift and go to state 37
+    etiqueta_instr                 shift and go to state 38
+    return_instr                   shift and go to state 39
+    expresion                      shift and go to state 40
+
+state 32
+
+    (17) instrucciones -> instruccion .
+
+    LLAVDER         reduce using rule 17 (instrucciones -> instruccion .)
+    RSTACK          reduce using rule 17 (instrucciones -> instruccion .)
+    RHEAP           reduce using rule 17 (instrucciones -> instruccion .)
+    RFMT            reduce using rule 17 (instrucciones -> instruccion .)
+    RGOTO           reduce using rule 17 (instrucciones -> instruccion .)
+    RIF             reduce using rule 17 (instrucciones -> instruccion .)
+    ID              reduce using rule 17 (instrucciones -> instruccion .)
+    RRETURN         reduce using rule 17 (instrucciones -> instruccion .)
+    DECIMAL         reduce using rule 17 (instrucciones -> instruccion .)
+    ENTERO          reduce using rule 17 (instrucciones -> instruccion .)
+    RP              reduce using rule 17 (instrucciones -> instruccion .)
+    RH              reduce using rule 17 (instrucciones -> instruccion .)
+    RINT            reduce using rule 17 (instrucciones -> instruccion .)
+    MENOS           reduce using rule 17 (instrucciones -> instruccion .)
+
+
+state 33
+
+    (18) instruccion -> asignacion . PTCOMA
+
+    PTCOMA          shift and go to state 60
+
+
+state 34
+
+    (19) instruccion -> imprimir . PTCOMA
+
+    PTCOMA          shift and go to state 61
+
+
+state 35
+
+    (20) instruccion -> salto .
+
+    LLAVDER         reduce using rule 20 (instruccion -> salto .)
+    RSTACK          reduce using rule 20 (instruccion -> salto .)
+    RHEAP           reduce using rule 20 (instruccion -> salto .)
+    RFMT            reduce using rule 20 (instruccion -> salto .)
+    RGOTO           reduce using rule 20 (instruccion -> salto .)
+    RIF             reduce using rule 20 (instruccion -> salto .)
+    ID              reduce using rule 20 (instruccion -> salto .)
+    RRETURN         reduce using rule 20 (instruccion -> salto .)
+    DECIMAL         reduce using rule 20 (instruccion -> salto .)
+    ENTERO          reduce using rule 20 (instruccion -> salto .)
+    RP              reduce using rule 20 (instruccion -> salto .)
+    RH              reduce using rule 20 (instruccion -> salto .)
+    RINT            reduce using rule 20 (instruccion -> salto .)
+    MENOS           reduce using rule 20 (instruccion -> salto .)
+
+
+state 36
+
+    (21) instruccion -> if_inst .
+
+    LLAVDER         reduce using rule 21 (instruccion -> if_inst .)
+    RSTACK          reduce using rule 21 (instruccion -> if_inst .)
+    RHEAP           reduce using rule 21 (instruccion -> if_inst .)
+    RFMT            reduce using rule 21 (instruccion -> if_inst .)
+    RGOTO           reduce using rule 21 (instruccion -> if_inst .)
+    RIF             reduce using rule 21 (instruccion -> if_inst .)
+    ID              reduce using rule 21 (instruccion -> if_inst .)
+    RRETURN         reduce using rule 21 (instruccion -> if_inst .)
+    DECIMAL         reduce using rule 21 (instruccion -> if_inst .)
+    ENTERO          reduce using rule 21 (instruccion -> if_inst .)
+    RP              reduce using rule 21 (instruccion -> if_inst .)
+    RH              reduce using rule 21 (instruccion -> if_inst .)
+    RINT            reduce using rule 21 (instruccion -> if_inst .)
+    MENOS           reduce using rule 21 (instruccion -> if_inst .)
+
+
+state 37
+
+    (22) instruccion -> llamada_func . PTCOMA
+
+    PTCOMA          shift and go to state 62
+
+
+state 38
+
+    (23) instruccion -> etiqueta_instr .
+
+    LLAVDER         reduce using rule 23 (instruccion -> etiqueta_instr .)
+    RSTACK          reduce using rule 23 (instruccion -> etiqueta_instr .)
+    RHEAP           reduce using rule 23 (instruccion -> etiqueta_instr .)
+    RFMT            reduce using rule 23 (instruccion -> etiqueta_instr .)
+    RGOTO           reduce using rule 23 (instruccion -> etiqueta_instr .)
+    RIF             reduce using rule 23 (instruccion -> etiqueta_instr .)
+    ID              reduce using rule 23 (instruccion -> etiqueta_instr .)
+    RRETURN         reduce using rule 23 (instruccion -> etiqueta_instr .)
+    DECIMAL         reduce using rule 23 (instruccion -> etiqueta_instr .)
+    ENTERO          reduce using rule 23 (instruccion -> etiqueta_instr .)
+    RP              reduce using rule 23 (instruccion -> etiqueta_instr .)
+    RH              reduce using rule 23 (instruccion -> etiqueta_instr .)
+    RINT            reduce using rule 23 (instruccion -> etiqueta_instr .)
+    MENOS           reduce using rule 23 (instruccion -> etiqueta_instr .)
+
+
+state 39
+
+    (24) instruccion -> return_instr . PTCOMA
+
+    PTCOMA          shift and go to state 63
+
+
+state 40
+
+    (31) asignacion -> expresion . IGUAL expresion MAS expresion
+    (32) asignacion -> expresion . IGUAL expresion MENOS expresion
+    (33) asignacion -> expresion . IGUAL expresion POR expresion
+    (34) asignacion -> expresion . IGUAL expresion DIV expresion
+    (35) asignacion -> expresion . IGUAL expresion
+    (36) asignacion -> expresion . IGUAL RSTACK CORIZQ RINT PARIZQ expresion PARDER CORDER
+    (37) asignacion -> expresion . IGUAL RHEAP CORIZQ RINT PARIZQ expresion PARDER CORDER
+    (40) asignacion -> expresion . IGUAL RMATH PUNTO RMOD PARIZQ expresion COMA expresion PARDER
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    IGUAL           shift and go to state 64
+    MAYOR           shift and go to state 65
+    MAYORIGUAL      shift and go to state 66
+    MENOR           shift and go to state 67
+    MENORIGUAL      shift and go to state 68
+    IGUALDAD        shift and go to state 69
+    DIFERENTE       shift and go to state 70
+
+
+state 41
+
+    (53) expresion -> MENOS . expresion
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 71
+
+state 42
+
+    (38) asignacion -> RSTACK . CORIZQ RINT PARIZQ expresion PARDER CORDER IGUAL expresion
+
+    CORIZQ          shift and go to state 73
+
+
+state 43
+
+    (52) expresion -> RINT . PARIZQ expresion PARDER
+
+    PARIZQ          shift and go to state 74
+
+
+state 44
+
+    (39) asignacion -> RHEAP . CORIZQ RINT PARIZQ expresion PARDER CORDER IGUAL expresion
+
+    CORIZQ          shift and go to state 75
+
+
+state 45
+
+    (30) imprimir -> RFMT . PUNTO RPRINT PARIZQ CADENA COMA expresion PARDER
+
+    PUNTO           shift and go to state 76
+
+
+state 46
+
+    (29) salto -> RGOTO . ID PTCOMA
+
+    ID              shift and go to state 77
+
+
+state 47
+
+    (28) if_inst -> RIF . expresion LLAVIZQ salto LLAVDER
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 78
+
+state 48
+
+    (26) return_instr -> RRETURN .
+
+    PTCOMA          reduce using rule 26 (return_instr -> RRETURN .)
+
+
+state 49
+
+    (41) expresion -> DECIMAL .
+
+    IGUAL           reduce using rule 41 (expresion -> DECIMAL .)
+    MAYOR           reduce using rule 41 (expresion -> DECIMAL .)
+    MAYORIGUAL      reduce using rule 41 (expresion -> DECIMAL .)
+    MENOR           reduce using rule 41 (expresion -> DECIMAL .)
+    MENORIGUAL      reduce using rule 41 (expresion -> DECIMAL .)
+    IGUALDAD        reduce using rule 41 (expresion -> DECIMAL .)
+    DIFERENTE       reduce using rule 41 (expresion -> DECIMAL .)
+    LLAVIZQ         reduce using rule 41 (expresion -> DECIMAL .)
+    MAS             reduce using rule 41 (expresion -> DECIMAL .)
+    MENOS           reduce using rule 41 (expresion -> DECIMAL .)
+    POR             reduce using rule 41 (expresion -> DECIMAL .)
+    DIV             reduce using rule 41 (expresion -> DECIMAL .)
+    PTCOMA          reduce using rule 41 (expresion -> DECIMAL .)
+    PARDER          reduce using rule 41 (expresion -> DECIMAL .)
+    COMA            reduce using rule 41 (expresion -> DECIMAL .)
+
+
+state 50
+
+    (42) expresion -> ENTERO .
+
+    IGUAL           reduce using rule 42 (expresion -> ENTERO .)
+    MAYOR           reduce using rule 42 (expresion -> ENTERO .)
+    MAYORIGUAL      reduce using rule 42 (expresion -> ENTERO .)
+    MENOR           reduce using rule 42 (expresion -> ENTERO .)
+    MENORIGUAL      reduce using rule 42 (expresion -> ENTERO .)
+    IGUALDAD        reduce using rule 42 (expresion -> ENTERO .)
+    DIFERENTE       reduce using rule 42 (expresion -> ENTERO .)
+    LLAVIZQ         reduce using rule 42 (expresion -> ENTERO .)
+    MAS             reduce using rule 42 (expresion -> ENTERO .)
+    MENOS           reduce using rule 42 (expresion -> ENTERO .)
+    POR             reduce using rule 42 (expresion -> ENTERO .)
+    DIV             reduce using rule 42 (expresion -> ENTERO .)
+    PTCOMA          reduce using rule 42 (expresion -> ENTERO .)
+    PARDER          reduce using rule 42 (expresion -> ENTERO .)
+    COMA            reduce using rule 42 (expresion -> ENTERO .)
+
+
+state 51
+
+    (43) expresion -> RP .
+
+    IGUAL           reduce using rule 43 (expresion -> RP .)
+    MAYOR           reduce using rule 43 (expresion -> RP .)
+    MAYORIGUAL      reduce using rule 43 (expresion -> RP .)
+    MENOR           reduce using rule 43 (expresion -> RP .)
+    MENORIGUAL      reduce using rule 43 (expresion -> RP .)
+    IGUALDAD        reduce using rule 43 (expresion -> RP .)
+    DIFERENTE       reduce using rule 43 (expresion -> RP .)
+    LLAVIZQ         reduce using rule 43 (expresion -> RP .)
+    MAS             reduce using rule 43 (expresion -> RP .)
+    MENOS           reduce using rule 43 (expresion -> RP .)
+    POR             reduce using rule 43 (expresion -> RP .)
+    DIV             reduce using rule 43 (expresion -> RP .)
+    PTCOMA          reduce using rule 43 (expresion -> RP .)
+    PARDER          reduce using rule 43 (expresion -> RP .)
+    COMA            reduce using rule 43 (expresion -> RP .)
+
+
+state 52
+
+    (44) expresion -> RH .
+
+    IGUAL           reduce using rule 44 (expresion -> RH .)
+    MAYOR           reduce using rule 44 (expresion -> RH .)
+    MAYORIGUAL      reduce using rule 44 (expresion -> RH .)
+    MENOR           reduce using rule 44 (expresion -> RH .)
+    MENORIGUAL      reduce using rule 44 (expresion -> RH .)
+    IGUALDAD        reduce using rule 44 (expresion -> RH .)
+    DIFERENTE       reduce using rule 44 (expresion -> RH .)
+    LLAVIZQ         reduce using rule 44 (expresion -> RH .)
+    MAS             reduce using rule 44 (expresion -> RH .)
+    MENOS           reduce using rule 44 (expresion -> RH .)
+    POR             reduce using rule 44 (expresion -> RH .)
+    DIV             reduce using rule 44 (expresion -> RH .)
+    PTCOMA          reduce using rule 44 (expresion -> RH .)
+    PARDER          reduce using rule 44 (expresion -> RH .)
+    COMA            reduce using rule 44 (expresion -> RH .)
+
+
+state 53
+
+    (15) funcion -> RFUNC RMAIN PARIZQ PARDER LLAVIZQ instrucciones . LLAVDER
+    (16) instrucciones -> instrucciones . instruccion
+    (18) instruccion -> . asignacion PTCOMA
+    (19) instruccion -> . imprimir PTCOMA
+    (20) instruccion -> . salto
+    (21) instruccion -> . if_inst
+    (22) instruccion -> . llamada_func PTCOMA
+    (23) instruccion -> . etiqueta_instr
+    (24) instruccion -> . return_instr PTCOMA
+    (31) asignacion -> . expresion IGUAL expresion MAS expresion
+    (32) asignacion -> . expresion IGUAL expresion MENOS expresion
+    (33) asignacion -> . expresion IGUAL expresion POR expresion
+    (34) asignacion -> . expresion IGUAL expresion DIV expresion
+    (35) asignacion -> . expresion IGUAL expresion
+    (36) asignacion -> . expresion IGUAL RSTACK CORIZQ RINT PARIZQ expresion PARDER CORDER
+    (37) asignacion -> . expresion IGUAL RHEAP CORIZQ RINT PARIZQ expresion PARDER CORDER
+    (38) asignacion -> . RSTACK CORIZQ RINT PARIZQ expresion PARDER CORDER IGUAL expresion
+    (39) asignacion -> . RHEAP CORIZQ RINT PARIZQ expresion PARDER CORDER IGUAL expresion
+    (40) asignacion -> . expresion IGUAL RMATH PUNTO RMOD PARIZQ expresion COMA expresion PARDER
+    (30) imprimir -> . RFMT PUNTO RPRINT PARIZQ CADENA COMA expresion PARDER
+    (29) salto -> . RGOTO ID PTCOMA
+    (28) if_inst -> . RIF expresion LLAVIZQ salto LLAVDER
+    (25) llamada_func -> . ID PARIZQ PARDER
+    (27) etiqueta_instr -> . ID DOSPTS
+    (26) return_instr -> . RRETURN
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    LLAVDER         shift and go to state 79
+    RSTACK          shift and go to state 42
+    RHEAP           shift and go to state 44
+    RFMT            shift and go to state 45
+    RGOTO           shift and go to state 46
+    RIF             shift and go to state 47
+    ID              shift and go to state 30
+    RRETURN         shift and go to state 48
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    instruccion                    shift and go to state 59
+    asignacion                     shift and go to state 33
+    imprimir                       shift and go to state 34
+    salto                          shift and go to state 35
+    if_inst                        shift and go to state 36
+    llamada_func                   shift and go to state 37
+    etiqueta_instr                 shift and go to state 38
+    return_instr                   shift and go to state 39
+    expresion                      shift and go to state 40
+
+state 54
+
+    (6) variables -> RVAR RSTACK CORIZQ . ENTERO CORDER RFLOAT PTCOMA variables1
+
+    ENTERO          shift and go to state 80
+
+
+state 55
+
+    (5) conjLibs -> CADENA PTCOMA CADENA PARDER variables .
+
+    RFUNC           reduce using rule 5 (conjLibs -> CADENA PTCOMA CADENA PARDER variables .)
+
+
+state 56
+
+    (25) llamada_func -> ID PARIZQ . PARDER
+
+    PARDER          shift and go to state 81
+
+
+state 57
+
+    (27) etiqueta_instr -> ID DOSPTS .
+
+    LLAVDER         reduce using rule 27 (etiqueta_instr -> ID DOSPTS .)
+    RSTACK          reduce using rule 27 (etiqueta_instr -> ID DOSPTS .)
+    RHEAP           reduce using rule 27 (etiqueta_instr -> ID DOSPTS .)
+    RFMT            reduce using rule 27 (etiqueta_instr -> ID DOSPTS .)
+    RGOTO           reduce using rule 27 (etiqueta_instr -> ID DOSPTS .)
+    RIF             reduce using rule 27 (etiqueta_instr -> ID DOSPTS .)
+    ID              reduce using rule 27 (etiqueta_instr -> ID DOSPTS .)
+    RRETURN         reduce using rule 27 (etiqueta_instr -> ID DOSPTS .)
+    DECIMAL         reduce using rule 27 (etiqueta_instr -> ID DOSPTS .)
+    ENTERO          reduce using rule 27 (etiqueta_instr -> ID DOSPTS .)
+    RP              reduce using rule 27 (etiqueta_instr -> ID DOSPTS .)
+    RH              reduce using rule 27 (etiqueta_instr -> ID DOSPTS .)
+    RINT            reduce using rule 27 (etiqueta_instr -> ID DOSPTS .)
+    MENOS           reduce using rule 27 (etiqueta_instr -> ID DOSPTS .)
+
+
+state 58
+
+    (14) funcion -> RFUNC ID PARIZQ PARDER LLAVIZQ instrucciones LLAVDER .
+
+    RFUNC           reduce using rule 14 (funcion -> RFUNC ID PARIZQ PARDER LLAVIZQ instrucciones LLAVDER .)
+    $end            reduce using rule 14 (funcion -> RFUNC ID PARIZQ PARDER LLAVIZQ instrucciones LLAVDER .)
+
+
+state 59
+
+    (16) instrucciones -> instrucciones instruccion .
+
+    LLAVDER         reduce using rule 16 (instrucciones -> instrucciones instruccion .)
+    RSTACK          reduce using rule 16 (instrucciones -> instrucciones instruccion .)
+    RHEAP           reduce using rule 16 (instrucciones -> instrucciones instruccion .)
+    RFMT            reduce using rule 16 (instrucciones -> instrucciones instruccion .)
+    RGOTO           reduce using rule 16 (instrucciones -> instrucciones instruccion .)
+    RIF             reduce using rule 16 (instrucciones -> instrucciones instruccion .)
+    ID              reduce using rule 16 (instrucciones -> instrucciones instruccion .)
+    RRETURN         reduce using rule 16 (instrucciones -> instrucciones instruccion .)
+    DECIMAL         reduce using rule 16 (instrucciones -> instrucciones instruccion .)
+    ENTERO          reduce using rule 16 (instrucciones -> instrucciones instruccion .)
+    RP              reduce using rule 16 (instrucciones -> instrucciones instruccion .)
+    RH              reduce using rule 16 (instrucciones -> instrucciones instruccion .)
+    RINT            reduce using rule 16 (instrucciones -> instrucciones instruccion .)
+    MENOS           reduce using rule 16 (instrucciones -> instrucciones instruccion .)
+
+
+state 60
+
+    (18) instruccion -> asignacion PTCOMA .
+
+    LLAVDER         reduce using rule 18 (instruccion -> asignacion PTCOMA .)
+    RSTACK          reduce using rule 18 (instruccion -> asignacion PTCOMA .)
+    RHEAP           reduce using rule 18 (instruccion -> asignacion PTCOMA .)
+    RFMT            reduce using rule 18 (instruccion -> asignacion PTCOMA .)
+    RGOTO           reduce using rule 18 (instruccion -> asignacion PTCOMA .)
+    RIF             reduce using rule 18 (instruccion -> asignacion PTCOMA .)
+    ID              reduce using rule 18 (instruccion -> asignacion PTCOMA .)
+    RRETURN         reduce using rule 18 (instruccion -> asignacion PTCOMA .)
+    DECIMAL         reduce using rule 18 (instruccion -> asignacion PTCOMA .)
+    ENTERO          reduce using rule 18 (instruccion -> asignacion PTCOMA .)
+    RP              reduce using rule 18 (instruccion -> asignacion PTCOMA .)
+    RH              reduce using rule 18 (instruccion -> asignacion PTCOMA .)
+    RINT            reduce using rule 18 (instruccion -> asignacion PTCOMA .)
+    MENOS           reduce using rule 18 (instruccion -> asignacion PTCOMA .)
+
+
+state 61
+
+    (19) instruccion -> imprimir PTCOMA .
+
+    LLAVDER         reduce using rule 19 (instruccion -> imprimir PTCOMA .)
+    RSTACK          reduce using rule 19 (instruccion -> imprimir PTCOMA .)
+    RHEAP           reduce using rule 19 (instruccion -> imprimir PTCOMA .)
+    RFMT            reduce using rule 19 (instruccion -> imprimir PTCOMA .)
+    RGOTO           reduce using rule 19 (instruccion -> imprimir PTCOMA .)
+    RIF             reduce using rule 19 (instruccion -> imprimir PTCOMA .)
+    ID              reduce using rule 19 (instruccion -> imprimir PTCOMA .)
+    RRETURN         reduce using rule 19 (instruccion -> imprimir PTCOMA .)
+    DECIMAL         reduce using rule 19 (instruccion -> imprimir PTCOMA .)
+    ENTERO          reduce using rule 19 (instruccion -> imprimir PTCOMA .)
+    RP              reduce using rule 19 (instruccion -> imprimir PTCOMA .)
+    RH              reduce using rule 19 (instruccion -> imprimir PTCOMA .)
+    RINT            reduce using rule 19 (instruccion -> imprimir PTCOMA .)
+    MENOS           reduce using rule 19 (instruccion -> imprimir PTCOMA .)
+
+
+state 62
+
+    (22) instruccion -> llamada_func PTCOMA .
+
+    LLAVDER         reduce using rule 22 (instruccion -> llamada_func PTCOMA .)
+    RSTACK          reduce using rule 22 (instruccion -> llamada_func PTCOMA .)
+    RHEAP           reduce using rule 22 (instruccion -> llamada_func PTCOMA .)
+    RFMT            reduce using rule 22 (instruccion -> llamada_func PTCOMA .)
+    RGOTO           reduce using rule 22 (instruccion -> llamada_func PTCOMA .)
+    RIF             reduce using rule 22 (instruccion -> llamada_func PTCOMA .)
+    ID              reduce using rule 22 (instruccion -> llamada_func PTCOMA .)
+    RRETURN         reduce using rule 22 (instruccion -> llamada_func PTCOMA .)
+    DECIMAL         reduce using rule 22 (instruccion -> llamada_func PTCOMA .)
+    ENTERO          reduce using rule 22 (instruccion -> llamada_func PTCOMA .)
+    RP              reduce using rule 22 (instruccion -> llamada_func PTCOMA .)
+    RH              reduce using rule 22 (instruccion -> llamada_func PTCOMA .)
+    RINT            reduce using rule 22 (instruccion -> llamada_func PTCOMA .)
+    MENOS           reduce using rule 22 (instruccion -> llamada_func PTCOMA .)
+
+
+state 63
+
+    (24) instruccion -> return_instr PTCOMA .
+
+    LLAVDER         reduce using rule 24 (instruccion -> return_instr PTCOMA .)
+    RSTACK          reduce using rule 24 (instruccion -> return_instr PTCOMA .)
+    RHEAP           reduce using rule 24 (instruccion -> return_instr PTCOMA .)
+    RFMT            reduce using rule 24 (instruccion -> return_instr PTCOMA .)
+    RGOTO           reduce using rule 24 (instruccion -> return_instr PTCOMA .)
+    RIF             reduce using rule 24 (instruccion -> return_instr PTCOMA .)
+    ID              reduce using rule 24 (instruccion -> return_instr PTCOMA .)
+    RRETURN         reduce using rule 24 (instruccion -> return_instr PTCOMA .)
+    DECIMAL         reduce using rule 24 (instruccion -> return_instr PTCOMA .)
+    ENTERO          reduce using rule 24 (instruccion -> return_instr PTCOMA .)
+    RP              reduce using rule 24 (instruccion -> return_instr PTCOMA .)
+    RH              reduce using rule 24 (instruccion -> return_instr PTCOMA .)
+    RINT            reduce using rule 24 (instruccion -> return_instr PTCOMA .)
+    MENOS           reduce using rule 24 (instruccion -> return_instr PTCOMA .)
+
+
+state 64
+
+    (31) asignacion -> expresion IGUAL . expresion MAS expresion
+    (32) asignacion -> expresion IGUAL . expresion MENOS expresion
+    (33) asignacion -> expresion IGUAL . expresion POR expresion
+    (34) asignacion -> expresion IGUAL . expresion DIV expresion
+    (35) asignacion -> expresion IGUAL . expresion
+    (36) asignacion -> expresion IGUAL . RSTACK CORIZQ RINT PARIZQ expresion PARDER CORDER
+    (37) asignacion -> expresion IGUAL . RHEAP CORIZQ RINT PARIZQ expresion PARDER CORDER
+    (40) asignacion -> expresion IGUAL . RMATH PUNTO RMOD PARIZQ expresion COMA expresion PARDER
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    RSTACK          shift and go to state 83
+    RHEAP           shift and go to state 84
+    RMATH           shift and go to state 85
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 82
+
+state 65
+
+    (46) expresion -> expresion MAYOR . expresion
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 86
+
+state 66
+
+    (47) expresion -> expresion MAYORIGUAL . expresion
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 87
+
+state 67
+
+    (48) expresion -> expresion MENOR . expresion
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 88
+
+state 68
+
+    (49) expresion -> expresion MENORIGUAL . expresion
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 89
+
+state 69
+
+    (50) expresion -> expresion IGUALDAD . expresion
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 90
+
+state 70
+
+    (51) expresion -> expresion DIFERENTE . expresion
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 91
+
+state 71
+
+    (53) expresion -> MENOS expresion .
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    IGUAL           reduce using rule 53 (expresion -> MENOS expresion .)
+    MAYOR           reduce using rule 53 (expresion -> MENOS expresion .)
+    MAYORIGUAL      reduce using rule 53 (expresion -> MENOS expresion .)
+    MENOR           reduce using rule 53 (expresion -> MENOS expresion .)
+    MENORIGUAL      reduce using rule 53 (expresion -> MENOS expresion .)
+    IGUALDAD        reduce using rule 53 (expresion -> MENOS expresion .)
+    DIFERENTE       reduce using rule 53 (expresion -> MENOS expresion .)
+    LLAVIZQ         reduce using rule 53 (expresion -> MENOS expresion .)
+    MAS             reduce using rule 53 (expresion -> MENOS expresion .)
+    MENOS           reduce using rule 53 (expresion -> MENOS expresion .)
+    POR             reduce using rule 53 (expresion -> MENOS expresion .)
+    DIV             reduce using rule 53 (expresion -> MENOS expresion .)
+    PTCOMA          reduce using rule 53 (expresion -> MENOS expresion .)
+    PARDER          reduce using rule 53 (expresion -> MENOS expresion .)
+    COMA            reduce using rule 53 (expresion -> MENOS expresion .)
+
+  ! MAYOR           [ shift and go to state 65 ]
+  ! MAYORIGUAL      [ shift and go to state 66 ]
+  ! MENOR           [ shift and go to state 67 ]
+  ! MENORIGUAL      [ shift and go to state 68 ]
+  ! IGUALDAD        [ shift and go to state 69 ]
+  ! DIFERENTE       [ shift and go to state 70 ]
+
+
+state 72
+
+    (45) expresion -> ID .
+
+    MAYOR           reduce using rule 45 (expresion -> ID .)
+    MAYORIGUAL      reduce using rule 45 (expresion -> ID .)
+    MENOR           reduce using rule 45 (expresion -> ID .)
+    MENORIGUAL      reduce using rule 45 (expresion -> ID .)
+    IGUALDAD        reduce using rule 45 (expresion -> ID .)
+    DIFERENTE       reduce using rule 45 (expresion -> ID .)
+    IGUAL           reduce using rule 45 (expresion -> ID .)
+    LLAVIZQ         reduce using rule 45 (expresion -> ID .)
+    MAS             reduce using rule 45 (expresion -> ID .)
+    MENOS           reduce using rule 45 (expresion -> ID .)
+    POR             reduce using rule 45 (expresion -> ID .)
+    DIV             reduce using rule 45 (expresion -> ID .)
+    PTCOMA          reduce using rule 45 (expresion -> ID .)
+    PARDER          reduce using rule 45 (expresion -> ID .)
+    COMA            reduce using rule 45 (expresion -> ID .)
+
+
+state 73
+
+    (38) asignacion -> RSTACK CORIZQ . RINT PARIZQ expresion PARDER CORDER IGUAL expresion
+
+    RINT            shift and go to state 92
+
+
+state 74
+
+    (52) expresion -> RINT PARIZQ . expresion PARDER
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 93
+
+state 75
+
+    (39) asignacion -> RHEAP CORIZQ . RINT PARIZQ expresion PARDER CORDER IGUAL expresion
+
+    RINT            shift and go to state 94
+
+
+state 76
+
+    (30) imprimir -> RFMT PUNTO . RPRINT PARIZQ CADENA COMA expresion PARDER
+
+    RPRINT          shift and go to state 95
+
+
+state 77
+
+    (29) salto -> RGOTO ID . PTCOMA
+
+    PTCOMA          shift and go to state 96
+
+
+state 78
+
+    (28) if_inst -> RIF expresion . LLAVIZQ salto LLAVDER
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    LLAVIZQ         shift and go to state 97
+    MAYOR           shift and go to state 65
+    MAYORIGUAL      shift and go to state 66
+    MENOR           shift and go to state 67
+    MENORIGUAL      shift and go to state 68
+    IGUALDAD        shift and go to state 69
+    DIFERENTE       shift and go to state 70
+
+
+state 79
+
+    (15) funcion -> RFUNC RMAIN PARIZQ PARDER LLAVIZQ instrucciones LLAVDER .
+
+    RFUNC           reduce using rule 15 (funcion -> RFUNC RMAIN PARIZQ PARDER LLAVIZQ instrucciones LLAVDER .)
+    $end            reduce using rule 15 (funcion -> RFUNC RMAIN PARIZQ PARDER LLAVIZQ instrucciones LLAVDER .)
+
+
+state 80
+
+    (6) variables -> RVAR RSTACK CORIZQ ENTERO . CORDER RFLOAT PTCOMA variables1
+
+    CORDER          shift and go to state 98
+
+
+state 81
+
+    (25) llamada_func -> ID PARIZQ PARDER .
+
+    PTCOMA          reduce using rule 25 (llamada_func -> ID PARIZQ PARDER .)
+
+
+state 82
+
+    (31) asignacion -> expresion IGUAL expresion . MAS expresion
+    (32) asignacion -> expresion IGUAL expresion . MENOS expresion
+    (33) asignacion -> expresion IGUAL expresion . POR expresion
+    (34) asignacion -> expresion IGUAL expresion . DIV expresion
+    (35) asignacion -> expresion IGUAL expresion .
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    MAS             shift and go to state 99
+    MENOS           shift and go to state 100
+    POR             shift and go to state 101
+    DIV             shift and go to state 102
+    PTCOMA          reduce using rule 35 (asignacion -> expresion IGUAL expresion .)
+    MAYOR           shift and go to state 65
+    MAYORIGUAL      shift and go to state 66
+    MENOR           shift and go to state 67
+    MENORIGUAL      shift and go to state 68
+    IGUALDAD        shift and go to state 69
+    DIFERENTE       shift and go to state 70
+
+
+state 83
+
+    (36) asignacion -> expresion IGUAL RSTACK . CORIZQ RINT PARIZQ expresion PARDER CORDER
+
+    CORIZQ          shift and go to state 103
+
+
+state 84
+
+    (37) asignacion -> expresion IGUAL RHEAP . CORIZQ RINT PARIZQ expresion PARDER CORDER
+
+    CORIZQ          shift and go to state 104
+
+
+state 85
+
+    (40) asignacion -> expresion IGUAL RMATH . PUNTO RMOD PARIZQ expresion COMA expresion PARDER
+
+    PUNTO           shift and go to state 105
+
+
+state 86
+
+    (46) expresion -> expresion MAYOR expresion .
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    IGUAL           reduce using rule 46 (expresion -> expresion MAYOR expresion .)
+    MAYOR           reduce using rule 46 (expresion -> expresion MAYOR expresion .)
+    MAYORIGUAL      reduce using rule 46 (expresion -> expresion MAYOR expresion .)
+    MENOR           reduce using rule 46 (expresion -> expresion MAYOR expresion .)
+    MENORIGUAL      reduce using rule 46 (expresion -> expresion MAYOR expresion .)
+    IGUALDAD        reduce using rule 46 (expresion -> expresion MAYOR expresion .)
+    DIFERENTE       reduce using rule 46 (expresion -> expresion MAYOR expresion .)
+    LLAVIZQ         reduce using rule 46 (expresion -> expresion MAYOR expresion .)
+    MAS             reduce using rule 46 (expresion -> expresion MAYOR expresion .)
+    MENOS           reduce using rule 46 (expresion -> expresion MAYOR expresion .)
+    POR             reduce using rule 46 (expresion -> expresion MAYOR expresion .)
+    DIV             reduce using rule 46 (expresion -> expresion MAYOR expresion .)
+    PTCOMA          reduce using rule 46 (expresion -> expresion MAYOR expresion .)
+    PARDER          reduce using rule 46 (expresion -> expresion MAYOR expresion .)
+    COMA            reduce using rule 46 (expresion -> expresion MAYOR expresion .)
+
+  ! MAYOR           [ shift and go to state 65 ]
+  ! MAYORIGUAL      [ shift and go to state 66 ]
+  ! MENOR           [ shift and go to state 67 ]
+  ! MENORIGUAL      [ shift and go to state 68 ]
+  ! IGUALDAD        [ shift and go to state 69 ]
+  ! DIFERENTE       [ shift and go to state 70 ]
+
+
+state 87
+
+    (47) expresion -> expresion MAYORIGUAL expresion .
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    IGUAL           reduce using rule 47 (expresion -> expresion MAYORIGUAL expresion .)
+    MAYOR           reduce using rule 47 (expresion -> expresion MAYORIGUAL expresion .)
+    MAYORIGUAL      reduce using rule 47 (expresion -> expresion MAYORIGUAL expresion .)
+    MENOR           reduce using rule 47 (expresion -> expresion MAYORIGUAL expresion .)
+    MENORIGUAL      reduce using rule 47 (expresion -> expresion MAYORIGUAL expresion .)
+    IGUALDAD        reduce using rule 47 (expresion -> expresion MAYORIGUAL expresion .)
+    DIFERENTE       reduce using rule 47 (expresion -> expresion MAYORIGUAL expresion .)
+    LLAVIZQ         reduce using rule 47 (expresion -> expresion MAYORIGUAL expresion .)
+    MAS             reduce using rule 47 (expresion -> expresion MAYORIGUAL expresion .)
+    MENOS           reduce using rule 47 (expresion -> expresion MAYORIGUAL expresion .)
+    POR             reduce using rule 47 (expresion -> expresion MAYORIGUAL expresion .)
+    DIV             reduce using rule 47 (expresion -> expresion MAYORIGUAL expresion .)
+    PTCOMA          reduce using rule 47 (expresion -> expresion MAYORIGUAL expresion .)
+    PARDER          reduce using rule 47 (expresion -> expresion MAYORIGUAL expresion .)
+    COMA            reduce using rule 47 (expresion -> expresion MAYORIGUAL expresion .)
+
+  ! MAYOR           [ shift and go to state 65 ]
+  ! MAYORIGUAL      [ shift and go to state 66 ]
+  ! MENOR           [ shift and go to state 67 ]
+  ! MENORIGUAL      [ shift and go to state 68 ]
+  ! IGUALDAD        [ shift and go to state 69 ]
+  ! DIFERENTE       [ shift and go to state 70 ]
+
+
+state 88
+
+    (48) expresion -> expresion MENOR expresion .
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    IGUAL           reduce using rule 48 (expresion -> expresion MENOR expresion .)
+    MAYOR           reduce using rule 48 (expresion -> expresion MENOR expresion .)
+    MAYORIGUAL      reduce using rule 48 (expresion -> expresion MENOR expresion .)
+    MENOR           reduce using rule 48 (expresion -> expresion MENOR expresion .)
+    MENORIGUAL      reduce using rule 48 (expresion -> expresion MENOR expresion .)
+    IGUALDAD        reduce using rule 48 (expresion -> expresion MENOR expresion .)
+    DIFERENTE       reduce using rule 48 (expresion -> expresion MENOR expresion .)
+    LLAVIZQ         reduce using rule 48 (expresion -> expresion MENOR expresion .)
+    MAS             reduce using rule 48 (expresion -> expresion MENOR expresion .)
+    MENOS           reduce using rule 48 (expresion -> expresion MENOR expresion .)
+    POR             reduce using rule 48 (expresion -> expresion MENOR expresion .)
+    DIV             reduce using rule 48 (expresion -> expresion MENOR expresion .)
+    PTCOMA          reduce using rule 48 (expresion -> expresion MENOR expresion .)
+    PARDER          reduce using rule 48 (expresion -> expresion MENOR expresion .)
+    COMA            reduce using rule 48 (expresion -> expresion MENOR expresion .)
+
+  ! MAYOR           [ shift and go to state 65 ]
+  ! MAYORIGUAL      [ shift and go to state 66 ]
+  ! MENOR           [ shift and go to state 67 ]
+  ! MENORIGUAL      [ shift and go to state 68 ]
+  ! IGUALDAD        [ shift and go to state 69 ]
+  ! DIFERENTE       [ shift and go to state 70 ]
+
+
+state 89
+
+    (49) expresion -> expresion MENORIGUAL expresion .
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    IGUAL           reduce using rule 49 (expresion -> expresion MENORIGUAL expresion .)
+    MAYOR           reduce using rule 49 (expresion -> expresion MENORIGUAL expresion .)
+    MAYORIGUAL      reduce using rule 49 (expresion -> expresion MENORIGUAL expresion .)
+    MENOR           reduce using rule 49 (expresion -> expresion MENORIGUAL expresion .)
+    MENORIGUAL      reduce using rule 49 (expresion -> expresion MENORIGUAL expresion .)
+    IGUALDAD        reduce using rule 49 (expresion -> expresion MENORIGUAL expresion .)
+    DIFERENTE       reduce using rule 49 (expresion -> expresion MENORIGUAL expresion .)
+    LLAVIZQ         reduce using rule 49 (expresion -> expresion MENORIGUAL expresion .)
+    MAS             reduce using rule 49 (expresion -> expresion MENORIGUAL expresion .)
+    MENOS           reduce using rule 49 (expresion -> expresion MENORIGUAL expresion .)
+    POR             reduce using rule 49 (expresion -> expresion MENORIGUAL expresion .)
+    DIV             reduce using rule 49 (expresion -> expresion MENORIGUAL expresion .)
+    PTCOMA          reduce using rule 49 (expresion -> expresion MENORIGUAL expresion .)
+    PARDER          reduce using rule 49 (expresion -> expresion MENORIGUAL expresion .)
+    COMA            reduce using rule 49 (expresion -> expresion MENORIGUAL expresion .)
+
+  ! MAYOR           [ shift and go to state 65 ]
+  ! MAYORIGUAL      [ shift and go to state 66 ]
+  ! MENOR           [ shift and go to state 67 ]
+  ! MENORIGUAL      [ shift and go to state 68 ]
+  ! IGUALDAD        [ shift and go to state 69 ]
+  ! DIFERENTE       [ shift and go to state 70 ]
+
+
+state 90
+
+    (50) expresion -> expresion IGUALDAD expresion .
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    IGUAL           reduce using rule 50 (expresion -> expresion IGUALDAD expresion .)
+    MAYOR           reduce using rule 50 (expresion -> expresion IGUALDAD expresion .)
+    MAYORIGUAL      reduce using rule 50 (expresion -> expresion IGUALDAD expresion .)
+    MENOR           reduce using rule 50 (expresion -> expresion IGUALDAD expresion .)
+    MENORIGUAL      reduce using rule 50 (expresion -> expresion IGUALDAD expresion .)
+    IGUALDAD        reduce using rule 50 (expresion -> expresion IGUALDAD expresion .)
+    DIFERENTE       reduce using rule 50 (expresion -> expresion IGUALDAD expresion .)
+    LLAVIZQ         reduce using rule 50 (expresion -> expresion IGUALDAD expresion .)
+    MAS             reduce using rule 50 (expresion -> expresion IGUALDAD expresion .)
+    MENOS           reduce using rule 50 (expresion -> expresion IGUALDAD expresion .)
+    POR             reduce using rule 50 (expresion -> expresion IGUALDAD expresion .)
+    DIV             reduce using rule 50 (expresion -> expresion IGUALDAD expresion .)
+    PTCOMA          reduce using rule 50 (expresion -> expresion IGUALDAD expresion .)
+    PARDER          reduce using rule 50 (expresion -> expresion IGUALDAD expresion .)
+    COMA            reduce using rule 50 (expresion -> expresion IGUALDAD expresion .)
+
+  ! MAYOR           [ shift and go to state 65 ]
+  ! MAYORIGUAL      [ shift and go to state 66 ]
+  ! MENOR           [ shift and go to state 67 ]
+  ! MENORIGUAL      [ shift and go to state 68 ]
+  ! IGUALDAD        [ shift and go to state 69 ]
+  ! DIFERENTE       [ shift and go to state 70 ]
+
+
+state 91
+
+    (51) expresion -> expresion DIFERENTE expresion .
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    IGUAL           reduce using rule 51 (expresion -> expresion DIFERENTE expresion .)
+    MAYOR           reduce using rule 51 (expresion -> expresion DIFERENTE expresion .)
+    MAYORIGUAL      reduce using rule 51 (expresion -> expresion DIFERENTE expresion .)
+    MENOR           reduce using rule 51 (expresion -> expresion DIFERENTE expresion .)
+    MENORIGUAL      reduce using rule 51 (expresion -> expresion DIFERENTE expresion .)
+    IGUALDAD        reduce using rule 51 (expresion -> expresion DIFERENTE expresion .)
+    DIFERENTE       reduce using rule 51 (expresion -> expresion DIFERENTE expresion .)
+    LLAVIZQ         reduce using rule 51 (expresion -> expresion DIFERENTE expresion .)
+    MAS             reduce using rule 51 (expresion -> expresion DIFERENTE expresion .)
+    MENOS           reduce using rule 51 (expresion -> expresion DIFERENTE expresion .)
+    POR             reduce using rule 51 (expresion -> expresion DIFERENTE expresion .)
+    DIV             reduce using rule 51 (expresion -> expresion DIFERENTE expresion .)
+    PTCOMA          reduce using rule 51 (expresion -> expresion DIFERENTE expresion .)
+    PARDER          reduce using rule 51 (expresion -> expresion DIFERENTE expresion .)
+    COMA            reduce using rule 51 (expresion -> expresion DIFERENTE expresion .)
+
+  ! MAYOR           [ shift and go to state 65 ]
+  ! MAYORIGUAL      [ shift and go to state 66 ]
+  ! MENOR           [ shift and go to state 67 ]
+  ! MENORIGUAL      [ shift and go to state 68 ]
+  ! IGUALDAD        [ shift and go to state 69 ]
+  ! DIFERENTE       [ shift and go to state 70 ]
+
+
+state 92
+
+    (38) asignacion -> RSTACK CORIZQ RINT . PARIZQ expresion PARDER CORDER IGUAL expresion
+
+    PARIZQ          shift and go to state 106
+
+
+state 93
+
+    (52) expresion -> RINT PARIZQ expresion . PARDER
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    PARDER          shift and go to state 107
+    MAYOR           shift and go to state 65
+    MAYORIGUAL      shift and go to state 66
+    MENOR           shift and go to state 67
+    MENORIGUAL      shift and go to state 68
+    IGUALDAD        shift and go to state 69
+    DIFERENTE       shift and go to state 70
+
+
+state 94
+
+    (39) asignacion -> RHEAP CORIZQ RINT . PARIZQ expresion PARDER CORDER IGUAL expresion
+
+    PARIZQ          shift and go to state 108
+
+
+state 95
+
+    (30) imprimir -> RFMT PUNTO RPRINT . PARIZQ CADENA COMA expresion PARDER
+
+    PARIZQ          shift and go to state 109
+
+
+state 96
+
+    (29) salto -> RGOTO ID PTCOMA .
+
+    LLAVDER         reduce using rule 29 (salto -> RGOTO ID PTCOMA .)
+    RSTACK          reduce using rule 29 (salto -> RGOTO ID PTCOMA .)
+    RHEAP           reduce using rule 29 (salto -> RGOTO ID PTCOMA .)
+    RFMT            reduce using rule 29 (salto -> RGOTO ID PTCOMA .)
+    RGOTO           reduce using rule 29 (salto -> RGOTO ID PTCOMA .)
+    RIF             reduce using rule 29 (salto -> RGOTO ID PTCOMA .)
+    ID              reduce using rule 29 (salto -> RGOTO ID PTCOMA .)
+    RRETURN         reduce using rule 29 (salto -> RGOTO ID PTCOMA .)
+    DECIMAL         reduce using rule 29 (salto -> RGOTO ID PTCOMA .)
+    ENTERO          reduce using rule 29 (salto -> RGOTO ID PTCOMA .)
+    RP              reduce using rule 29 (salto -> RGOTO ID PTCOMA .)
+    RH              reduce using rule 29 (salto -> RGOTO ID PTCOMA .)
+    RINT            reduce using rule 29 (salto -> RGOTO ID PTCOMA .)
+    MENOS           reduce using rule 29 (salto -> RGOTO ID PTCOMA .)
+
+
+state 97
+
+    (28) if_inst -> RIF expresion LLAVIZQ . salto LLAVDER
+    (29) salto -> . RGOTO ID PTCOMA
+
+    RGOTO           shift and go to state 46
+
+    salto                          shift and go to state 110
+
+state 98
+
+    (6) variables -> RVAR RSTACK CORIZQ ENTERO CORDER . RFLOAT PTCOMA variables1
+
+    RFLOAT          shift and go to state 111
+
+
+state 99
+
+    (31) asignacion -> expresion IGUAL expresion MAS . expresion
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 112
+
+state 100
+
+    (32) asignacion -> expresion IGUAL expresion MENOS . expresion
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 113
+
+state 101
+
+    (33) asignacion -> expresion IGUAL expresion POR . expresion
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 114
+
+state 102
+
+    (34) asignacion -> expresion IGUAL expresion DIV . expresion
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 115
+
+state 103
+
+    (36) asignacion -> expresion IGUAL RSTACK CORIZQ . RINT PARIZQ expresion PARDER CORDER
+
+    RINT            shift and go to state 116
+
+
+state 104
+
+    (37) asignacion -> expresion IGUAL RHEAP CORIZQ . RINT PARIZQ expresion PARDER CORDER
+
+    RINT            shift and go to state 117
+
+
+state 105
+
+    (40) asignacion -> expresion IGUAL RMATH PUNTO . RMOD PARIZQ expresion COMA expresion PARDER
+
+    RMOD            shift and go to state 118
+
+
+state 106
+
+    (38) asignacion -> RSTACK CORIZQ RINT PARIZQ . expresion PARDER CORDER IGUAL expresion
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 119
+
+state 107
+
+    (52) expresion -> RINT PARIZQ expresion PARDER .
+
+    IGUAL           reduce using rule 52 (expresion -> RINT PARIZQ expresion PARDER .)
+    MAYOR           reduce using rule 52 (expresion -> RINT PARIZQ expresion PARDER .)
+    MAYORIGUAL      reduce using rule 52 (expresion -> RINT PARIZQ expresion PARDER .)
+    MENOR           reduce using rule 52 (expresion -> RINT PARIZQ expresion PARDER .)
+    MENORIGUAL      reduce using rule 52 (expresion -> RINT PARIZQ expresion PARDER .)
+    IGUALDAD        reduce using rule 52 (expresion -> RINT PARIZQ expresion PARDER .)
+    DIFERENTE       reduce using rule 52 (expresion -> RINT PARIZQ expresion PARDER .)
+    LLAVIZQ         reduce using rule 52 (expresion -> RINT PARIZQ expresion PARDER .)
+    MAS             reduce using rule 52 (expresion -> RINT PARIZQ expresion PARDER .)
+    MENOS           reduce using rule 52 (expresion -> RINT PARIZQ expresion PARDER .)
+    POR             reduce using rule 52 (expresion -> RINT PARIZQ expresion PARDER .)
+    DIV             reduce using rule 52 (expresion -> RINT PARIZQ expresion PARDER .)
+    PTCOMA          reduce using rule 52 (expresion -> RINT PARIZQ expresion PARDER .)
+    PARDER          reduce using rule 52 (expresion -> RINT PARIZQ expresion PARDER .)
+    COMA            reduce using rule 52 (expresion -> RINT PARIZQ expresion PARDER .)
+
+
+state 108
+
+    (39) asignacion -> RHEAP CORIZQ RINT PARIZQ . expresion PARDER CORDER IGUAL expresion
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 120
+
+state 109
+
+    (30) imprimir -> RFMT PUNTO RPRINT PARIZQ . CADENA COMA expresion PARDER
+
+    CADENA          shift and go to state 121
+
+
+state 110
+
+    (28) if_inst -> RIF expresion LLAVIZQ salto . LLAVDER
+
+    LLAVDER         shift and go to state 122
+
+
+state 111
+
+    (6) variables -> RVAR RSTACK CORIZQ ENTERO CORDER RFLOAT . PTCOMA variables1
+
+    PTCOMA          shift and go to state 123
+
+
+state 112
+
+    (31) asignacion -> expresion IGUAL expresion MAS expresion .
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    PTCOMA          reduce using rule 31 (asignacion -> expresion IGUAL expresion MAS expresion .)
+    MAYOR           shift and go to state 65
+    MAYORIGUAL      shift and go to state 66
+    MENOR           shift and go to state 67
+    MENORIGUAL      shift and go to state 68
+    IGUALDAD        shift and go to state 69
+    DIFERENTE       shift and go to state 70
+
+
+state 113
+
+    (32) asignacion -> expresion IGUAL expresion MENOS expresion .
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    PTCOMA          reduce using rule 32 (asignacion -> expresion IGUAL expresion MENOS expresion .)
+    MAYOR           shift and go to state 65
+    MAYORIGUAL      shift and go to state 66
+    MENOR           shift and go to state 67
+    MENORIGUAL      shift and go to state 68
+    IGUALDAD        shift and go to state 69
+    DIFERENTE       shift and go to state 70
+
+
+state 114
+
+    (33) asignacion -> expresion IGUAL expresion POR expresion .
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    PTCOMA          reduce using rule 33 (asignacion -> expresion IGUAL expresion POR expresion .)
+    MAYOR           shift and go to state 65
+    MAYORIGUAL      shift and go to state 66
+    MENOR           shift and go to state 67
+    MENORIGUAL      shift and go to state 68
+    IGUALDAD        shift and go to state 69
+    DIFERENTE       shift and go to state 70
+
+
+state 115
+
+    (34) asignacion -> expresion IGUAL expresion DIV expresion .
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    PTCOMA          reduce using rule 34 (asignacion -> expresion IGUAL expresion DIV expresion .)
+    MAYOR           shift and go to state 65
+    MAYORIGUAL      shift and go to state 66
+    MENOR           shift and go to state 67
+    MENORIGUAL      shift and go to state 68
+    IGUALDAD        shift and go to state 69
+    DIFERENTE       shift and go to state 70
+
+
+state 116
+
+    (36) asignacion -> expresion IGUAL RSTACK CORIZQ RINT . PARIZQ expresion PARDER CORDER
+
+    PARIZQ          shift and go to state 124
+
+
+state 117
+
+    (37) asignacion -> expresion IGUAL RHEAP CORIZQ RINT . PARIZQ expresion PARDER CORDER
+
+    PARIZQ          shift and go to state 125
+
+
+state 118
+
+    (40) asignacion -> expresion IGUAL RMATH PUNTO RMOD . PARIZQ expresion COMA expresion PARDER
+
+    PARIZQ          shift and go to state 126
+
+
+state 119
+
+    (38) asignacion -> RSTACK CORIZQ RINT PARIZQ expresion . PARDER CORDER IGUAL expresion
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    PARDER          shift and go to state 127
+    MAYOR           shift and go to state 65
+    MAYORIGUAL      shift and go to state 66
+    MENOR           shift and go to state 67
+    MENORIGUAL      shift and go to state 68
+    IGUALDAD        shift and go to state 69
+    DIFERENTE       shift and go to state 70
+
+
+state 120
+
+    (39) asignacion -> RHEAP CORIZQ RINT PARIZQ expresion . PARDER CORDER IGUAL expresion
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    PARDER          shift and go to state 128
+    MAYOR           shift and go to state 65
+    MAYORIGUAL      shift and go to state 66
+    MENOR           shift and go to state 67
+    MENORIGUAL      shift and go to state 68
+    IGUALDAD        shift and go to state 69
+    DIFERENTE       shift and go to state 70
+
+
+state 121
+
+    (30) imprimir -> RFMT PUNTO RPRINT PARIZQ CADENA . COMA expresion PARDER
+
+    COMA            shift and go to state 129
+
+
+state 122
+
+    (28) if_inst -> RIF expresion LLAVIZQ salto LLAVDER .
+
+    LLAVDER         reduce using rule 28 (if_inst -> RIF expresion LLAVIZQ salto LLAVDER .)
+    RSTACK          reduce using rule 28 (if_inst -> RIF expresion LLAVIZQ salto LLAVDER .)
+    RHEAP           reduce using rule 28 (if_inst -> RIF expresion LLAVIZQ salto LLAVDER .)
+    RFMT            reduce using rule 28 (if_inst -> RIF expresion LLAVIZQ salto LLAVDER .)
+    RGOTO           reduce using rule 28 (if_inst -> RIF expresion LLAVIZQ salto LLAVDER .)
+    RIF             reduce using rule 28 (if_inst -> RIF expresion LLAVIZQ salto LLAVDER .)
+    ID              reduce using rule 28 (if_inst -> RIF expresion LLAVIZQ salto LLAVDER .)
+    RRETURN         reduce using rule 28 (if_inst -> RIF expresion LLAVIZQ salto LLAVDER .)
+    DECIMAL         reduce using rule 28 (if_inst -> RIF expresion LLAVIZQ salto LLAVDER .)
+    ENTERO          reduce using rule 28 (if_inst -> RIF expresion LLAVIZQ salto LLAVDER .)
+    RP              reduce using rule 28 (if_inst -> RIF expresion LLAVIZQ salto LLAVDER .)
+    RH              reduce using rule 28 (if_inst -> RIF expresion LLAVIZQ salto LLAVDER .)
+    RINT            reduce using rule 28 (if_inst -> RIF expresion LLAVIZQ salto LLAVDER .)
+    MENOS           reduce using rule 28 (if_inst -> RIF expresion LLAVIZQ salto LLAVDER .)
+
+
+state 123
+
+    (6) variables -> RVAR RSTACK CORIZQ ENTERO CORDER RFLOAT PTCOMA . variables1
+    (7) variables1 -> . RVAR RHEAP CORIZQ ENTERO CORDER RFLOAT PTCOMA variables2
+
+    RVAR            shift and go to state 130
+
+    variables1                     shift and go to state 131
+
+state 124
+
+    (36) asignacion -> expresion IGUAL RSTACK CORIZQ RINT PARIZQ . expresion PARDER CORDER
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 132
+
+state 125
+
+    (37) asignacion -> expresion IGUAL RHEAP CORIZQ RINT PARIZQ . expresion PARDER CORDER
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 133
+
+state 126
+
+    (40) asignacion -> expresion IGUAL RMATH PUNTO RMOD PARIZQ . expresion COMA expresion PARDER
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 134
+
+state 127
+
+    (38) asignacion -> RSTACK CORIZQ RINT PARIZQ expresion PARDER . CORDER IGUAL expresion
+
+    CORDER          shift and go to state 135
+
+
+state 128
+
+    (39) asignacion -> RHEAP CORIZQ RINT PARIZQ expresion PARDER . CORDER IGUAL expresion
+
+    CORDER          shift and go to state 136
+
+
+state 129
+
+    (30) imprimir -> RFMT PUNTO RPRINT PARIZQ CADENA COMA . expresion PARDER
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 137
+
+state 130
+
+    (7) variables1 -> RVAR . RHEAP CORIZQ ENTERO CORDER RFLOAT PTCOMA variables2
+
+    RHEAP           shift and go to state 138
+
+
+state 131
+
+    (6) variables -> RVAR RSTACK CORIZQ ENTERO CORDER RFLOAT PTCOMA variables1 .
+
+    RFUNC           reduce using rule 6 (variables -> RVAR RSTACK CORIZQ ENTERO CORDER RFLOAT PTCOMA variables1 .)
+
+
+state 132
+
+    (36) asignacion -> expresion IGUAL RSTACK CORIZQ RINT PARIZQ expresion . PARDER CORDER
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    PARDER          shift and go to state 139
+    MAYOR           shift and go to state 65
+    MAYORIGUAL      shift and go to state 66
+    MENOR           shift and go to state 67
+    MENORIGUAL      shift and go to state 68
+    IGUALDAD        shift and go to state 69
+    DIFERENTE       shift and go to state 70
+
+
+state 133
+
+    (37) asignacion -> expresion IGUAL RHEAP CORIZQ RINT PARIZQ expresion . PARDER CORDER
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    PARDER          shift and go to state 140
+    MAYOR           shift and go to state 65
+    MAYORIGUAL      shift and go to state 66
+    MENOR           shift and go to state 67
+    MENORIGUAL      shift and go to state 68
+    IGUALDAD        shift and go to state 69
+    DIFERENTE       shift and go to state 70
+
+
+state 134
+
+    (40) asignacion -> expresion IGUAL RMATH PUNTO RMOD PARIZQ expresion . COMA expresion PARDER
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    COMA            shift and go to state 141
+    MAYOR           shift and go to state 65
+    MAYORIGUAL      shift and go to state 66
+    MENOR           shift and go to state 67
+    MENORIGUAL      shift and go to state 68
+    IGUALDAD        shift and go to state 69
+    DIFERENTE       shift and go to state 70
+
+
+state 135
+
+    (38) asignacion -> RSTACK CORIZQ RINT PARIZQ expresion PARDER CORDER . IGUAL expresion
+
+    IGUAL           shift and go to state 142
+
+
+state 136
+
+    (39) asignacion -> RHEAP CORIZQ RINT PARIZQ expresion PARDER CORDER . IGUAL expresion
+
+    IGUAL           shift and go to state 143
+
+
+state 137
+
+    (30) imprimir -> RFMT PUNTO RPRINT PARIZQ CADENA COMA expresion . PARDER
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    PARDER          shift and go to state 144
+    MAYOR           shift and go to state 65
+    MAYORIGUAL      shift and go to state 66
+    MENOR           shift and go to state 67
+    MENORIGUAL      shift and go to state 68
+    IGUALDAD        shift and go to state 69
+    DIFERENTE       shift and go to state 70
+
+
+state 138
+
+    (7) variables1 -> RVAR RHEAP . CORIZQ ENTERO CORDER RFLOAT PTCOMA variables2
+
+    CORIZQ          shift and go to state 145
+
+
+state 139
+
+    (36) asignacion -> expresion IGUAL RSTACK CORIZQ RINT PARIZQ expresion PARDER . CORDER
+
+    CORDER          shift and go to state 146
+
+
+state 140
+
+    (37) asignacion -> expresion IGUAL RHEAP CORIZQ RINT PARIZQ expresion PARDER . CORDER
+
+    CORDER          shift and go to state 147
+
+
+state 141
+
+    (40) asignacion -> expresion IGUAL RMATH PUNTO RMOD PARIZQ expresion COMA . expresion PARDER
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 148
+
+state 142
+
+    (38) asignacion -> RSTACK CORIZQ RINT PARIZQ expresion PARDER CORDER IGUAL . expresion
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 149
+
+state 143
+
+    (39) asignacion -> RHEAP CORIZQ RINT PARIZQ expresion PARDER CORDER IGUAL . expresion
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ENTERO
+    (43) expresion -> . RP
+    (44) expresion -> . RH
+    (45) expresion -> . ID
+    (46) expresion -> . expresion MAYOR expresion
+    (47) expresion -> . expresion MAYORIGUAL expresion
+    (48) expresion -> . expresion MENOR expresion
+    (49) expresion -> . expresion MENORIGUAL expresion
+    (50) expresion -> . expresion IGUALDAD expresion
+    (51) expresion -> . expresion DIFERENTE expresion
+    (52) expresion -> . RINT PARIZQ expresion PARDER
+    (53) expresion -> . MENOS expresion
+
+    DECIMAL         shift and go to state 49
+    ENTERO          shift and go to state 50
+    RP              shift and go to state 51
+    RH              shift and go to state 52
+    ID              shift and go to state 72
+    RINT            shift and go to state 43
+    MENOS           shift and go to state 41
+
+    expresion                      shift and go to state 150
+
+state 144
+
+    (30) imprimir -> RFMT PUNTO RPRINT PARIZQ CADENA COMA expresion PARDER .
+
+    PTCOMA          reduce using rule 30 (imprimir -> RFMT PUNTO RPRINT PARIZQ CADENA COMA expresion PARDER .)
+
+
+state 145
+
+    (7) variables1 -> RVAR RHEAP CORIZQ . ENTERO CORDER RFLOAT PTCOMA variables2
+
+    ENTERO          shift and go to state 151
+
+
+state 146
+
+    (36) asignacion -> expresion IGUAL RSTACK CORIZQ RINT PARIZQ expresion PARDER CORDER .
+
+    PTCOMA          reduce using rule 36 (asignacion -> expresion IGUAL RSTACK CORIZQ RINT PARIZQ expresion PARDER CORDER .)
+
+
+state 147
+
+    (37) asignacion -> expresion IGUAL RHEAP CORIZQ RINT PARIZQ expresion PARDER CORDER .
+
+    PTCOMA          reduce using rule 37 (asignacion -> expresion IGUAL RHEAP CORIZQ RINT PARIZQ expresion PARDER CORDER .)
+
+
+state 148
+
+    (40) asignacion -> expresion IGUAL RMATH PUNTO RMOD PARIZQ expresion COMA expresion . PARDER
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    PARDER          shift and go to state 152
+    MAYOR           shift and go to state 65
+    MAYORIGUAL      shift and go to state 66
+    MENOR           shift and go to state 67
+    MENORIGUAL      shift and go to state 68
+    IGUALDAD        shift and go to state 69
+    DIFERENTE       shift and go to state 70
+
+
+state 149
+
+    (38) asignacion -> RSTACK CORIZQ RINT PARIZQ expresion PARDER CORDER IGUAL expresion .
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    PTCOMA          reduce using rule 38 (asignacion -> RSTACK CORIZQ RINT PARIZQ expresion PARDER CORDER IGUAL expresion .)
+    MAYOR           shift and go to state 65
+    MAYORIGUAL      shift and go to state 66
+    MENOR           shift and go to state 67
+    MENORIGUAL      shift and go to state 68
+    IGUALDAD        shift and go to state 69
+    DIFERENTE       shift and go to state 70
+
+
+state 150
+
+    (39) asignacion -> RHEAP CORIZQ RINT PARIZQ expresion PARDER CORDER IGUAL expresion .
+    (46) expresion -> expresion . MAYOR expresion
+    (47) expresion -> expresion . MAYORIGUAL expresion
+    (48) expresion -> expresion . MENOR expresion
+    (49) expresion -> expresion . MENORIGUAL expresion
+    (50) expresion -> expresion . IGUALDAD expresion
+    (51) expresion -> expresion . DIFERENTE expresion
+
+    PTCOMA          reduce using rule 39 (asignacion -> RHEAP CORIZQ RINT PARIZQ expresion PARDER CORDER IGUAL expresion .)
+    MAYOR           shift and go to state 65
+    MAYORIGUAL      shift and go to state 66
+    MENOR           shift and go to state 67
+    MENORIGUAL      shift and go to state 68
+    IGUALDAD        shift and go to state 69
+    DIFERENTE       shift and go to state 70
+
+
+state 151
+
+    (7) variables1 -> RVAR RHEAP CORIZQ ENTERO . CORDER RFLOAT PTCOMA variables2
+
+    CORDER          shift and go to state 153
+
+
+state 152
+
+    (40) asignacion -> expresion IGUAL RMATH PUNTO RMOD PARIZQ expresion COMA expresion PARDER .
+
+    PTCOMA          reduce using rule 40 (asignacion -> expresion IGUAL RMATH PUNTO RMOD PARIZQ expresion COMA expresion PARDER .)
+
+
+state 153
+
+    (7) variables1 -> RVAR RHEAP CORIZQ ENTERO CORDER . RFLOAT PTCOMA variables2
+
+    RFLOAT          shift and go to state 154
+
+
+state 154
+
+    (7) variables1 -> RVAR RHEAP CORIZQ ENTERO CORDER RFLOAT . PTCOMA variables2
+
+    PTCOMA          shift and go to state 155
+
+
+state 155
+
+    (7) variables1 -> RVAR RHEAP CORIZQ ENTERO CORDER RFLOAT PTCOMA . variables2
+    (8) variables2 -> . RVAR RP COMA RH RFLOAT PTCOMA variables3
+
+    RVAR            shift and go to state 156
+
+    variables2                     shift and go to state 157
+
+state 156
+
+    (8) variables2 -> RVAR . RP COMA RH RFLOAT PTCOMA variables3
+
+    RP              shift and go to state 158
+
+
+state 157
+
+    (7) variables1 -> RVAR RHEAP CORIZQ ENTERO CORDER RFLOAT PTCOMA variables2 .
+
+    RFUNC           reduce using rule 7 (variables1 -> RVAR RHEAP CORIZQ ENTERO CORDER RFLOAT PTCOMA variables2 .)
+
+
+state 158
+
+    (8) variables2 -> RVAR RP . COMA RH RFLOAT PTCOMA variables3
+
+    COMA            shift and go to state 159
+
+
+state 159
+
+    (8) variables2 -> RVAR RP COMA . RH RFLOAT PTCOMA variables3
+
+    RH              shift and go to state 160
+
+
+state 160
+
+    (8) variables2 -> RVAR RP COMA RH . RFLOAT PTCOMA variables3
+
+    RFLOAT          shift and go to state 161
+
+
+state 161
+
+    (8) variables2 -> RVAR RP COMA RH RFLOAT . PTCOMA variables3
+
+    PTCOMA          shift and go to state 162
+
+
+state 162
+
+    (8) variables2 -> RVAR RP COMA RH RFLOAT PTCOMA . variables3
+    (9) variables3 -> . RVAR listaTMP RFLOAT PTCOMA
+
+    RVAR            shift and go to state 163
+
+    variables3                     shift and go to state 164
+
+state 163
+
+    (9) variables3 -> RVAR . listaTMP RFLOAT PTCOMA
+    (10) listaTMP -> . listaTMP COMA ID
+    (11) listaTMP -> . ID
+
+    ID              shift and go to state 166
+
+    listaTMP                       shift and go to state 165
+
+state 164
+
+    (8) variables2 -> RVAR RP COMA RH RFLOAT PTCOMA variables3 .
+
+    RFUNC           reduce using rule 8 (variables2 -> RVAR RP COMA RH RFLOAT PTCOMA variables3 .)
+
+
+state 165
+
+    (9) variables3 -> RVAR listaTMP . RFLOAT PTCOMA
+    (10) listaTMP -> listaTMP . COMA ID
+
+    RFLOAT          shift and go to state 167
+    COMA            shift and go to state 168
+
+
+state 166
+
+    (11) listaTMP -> ID .
+
+    RFLOAT          reduce using rule 11 (listaTMP -> ID .)
+    COMA            reduce using rule 11 (listaTMP -> ID .)
+
+
+state 167
+
+    (9) variables3 -> RVAR listaTMP RFLOAT . PTCOMA
+
+    PTCOMA          shift and go to state 169
+
+
+state 168
+
+    (10) listaTMP -> listaTMP COMA . ID
+
+    ID              shift and go to state 170
+
+
+state 169
+
+    (9) variables3 -> RVAR listaTMP RFLOAT PTCOMA .
+
+    RFUNC           reduce using rule 9 (variables3 -> RVAR listaTMP RFLOAT PTCOMA .)
+
+
+state 170
+
+    (10) listaTMP -> listaTMP COMA ID .
+
+    RFLOAT          reduce using rule 10 (listaTMP -> listaTMP COMA ID .)
+    COMA            reduce using rule 10 (listaTMP -> listaTMP COMA ID .)
+

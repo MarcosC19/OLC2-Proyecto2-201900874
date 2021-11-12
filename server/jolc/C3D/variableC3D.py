@@ -2,8 +2,10 @@ from enum import Enum
 
 class VariableC3D():
 
-    def __init__(self, nombre, posicion, tipo, tipoVal, tipoVar):
+    def __init__(self, nombre, posicion, tipo, tipoVal, tipoVar, file, column):
         self.name = nombre
+        self.fila = file
+        self.columna = column
         self.position = posicion
         self.type = tipo
         self.typeVal = tipoVal

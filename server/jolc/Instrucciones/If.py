@@ -144,7 +144,11 @@ class If(AST):
                 elif isinstance(instruccion, If):
                     C3D += instruccion.getC3D(c3dObj, finalL, inicioL)
                 else:
-                    C3D += instruccion.getC3D(c3dObj)
+                    resultado = instruccion.getC3D(c3dObj)
+                    if isinstance(resultado, list):
+                        C3D += resultado[0]
+                    else:
+                        C3D += resultado
             C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
             temporalLS = c3dObj.getContadorL()
             c3dObj.addContadorL()
@@ -160,7 +164,11 @@ class If(AST):
                     elif isinstance(insElse, If):
                         C3D += insElse.getC3D(c3dObj, finalL, inicioL)
                     else:
-                        C3D += insElse.getC3D(c3dObj)
+                        resultado = insElse.getC3D(c3dObj)
+                        if isinstance(resultado, list):
+                            C3D += resultado[0]
+                        else:
+                            C3D += resultado
             C3D += "    L" + str(temporalLS) + ":\n"
         elif isinstance(self.condicion, Logica):
             for valor in resultadoCondicion[1]:
@@ -173,7 +181,11 @@ class If(AST):
                 elif isinstance(instruccion, If):
                     C3D += instruccion.getC3D(c3dObj, finalL, inicioL)
                 else:
-                    C3D += instruccion.getC3D(c3dObj)
+                    resultado = instruccion.getC3D(c3dObj)
+                    if isinstance(resultado, list):
+                        C3D += resultado[0]
+                    else:
+                        C3D += resultado
             C3D += "    goto L" + str(c3dObj.getContadorL()) + ";\n"
             temporalLS = c3dObj.getContadorL()
             c3dObj.addContadorL()
@@ -190,6 +202,10 @@ class If(AST):
                     elif isinstance(insElse, If):
                         C3D += insElse.getC3D(c3dObj, finalL, inicioL)
                     else:
-                        C3D += insElse.getC3D(c3dObj)
+                        resultado = insElse.getC3D(c3dObj)
+                        if isinstance(resultado, list):
+                            C3D += resultado[0]
+                        else:
+                            C3D += resultado
             C3D += "    L" + str(temporalLS) + ":\n"
         return C3D

@@ -6,6 +6,7 @@ from tablaSimbolos.Tipo import TIPO_DATO
 from Abstract.nodoAST import nodeAST
 from gramaticaP import parse
 from gramaticaP import parseC3D
+from Optimizacion.gramaticaOPT import parseMirilla
 
 app = Flask(__name__)
 CORS(app)
@@ -62,30 +63,49 @@ def getErrors():
 def getTable():
     regreso = []
     tablaActual = result[2]
-    while tablaActual != None:
-        miTabla = tablaActual.tabla
-        tipo = ""
-        for simbolo in miTabla:
-            nuevoSimbolo = miTabla[simbolo]
-            if nuevoSimbolo.type == TIPO_DATO.ENTERO: tipo = "Entero"
-            elif nuevoSimbolo.type == TIPO_DATO.DECIMAL: tipo = "Decimal"
-            elif nuevoSimbolo.type == TIPO_DATO.CADENA: tipo = "Cadena"
-            elif nuevoSimbolo.type == TIPO_DATO.CARACTER: tipo = "Caracter"
-            elif nuevoSimbolo.type == TIPO_DATO.BOOLEANO: tipo = "Boolean"
-            elif nuevoSimbolo.type == TIPO_DATO.NULL: tipo = "Nulo"
-            elif nuevoSimbolo.type == TIPO_DATO.LISTA: tipo = "Lista"
-            elif nuevoSimbolo.type == TIPO_DATO.STRUCTN: tipo = "Struct No Mutable"
-            elif nuevoSimbolo.type == TIPO_DATO.STRUCTM: tipo = "Struct Mutable"
-            elif nuevoSimbolo.type == TIPO_DATO.FUNCION: tipo = "Funcion"
-            jsonR = {
-                'nombre': simbolo,
-                'tipo': tipo,
-                'ambito': 'global',
-                'fila': nuevoSimbolo.getFile(),
-                'columna': nuevoSimbolo.getColumn()
-            }
-            regreso.append(jsonR)
-        tablaActual = tablaActual.anterior
+    tipo = ""
+    for simbolo in tablaActual:
+        nuevoSimbolo = tablaActual[simbolo]
+        if nuevoSimbolo.typeVal == TIPO_DATO.ENTERO: tipo = "Entero"
+        elif nuevoSimbolo.typeVal == TIPO_DATO.DECIMAL: tipo = "Decimal"
+        elif nuevoSimbolo.typeVal == TIPO_DATO.CADENA: tipo = "Cadena"
+        elif nuevoSimbolo.typeVal == TIPO_DATO.CARACTER: tipo = "Caracter"
+        elif nuevoSimbolo.typeVal == TIPO_DATO.BOOLEANO: tipo = "Boolean"
+        elif nuevoSimbolo.typeVal == TIPO_DATO.NULL: tipo = "Nulo"
+        elif nuevoSimbolo.typeVal == TIPO_DATO.LISTA: tipo = "Lista"
+        elif nuevoSimbolo.typeVal == TIPO_DATO.STRUCTN: tipo = "Struct No Mutable"
+        elif nuevoSimbolo.typeVal == TIPO_DATO.STRUCTM: tipo = "Struct Mutable"
+        elif nuevoSimbolo.typeVal == TIPO_DATO.FUNCION: tipo = "Funcion"
+        jsonR = {
+            'nombre': simbolo,
+            'tipo': tipo,
+            'ambito': 'global',
+            'fila': nuevoSimbolo.fila,
+            'columna': nuevoSimbolo.columna
+        }
+        regreso.append(jsonR)
+
+    tablaActual = result[3]
+    for simbolo in tablaActual:
+        nuevoSimbolo = tablaActual[simbolo]
+        if nuevoSimbolo.type == TIPO_DATO.ENTERO: tipo = "Entero"
+        elif nuevoSimbolo.type == TIPO_DATO.DECIMAL: tipo = "Decimal"
+        elif nuevoSimbolo.type == TIPO_DATO.CADENA: tipo = "Cadena"
+        elif nuevoSimbolo.type == TIPO_DATO.CARACTER: tipo = "Caracter"
+        elif nuevoSimbolo.type == TIPO_DATO.BOOLEANO: tipo = "Boolean"
+        elif nuevoSimbolo.type == TIPO_DATO.NULL: tipo = "Nulo"
+        elif nuevoSimbolo.type == TIPO_DATO.LISTA: tipo = "Lista"
+        elif nuevoSimbolo.type == TIPO_DATO.STRUCTN: tipo = "Struct No Mutable"
+        elif nuevoSimbolo.type == TIPO_DATO.STRUCTM: tipo = "Struct Mutable"
+        elif nuevoSimbolo.type == TIPO_DATO.FUNCION: tipo = "Funcion"
+        jsonR = {
+            'nombre': simbolo,
+            'tipo': tipo,
+            'ambito': 'global',
+            'fila': nuevoSimbolo.file,
+            'columna': nuevoSimbolo.column
+        }
+        regreso.append(jsonR)
     prueba = {
         'tabla': regreso
     }
@@ -99,6 +119,14 @@ def getC3D():
     result = parseC3D(entrada)
     errores = result[1]
     retorno = {"salida": result[0].getC3D()}
+    return retorno
+
+@app.route('/Mirilla', methods=['POST'])
+def getMirilla():
+    entrada = flask.request.json['entrada']
+    global result
+    result = parseMirilla(entrada)
+    retorno = {"salida": result}
     return retorno
 
 if(__name__ == '__main__'):

@@ -763,7 +763,11 @@ def parseC3D(inp) :
             elif isinstance(instruccion, Continue):
                 instC3D += instruccion.getC3D(c3d, None)
             elif not isinstance(instruccion, Funcion):
-                instC3D += instruccion.getC3D(c3d)
+                resultado = instruccion.getC3D(c3d)
+                if isinstance(resultado, list):
+                    instC3D += resultado[0]
+                else:
+                    instC3D += resultado
 
         instC3D += "}"
         c3d.addLastIMP()
@@ -776,9 +780,9 @@ def parseC3D(inp) :
         lengthCode = c3d.addLength()
         if c3d.getContadorT() > 0:
             contadores = "var "
-            for i in range(0, c3d.getContadorT()):
+            for i in range(0, c3d.getContadorT() + 1):
                 contadores += "t" + str(i)
-                if i != c3d.getContadorT() -1:
+                if i != c3d.getContadorT():
                     contadores += ", "
             contadores += " float64;\n\n"
             c3d.addC3D(contadores)
@@ -798,4 +802,4 @@ def parseC3D(inp) :
         c3d.addC3D("func main(){\n")
         c3d.addC3D(instC3D)
 
-    return [c3d, errores, ast.getGlobal()]
+    return [c3d, errores, c3d.variables, c3d.funciones]

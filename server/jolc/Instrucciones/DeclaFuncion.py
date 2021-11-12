@@ -67,7 +67,7 @@ class Funcion(AST):
                     tipoApunt = TipoVar.APUNTADOR
                     if tiponewVal == TIPO_DATO.LISTA:
                         tipoValnew = TipoVariable.LISTA
-                newVariable = VariableC3D(parametro.getIdentifier(), "P + " + str(c3dNuevo.getNumVariables()), tipoApunt, tiponewVal, tipoValnew)
+                newVariable = VariableC3D(parametro.getIdentifier(), "P + " + str(c3dNuevo.getNumVariables()), tipoApunt, tiponewVal, tipoValnew, self.line, self.column)
                 
                 c3dNuevo.addVariable(newVariable.getName(), newVariable)
                 c3dNuevo.addNumVariable()
