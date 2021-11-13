@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { Link } from 'react-router-dom';
 import '../css/reportsPage.css';
 import Navigation from './navbar';
 
@@ -20,7 +21,7 @@ export default class Reports extends Component{
     }
 
     getErrors(){
-        fetch('http://localhost:5000/getErrores')
+        fetch('https://jolc2-back-201900874.herokuapp.com/getErrores')
         .then(res => res.json())
         .then(data => {
             this.setState({
@@ -30,7 +31,7 @@ export default class Reports extends Component{
     }
 
     getTable(){
-        fetch('http://localhost:5000/getTabla')
+        fetch('https://jolc2-back-201900874.herokuapp.com/getTabla')
         .then(res => res.json())
         .then(data => {
             this.setState({
@@ -103,8 +104,8 @@ export default class Reports extends Component{
                         </tbody>
                     </table>
                 </div>
-                <button type="button" id = "arbol" className="btn btn-outline-dark" onClick={() => {window.open("http://localhost:5000/getAST", "_blank")}}>Visualizar<br/>Arbol</button>
-                <a href = "http://localhost:3000/ReportOpt"><button type="button" id = "optimizacion" className="btn btn-outline-dark">Reporte<br/>Optimizacion</button></a>
+                <button type="button" id = "arbol" className="btn btn-outline-dark" onClick={() => {window.open("https://jolc2-back-201900874.herokuapp.com/getAST", "_blank")}}>Visualizar<br/>Arbol</button>
+                <Link to = "/ReportOpt"><button type="button" id = "optimizacion" className="btn btn-outline-dark">Reporte<br/>Optimizacion</button></Link>
             </div>
         );
     }

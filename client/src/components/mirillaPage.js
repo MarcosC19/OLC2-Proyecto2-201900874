@@ -31,7 +31,7 @@ export default class Compiler extends Component {
     }
 
     compiler(){
-        fetch('http://localhost:5000/Mirilla', {
+        fetch('https://jolc2-back-201900874.herokuapp.com/Mirilla', {
             method: 'POST',
             body: JSON.stringify(this.state),
             headers: {

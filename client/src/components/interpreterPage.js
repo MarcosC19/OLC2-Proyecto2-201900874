@@ -31,7 +31,7 @@ export default class Compiler extends Component {
     }
 
     compiler(){
-        fetch('http://localhost:5000/Interpreter', {
+        fetch('https://jolc2-back-201900874.herokuapp.com/Interpreter', {
             method: 'POST',
             body: JSON.stringify(this.state),
             headers: {

@@ -18,7 +18,7 @@ export default class ReportOPT extends Component{
     }
 
     getReport(){
-        fetch('http://localhost:5000/ReporteOpt')
+        fetch('https://jolc2-back-201900874.herokuapp.com/ReporteOpt')
         .then(res => res.json())
         .then(data => {
             this.setState({
