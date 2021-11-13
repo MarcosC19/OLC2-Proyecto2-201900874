@@ -131,6 +131,7 @@ def find_column(inp, token):
 import re
 import ply.lex as lex
 
+from .Instrucciones.Expresion import Expresion
 from .Instrucciones.LlamadaFuncion import LLamFuncion
 from .Instrucciones.Return import Return
 from .Instrucciones.Etiqueta import Etiqueta
@@ -299,20 +300,20 @@ def p_asignacion_exp(t):
                         | expresion IGUAL expresion POR expresion
                         | expresion IGUAL expresion DIV expresion
     '''
-    t[0] = Asignacion(t[1], str(t[3]) + t[4] + str(t[5]), t.lineno(1))
+    t[0] = Asignacion(t[1], Expresion(t[3], t[4], t[5]), t.lineno(2))
 
 def p_asignacion_exp1(t):
     '''
     asignacion          : expresion IGUAL expresion
     '''
-    t[0] = Asignacion(t[1], t[3], t.lineno(1))
+    t[0] = Asignacion(t[1], t[3], t.lineno(2))
 
 def p_asignacion_exp2(t):
     '''
     asignacion          : expresion IGUAL RSTACK CORIZQ RINT PARIZQ expresion PARDER CORDER
                         | expresion IGUAL RHEAP CORIZQ RINT PARIZQ expresion PARDER CORDER
     '''
-    t[0] = Asignacion(t[1], t[3] + t[4] + t[5] + t[6] + t[7] + t[8] + t[9], t.lineno(1))
+    t[0] = Asignacion(t[1], t[3] + t[4] + t[5] + t[6] + t[7] + t[8] + t[9], t.lineno(2))
 
 def p_asignacion_exp3(t):
     '''
@@ -325,7 +326,7 @@ def p_asignacion_exp5(t):
     '''
     asignacion          : expresion IGUAL RMATH PUNTO RMOD PARIZQ expresion COMA expresion PARDER
     '''
-    t[0] = Asignacion(t[1], t[3] + t[4] + t[5] + t[6] + str(t[7]) + t[8] + str(t[9]) + t[10], t.lineno(1))
+    t[0] = Asignacion(t[1], t[3] + t[4] + t[5] + t[6] + str(t[7]) + t[8] + str(t[9]) + t[10], t.lineno(2))
 
 # -------------- EXPRESIONES ----------------
 def p_expresiones(t):
@@ -347,7 +348,7 @@ def p_expresiones2(t):
                         | expresion IGUALDAD expresion
                         | expresion DIFERENTE expresion
     '''
-    t[0] = Comparacion(t[1], t[2], t[3], t.lineno(1))
+    t[0] = Comparacion(t[1], t[2], t[3], t.lineno(2))
 
 def p_expresiones1(t):
     '''
@@ -369,6 +370,7 @@ def parseMirilla(inp):
     parser = yacc.yacc()
     global input
     input = inp
+    reporte = []
     instrucciones=parser.parse(inp)
     nuevoC3D = instrucciones.OptMirilla()
     return nuevoC3D

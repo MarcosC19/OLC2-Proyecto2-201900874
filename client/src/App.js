@@ -9,6 +9,7 @@ import compilerPage from './components/compilerPage';
 import mirrilaPage from './components/mirillaPage';
 import blocksPage from './components/blockPage';
 import reportsPage from './components/reportsPage';
+import reportOpt from './components/reportOptPage';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
       <Route path="/OptMirr" component={mirrilaPage}></Route>
       <Route path="/OptBlock" component={blocksPage}></Route>
       <Route path="/Reports" component={reportsPage}></Route>
+      <Route path="/ReportOpt" component={reportOpt}></Route>
     </Router>
   );
 }

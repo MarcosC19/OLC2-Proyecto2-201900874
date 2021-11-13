@@ -132,6 +132,8 @@ class If(AST):
         C3D = ""
         resultadoCondicion = self.condicion.getC3D(c3dObj)
         # [C3D, LV, LF]
+        isReturn = False
+        temporalFR = None
         C3D += resultadoCondicion[0] # IF 
         C3D += "    /* REALIZANDO IF */\n"
         if isinstance(self.condicion, Relacional):
@@ -143,6 +145,9 @@ class If(AST):
                     C3D += instruccion.getC3D(c3dObj, inicioL)
                 elif isinstance(instruccion, If):
                     C3D += instruccion.getC3D(c3dObj, finalL, inicioL)
+                elif isinstance(instruccion, Return):
+                    C3D += instruccion.getC3D(c3dObj)
+                    isReturn = True
                 else:
                     resultado = instruccion.getC3D(c3dObj)
                     if isinstance(resultado, list):

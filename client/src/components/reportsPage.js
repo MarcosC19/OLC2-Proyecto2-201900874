@@ -104,7 +104,7 @@ export default class Reports extends Component{
                     </table>
                 </div>
                 <button type="button" id = "arbol" className="btn btn-outline-dark" onClick={() => {window.open("http://localhost:5000/getAST", "_blank")}}>Visualizar<br/>Arbol</button>
-                <button type="button" id = "optimizacion" className="btn btn-outline-dark">Reporte<br/>Optimizacion</button>
+                <a href = "http://localhost:3000/ReportOpt"><button type="button" id = "optimizacion" className="btn btn-outline-dark">Reporte<br/>Optimizacion</button></a>
             </div>
         );
     }

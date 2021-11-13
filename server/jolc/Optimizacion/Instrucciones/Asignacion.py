@@ -1,3 +1,6 @@
+from .Expresion import Expresion
+
+
 class Asignacion():
 
     def __init__(self, identificador, expresion, file):
@@ -6,4 +9,7 @@ class Asignacion():
         self.fila = file
 
     def printAsign(self):
-        return self.identificador + " = " + str(self.expresion) + ";\n"
+        if isinstance(self.expresion, Expresion):
+            return self.identificador + " = " + str(self.expresion.printAsign())
+        else:
+            return self.identificador + " = " + str(self.expresion) + ";\n"
