@@ -647,12 +647,15 @@ class Aritmetica(AST):
                     resultado1C3D = self.operating1.getC3D(c3dObj)
                     if isinstance(self.operating2, Primitivo): # PRIMITIVO / PRIMITIVO
                         resultado2C3D = self.operating2.getC3D(c3dObj)
-                        C3D += c3dObj.printMathError(resultado2C3D)
+                        C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(resultado2C3D[0]) + ";\n"
+                        temporalO = c3dObj.getContadorT()
+                        c3dObj.addContadorT()
+                        C3D += c3dObj.printMathError(temporalO)
                         C3D += "    L" + str(c3dObj.getLastContadorL()) + ":\n"
                         for texto in resultado1C3D:
                             C3D += "    t" + str(c3dObj.getContadorT()) + " = " + str(texto) + " / "
                         for texto in resultado2C3D:
-                            C3D += str(texto) + ";\n"
+                            C3D += "t" +str(temporalO) + ";\n"
                         C3D += "    L" + str(c3dObj.getContadorL()) + ":\n"
                         c3dObj.addContadorT()
                         c3dObj.addContadorL()

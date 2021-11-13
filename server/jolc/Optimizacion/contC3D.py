@@ -107,7 +107,6 @@ class contC3D():
 
         return [newFunction, isAplicable]
         
-
     def Regla6(self, instruccion, reportes):
         isAplicable = False
         if isinstance(instruccion, Asignacion):
