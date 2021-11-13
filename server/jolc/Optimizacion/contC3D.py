@@ -1,5 +1,6 @@
 from enum import Enum
 
+from .Instrucciones.If import If
 from .Instrucciones.Expresion import Expresion
 from .Instrucciones.Etiqueta import Etiqueta
 from .Instrucciones.Salto import Salto
@@ -32,14 +33,19 @@ class contC3D():
 
                 if regla1[1]:
                     newFunction += regla1[0]
+                    continue
                 elif regla2[1]:
                     newFunction += regla2[0]
+                    continue
                 elif regla6:
                     newFunction += ""
+                    continue
                 elif regla7[1]:
                     newFunction += regla7[0]
+                    continue
                 elif regla8[1]:
                     newFunction += regla8[0]
+                    continue
                 else:
                     newFunction += instruccionNew
             
@@ -72,7 +78,6 @@ class contC3D():
         backINS = ""
         expresionAnti = ""
         for instruccion2 in listado:
-
             if listado.index(instruccion) < listado.index(instruccion2):
                 if isinstance(instruccion, Salto):
                     newFunction = instruccion.printAsign()
